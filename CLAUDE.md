@@ -49,6 +49,10 @@ Context_Managment_System/
 │
 ├── CxMS_Enhancement_Exploration.md              # Future enhancement ideas (RFC)
 │
+├── # CxMS Self-Tracking (dogfooding)
+├── CxMS_Session.md                              # Current development state
+├── CxMS_Tasks.md                                # Development task tracker
+│
 └── Archive/                                     # Historical reference
     └── v1-theoretical/                          # Original documentation
 ```
