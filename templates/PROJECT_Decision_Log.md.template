@@ -1,0 +1,163 @@
+# [Project Name] - Decision Log
+
+**Template Version:** 1.0
+**Purpose:** Record significant decisions and their rationale for future reference
+**Created:** [DATE]
+**Format:** Append new decisions chronologically
+
+---
+
+## How to Use This Log
+
+**Log a decision when:**
+- Making architecture choices
+- Selecting technologies or libraries
+- Choosing between implementation approaches
+- Deciding to defer or not implement something
+- Making trade-off decisions
+
+**Each entry should capture:**
+- What was decided
+- What options were considered
+- Why this option was chosen
+- What this affects going forward
+
+---
+
+## Decisions
+
+### DEC-001: [Decision Title]
+**Date:** [DATE]
+**Status:** Active | Superseded by DEC-XXX | Revisited
+**Category:** Architecture | Technology | Process | Approach | Deferral
+
+**Context:**
+[What prompted this decision? What problem were we solving?]
+
+**Options Considered:**
+
+| Option | Pros | Cons |
+|--------|------|------|
+| Option A | [Pros] | [Cons] |
+| Option B | [Pros] | [Cons] |
+| Option C | [Pros] | [Cons] |
+
+**Decision:**
+[What was decided]
+
+**Rationale:**
+[Why this option was chosen over others]
+
+**Implications:**
+- [What this affects going forward]
+- [Dependencies created]
+- [Constraints imposed]
+
+**Revisit If:**
+- [Conditions that would trigger reconsideration]
+
+**Related:**
+- TASK-XXX
+- ACT-XXX
+- Other decisions: DEC-XXX
+
+---
+
+### DEC-002: [Decision Title]
+**Date:** [DATE]
+**Status:** Active
+**Category:** [Category]
+
+**Context:**
+[Context]
+
+**Options Considered:**
+
+| Option | Pros | Cons |
+|--------|------|------|
+| A | | |
+| B | | |
+
+**Decision:**
+[Decision]
+
+**Rationale:**
+[Rationale]
+
+**Implications:**
+- [Implication]
+
+**Revisit If:**
+- [Condition]
+
+---
+
+## Decisions by Category
+
+### Architecture Decisions
+| ID | Decision | Date | Status |
+|----|----------|------|--------|
+| DEC-001 | [Brief] | [Date] | Active |
+
+### Technology Decisions
+| ID | Decision | Date | Status |
+|----|----------|------|--------|
+| - | - | - | - |
+
+### Process Decisions
+| ID | Decision | Date | Status |
+|----|----------|------|--------|
+| - | - | - | - |
+
+### Deferred Items
+| ID | Item | Reason | Revisit When |
+|----|------|--------|--------------|
+| - | - | - | - |
+
+---
+
+## Decision Template
+
+Copy when adding new decisions:
+
+```markdown
+### DEC-XXX: [Decision Title]
+**Date:** [DATE]
+**Status:** Active | Superseded by DEC-XXX | Revisited
+**Category:** Architecture | Technology | Process | Approach | Deferral
+
+**Context:**
+[What prompted this decision?]
+
+**Options Considered:**
+
+| Option | Pros | Cons |
+|--------|------|------|
+| Option A | [Pros] | [Cons] |
+| Option B | [Pros] | [Cons] |
+
+**Decision:**
+[What was decided]
+
+**Rationale:**
+[Why this option was chosen]
+
+**Implications:**
+- [What this affects]
+
+**Revisit If:**
+- [Conditions for reconsideration]
+
+**Related:**
+- TASK-XXX, ACT-XXX, DEC-XXX
+```
+
+---
+
+## Review Schedule
+
+Decisions should be reviewed:
+- [ ] When requirements change significantly
+- [ ] When new information becomes available
+- [ ] When implementation reveals issues
+- [ ] Quarterly for long-running projects

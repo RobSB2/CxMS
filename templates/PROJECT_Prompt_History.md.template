@@ -1,0 +1,154 @@
+# [Project Name] - Prompt History
+
+**Template Version:** 1.0
+**Purpose:** Complete audit trail of prompts and resulting actions
+**Created:** [DATE]
+**Format:** Append new entries at bottom, organize by phase/date
+
+---
+
+## IMPORTANT: Context Loading Instructions
+
+**Before starting any work on this project, read the following documents in order:**
+
+1. **`CLAUDE.md`** - Project overview
+2. **`[PROJECT]_Context.md`** - Documentation index
+3. **`[PROJECT]_Session.md`** - Current state
+4. **`[PROJECT]_Tasks.md`** - Active tasks
+
+**Example prompt to start a session:**
+> Read CLAUDE.md and [PROJECT]_Session.md to understand the project context, then continue with [your task].
+
+---
+
+## How to Use This Log
+
+1. **After significant prompts:** Add entry with prompt text and actions taken
+2. **Group by phase:** Use phases for logical groupings (Setup, Feature A, etc.)
+3. **Include outcomes:** Note what files changed and any issues
+4. **Reference decisions:** Link to Decision Log entries where relevant
+
+---
+
+## Phase 1: [Phase Name - e.g., Initial Setup]
+
+### Session 1 - [DATE]
+
+#### Prompt 1.1: [Brief Description]
+**Time:** [TIME]
+**Prompt:**
+> [Exact prompt text or summary if very long]
+
+**Actions Taken:**
+- [Action 1]
+- [Action 2]
+
+**Files Changed:**
+| File | Change |
+|------|--------|
+| `path/to/file` | [What changed] |
+
+**Outcome:** Success | Partial | Failed
+**Notes:** [Any observations]
+**Related:** DEC-XXX (if decision was made)
+
+---
+
+#### Prompt 1.2: [Brief Description]
+**Time:** [TIME]
+**Prompt:**
+> [Prompt text]
+
+**Actions Taken:**
+- [Action 1]
+
+**Files Changed:**
+| File | Change |
+|------|--------|
+| `file` | [change] |
+
+**Outcome:** Success
+**Notes:** -
+
+---
+
+## Phase 2: [Phase Name]
+
+### Session X - [DATE]
+
+#### Prompt X.1: [Brief Description]
+...
+
+---
+
+## Files Created/Modified by This Project
+
+### Documentation Files
+| File | Purpose | Created |
+|------|---------|---------|
+| `CLAUDE.md` | Project overview | [DATE] |
+| `[PROJECT]_Session.md` | Session state | [DATE] |
+| `[PROJECT]_Tasks.md` | Task tracker | [DATE] |
+
+### Code Files
+| File | Purpose | Created/Modified |
+|------|---------|------------------|
+| - | - | - |
+
+---
+
+## Key Technical Patterns Established
+
+Document significant patterns discovered during the project.
+
+### [Pattern Name]
+**Established:** [DATE]
+**Context:** [Why this pattern was needed]
+
+```[language]
+[Code pattern example]
+```
+
+**Used For:** [Where this pattern applies]
+**Files Using This:** [List of files]
+
+---
+
+### [Another Pattern Name]
+...
+
+---
+
+## Prompt Template
+
+Copy when adding new entries:
+
+```markdown
+#### Prompt X.X: [Brief Description]
+**Time:** [TIME]
+**Prompt:**
+> [Prompt text]
+
+**Actions Taken:**
+- [Action 1]
+- [Action 2]
+
+**Files Changed:**
+| File | Change |
+|------|--------|
+| `file` | [change] |
+
+**Outcome:** Success | Partial | Failed
+**Notes:** [Any observations]
+**Related:** DEC-XXX (if applicable)
+```
+
+---
+
+## Statistics
+
+| Phase | Sessions | Prompts | Files Changed |
+|-------|----------|---------|---------------|
+| Phase 1 | X | X | X |
+| Phase 2 | X | X | X |
+| **Total** | **X** | **X** | **X** |

@@ -1,0 +1,234 @@
+# [Project Name] - [Feature/Initiative] Plan
+
+**Template Version:** 1.0
+**Created:** [DATE]
+**Last Updated:** [DATE]
+**Status:** Planning | In Progress | Complete
+**Owner:** [Name]
+
+---
+
+## Quick Reference (New Session Checklist)
+
+**Key Files:**
+- **Primary Work:** `[path/to/main/file]`
+- **Completed Example:** `[path/to/reference]`
+- **Full Inventory:** `[PROJECT]_Inventory.md`
+- **Current State:** `[PROJECT]_Session.md`
+
+**Important Notes:**
+- [Critical context for this initiative]
+- [Deployment notes if applicable]
+- [Dependencies or blockers]
+
+**Current Phase:** Phase [X] - [Phase Name]
+
+---
+
+## Overview
+
+[Brief description of what this plan accomplishes - 2-3 sentences]
+
+### Goals
+1. [Primary goal]
+2. [Secondary goal]
+3. [Additional goal]
+
+### Success Criteria
+- [ ] [Measurable outcome 1]
+- [ ] [Measurable outcome 2]
+- [ ] [Measurable outcome 3]
+
+### Out of Scope
+- [What this plan does NOT include]
+- [Explicitly excluded items]
+
+---
+
+## Scope Summary
+
+| Component | Total Items | Priority Items | Status | Notes |
+|-----------|-------------|----------------|--------|-------|
+| [Area 1] | X | Y | Not Started | [Notes] |
+| [Area 2] | X | Y | In Progress | [Notes] |
+| [Area 3] | X | Y | Complete | [Notes] |
+| **Total** | **X** | **Y** | | |
+
+---
+
+## Implementation Strategy
+
+### Phase 1: [Phase Name] (Do First)
+**Priority:** High
+**Reason:** [Why this phase first - dependencies, impact, etc.]
+**Target:** [Date or "When Phase 0 complete"]
+
+| Status | Item | Complexity | Notes |
+|--------|------|------------|-------|
+| [ ] | [Item 1] | Low/Med/High | [Notes] |
+| [ ] | [Item 2] | Low/Med/High | [Notes] |
+| [x] | [Item 3] | Low/Med/High | DONE - [Date] |
+
+**Phase 1 Checklist:**
+- [ ] [Prerequisite or validation step]
+- [ ] [Key deliverable]
+- [ ] [Verification step]
+
+---
+
+### Phase 2: [Phase Name]
+**Priority:** Medium
+**Reason:** [Why this phase order]
+**Blocked By:** Phase 1 completion
+**Target:** [Date]
+
+| Status | Item | Complexity | Notes |
+|--------|------|------------|-------|
+| [ ] | [Item 1] | Low/Med/High | [Notes] |
+| [ ] | [Item 2] | Low/Med/High | [Notes] |
+
+---
+
+### Phase 3: [Phase Name]
+**Priority:** Medium
+**Reason:** [Reason]
+**Blocked By:** [Dependencies]
+**Target:** [Date]
+
+| Status | Item | Complexity | Notes |
+|--------|------|------------|-------|
+| [ ] | [Item 1] | Low/Med/High | [Notes] |
+
+---
+
+### Phase 4: [Phase Name] (Final)
+**Priority:** Low
+**Reason:** Polish, optimization, nice-to-haves
+**Blocked By:** Core phases complete
+**Target:** [Date]
+
+| Status | Item | Complexity | Notes |
+|--------|------|------------|-------|
+| [ ] | [Item 1] | Low/Med/High | [Notes] |
+
+---
+
+## Completed Work
+
+### [Feature/Component Name] - COMPLETE
+**Completed:** [DATE]
+**Phase:** [Phase number]
+
+**Changes Made:**
+- [Change 1]
+- [Change 2]
+- [Change 3]
+
+**Files Modified:**
+| File | Change |
+|------|--------|
+| `path/file` | [Change] |
+
+**Backup:** [backup location if applicable]
+**Verification:** [How it was tested]
+
+---
+
+## Lessons Learned
+
+### [Pattern/Learning Name]
+**Date:** [DATE]
+**Context:** [What prompted this learning]
+**Learning:** [What we discovered]
+**Apply To:** [Where else this applies in this project or future work]
+
+---
+
+## Testing Checklist
+
+For each component/phase completed:
+
+### Functional Testing
+- [ ] [Test criterion 1]
+- [ ] [Test criterion 2]
+- [ ] All existing functionality still works
+
+### Visual/UI Testing (if applicable)
+- [ ] [Visual criterion 1]
+- [ ] Responsive layout works
+- [ ] No console errors
+
+### Integration Testing
+- [ ] [Integration criterion 1]
+- [ ] API endpoints work correctly
+- [ ] Database operations succeed
+
+---
+
+## Rollback Plan
+
+If critical issues are discovered:
+
+### Quick Rollback
+1. [Immediate action]
+2. [Restore step]
+3. [Verification]
+
+### Full Rollback
+1. [Identify version to restore]
+2. [Restore procedure]
+3. [Data considerations]
+4. [Verification]
+
+### Rollback Triggers
+- [Condition that would trigger rollback]
+- [Another trigger condition]
+
+---
+
+## Progress Tracking
+
+| Phase | Total | Complete | Remaining | % Done | Status |
+|-------|-------|----------|-----------|--------|--------|
+| Phase 1 | X | Y | Z | X% | [Status] |
+| Phase 2 | X | Y | Z | X% | Not Started |
+| Phase 3 | X | Y | Z | X% | Not Started |
+| Phase 4 | X | Y | Z | X% | Not Started |
+| **Total** | **X** | **Y** | **Z** | **X%** | |
+
+---
+
+## Dependencies
+
+| Dependency | Type | Status | Impact if Delayed |
+|------------|------|--------|-------------------|
+| [Dependency 1] | Internal/External | Ready/Pending | [Impact] |
+| [Dependency 2] | Internal/External | Ready/Pending | [Impact] |
+
+---
+
+## Risks
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|------------|--------|------------|
+| [Risk 1] | Low/Med/High | Low/Med/High | [Mitigation strategy] |
+| [Risk 2] | Low/Med/High | Low/Med/High | [Mitigation strategy] |
+
+---
+
+## Change Log
+
+| Date | Change | By |
+|------|--------|-----|
+| [DATE] | Initial plan created | [Name] |
+| [DATE] | [Change description] | [Name] |
+
+---
+
+## Related Documents
+
+| Document | Purpose |
+|----------|---------|
+| `[PROJECT]_Tasks.md` | Detailed task tracking |
+| `[PROJECT]_Decision_Log.md` | Decisions made during planning |
+| `[PROJECT]_Session.md` | Current work state |

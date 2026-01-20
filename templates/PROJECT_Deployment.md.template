@@ -1,0 +1,198 @@
+# [Project Name] - Deployment Tracker
+
+**Template Version:** 1.0
+**Purpose:** Track deployment status across environments
+**Created:** [DATE]
+**Last Updated:** [DATE]
+
+---
+
+## Environments
+
+| Environment | URL/Location | Purpose | Access |
+|-------------|--------------|---------|--------|
+| LOCAL | localhost | Development | Developer machines |
+| TEST | [IP/URL] | Testing/QA | Internal network |
+| PROD | [IP/URL] | Production | Public/Users |
+
+---
+
+## Current Deployment Status
+
+### Pending Deployment to TEST
+
+| File | Change Description | Ready Since | Priority |
+|------|-------------------|-------------|----------|
+| `path/to/file.php` | [Description] | [DATE] | High/Med/Low |
+| - | - | - | - |
+
+### Pending Deployment to PROD
+
+| File | Change Description | Tested On | Ready Since | Priority |
+|------|-------------------|-----------|-------------|----------|
+| `path/to/file.php` | [Description] | [DATE] | [DATE] | High/Med/Low |
+| - | - | - | - | - |
+
+### Recently Deployed
+
+| File | Environment | Deployed | Verified |
+|------|-------------|----------|----------|
+| `path/to/file.php` | TEST | [DATE] | ✅ |
+| - | - | - | - |
+
+---
+
+## Deployment History
+
+### DEPLOY-001: [DATE] - [ENVIRONMENT]
+**Deployed By:** [Name]
+**Time:** [TIME]
+**Type:** Feature | Bugfix | Hotfix | Config
+
+**Files Deployed:**
+| File | Change |
+|------|--------|
+| `file1.php` | [Change description] |
+| `file2.php` | [Change description] |
+
+**Verification:**
+- [ ] Application loads
+- [ ] Key features work
+- [ ] No errors in logs
+- ✅ Verified working
+
+**Notes:** [Any issues or observations]
+
+**Rollback Performed:** No | Yes - [reason]
+
+---
+
+### DEPLOY-002: [DATE] - [ENVIRONMENT]
+...
+
+---
+
+## Deployment Checklist
+
+### Before Deploying to TEST
+- [ ] Code changes complete
+- [ ] Local testing passed
+- [ ] Session.md updated with changes
+- [ ] Files listed in "Pending Deployment to TEST"
+
+### Before Deploying to PROD
+- [ ] All changes tested on TEST
+- [ ] No errors in TEST logs
+- [ ] Stakeholder approval (if required)
+- [ ] Backup taken (if needed)
+- [ ] Deployment window scheduled (if required)
+- [ ] Rollback plan documented
+
+### After Deployment
+- [ ] Verify application loads
+- [ ] Test key functionality
+- [ ] Check logs for errors
+- [ ] Update deployment status in this file
+- [ ] Log in Activity_Log.md
+
+---
+
+## Deployment Instructions
+
+### To TEST
+```bash
+# Step 1: [Description]
+[command]
+
+# Step 2: [Description]
+[command]
+
+# Step 3: Verify
+[verification steps]
+```
+
+### To PROD
+```bash
+# Step 1: [Description]
+[command]
+
+# Step 2: [Description]
+[command]
+
+# Step 3: Verify
+[verification steps]
+```
+
+---
+
+## Rollback Procedures
+
+### Quick Rollback (Last Deployment)
+```bash
+# Step 1: [Description]
+[command]
+
+# Step 2: Verify
+[verification steps]
+```
+
+### Full Rollback (To Specific Version)
+```bash
+# Step 1: Identify version
+[command]
+
+# Step 2: Restore
+[command]
+
+# Step 3: Verify
+[verification steps]
+```
+
+---
+
+## File Status Summary
+
+| File | LOCAL | TEST | PROD | Notes |
+|------|-------|------|------|-------|
+| `file1.php` | ✅ | ✅ | ⏳ | Pending PROD deploy |
+| `file2.php` | ✅ | ✅ | ✅ | Current |
+| `file3.php` | ✅ | ⏳ | ❌ | Pending TEST deploy |
+
+**Legend:**
+- ✅ Deployed and current
+- ⏳ Pending deployment
+- ❌ Not deployed / outdated
+- 🔄 In progress
+
+---
+
+## Deployment Template
+
+Copy when logging deployments:
+
+```markdown
+### DEPLOY-XXX: [DATE] - [ENVIRONMENT]
+**Deployed By:** [Name]
+**Time:** [TIME]
+**Type:** Feature | Bugfix | Hotfix | Config
+
+**Files Deployed:**
+| File | Change |
+|------|--------|
+| `file` | [Change] |
+
+**Verification:**
+- [ ] Application loads
+- [ ] Key features work
+- [ ] No errors in logs
+
+**Notes:** [Any issues]
+
+**Rollback Performed:** No
+```
+
+---
+
+## Notes
+
+<!-- Add any project-specific deployment notes here -->

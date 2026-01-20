@@ -1,0 +1,132 @@
+# [Project Name] - Session Summary
+
+**Template Version:** 1.0
+**Purpose:** Quick reference for all sessions (one line each)
+**Created:** [DATE]
+**Format:** Append after each session
+
+---
+
+## Session Log
+
+| # | Date | Duration | Focus | Key Accomplishments | Files Changed | Issues |
+|---|------|----------|-------|---------------------|---------------|--------|
+| 1 | [DATE] | ~X hrs | Initial setup | Created project structure | 5 | 0 |
+| 2 | [DATE] | ~X hrs | [Focus] | [Accomplishment] | X | 0 |
+
+---
+
+## Session Details
+
+### Session 1 - [DATE]
+**Duration:** ~X hours
+**Focus:** Initial Setup
+
+**Started With:**
+- New project, no prior context
+
+**Ended With:**
+- Project structure created
+- Core files in place
+
+**Key Accomplishments:**
+1. Created CLAUDE.md
+2. Created Session.md
+3. Created Tasks.md
+
+**Files Changed:** 5
+**Decisions Made:** 0
+**Issues Encountered:** 0
+
+**Blockers:** None
+
+**Next Session Should:**
+- Continue with [next task]
+
+---
+
+### Session 2 - [DATE]
+**Duration:** ~X hours
+**Focus:** [Focus Area]
+
+**Started With:**
+- [State at start]
+
+**Ended With:**
+- [State at end]
+
+**Key Accomplishments:**
+1. [Accomplishment]
+2. [Accomplishment]
+
+**Files Changed:** X
+**Decisions Made:** X (see DEC-XXX)
+**Issues Encountered:** X (see ISSUE-XXX)
+
+**Blockers:** [None or description]
+
+**Next Session Should:**
+- [Recommendation]
+
+---
+
+## Quick Stats
+
+| Metric | Value |
+|--------|-------|
+| Total Sessions | X |
+| Total Hours (est.) | X |
+| Files Created | X |
+| Files Modified | X |
+| Decisions Made | X |
+| Issues Resolved | X |
+
+---
+
+## Monthly Summary
+
+### [Month Year]
+| Week | Sessions | Focus Areas | Major Accomplishments |
+|------|----------|-------------|----------------------|
+| Week 1 | X | [Areas] | [Accomplishments] |
+| Week 2 | X | [Areas] | [Accomplishments] |
+
+---
+
+## Session Entry Template
+
+Copy after each session:
+
+```markdown
+### Session X - [DATE]
+**Duration:** ~X hours
+**Focus:** [Focus Area]
+
+**Started With:**
+- [State at start]
+
+**Ended With:**
+- [State at end]
+
+**Key Accomplishments:**
+1. [Accomplishment]
+
+**Files Changed:** X
+**Decisions Made:** X
+**Issues Encountered:** X
+
+**Blockers:** [None or description]
+
+**Next Session Should:**
+- [Recommendation]
+```
+
+---
+
+## Log Entry Template (Quick)
+
+For the summary table:
+
+```
+| X | [DATE] | ~X hrs | [Focus] | [Key accomplishment] | X | X |
+```

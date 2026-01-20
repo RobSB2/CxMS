@@ -1,0 +1,127 @@
+# [Project Name] - Context Index
+
+**Template Version:** 1.0
+**Purpose:** Central reference document pointing to all project documentation
+**Last Updated:** [DATE]
+
+---
+
+## IMPORTANT: Context Loading Instructions
+
+Before starting any work on this project, read the following documents in order:
+
+1. **`CLAUDE.md`** - Project overview and preferences
+2. **`[PROJECT]_Session.md`** - Current state (dynamic)
+3. **`[PROJECT]_Tasks.md`** - Active tasks
+
+**If this is a new session, use the standard start prompt from `SESSION_START_PROMPTS.md`**
+
+---
+
+## Quick Start
+
+| Goal | Read These Files |
+|------|------------------|
+| Understand the project | `CLAUDE.md` |
+| Know current state | `[PROJECT]_Session.md` |
+| See what needs doing | `[PROJECT]_Tasks.md` |
+| Full context | All three above in order |
+
+---
+
+## Documentation Index
+
+### Core Files (Required)
+| File | Purpose | Update Frequency |
+|------|---------|------------------|
+| `CLAUDE.md` | Project overview, tech stack, preferences | Rarely |
+| `[PROJECT]_Context.md` | This file - documentation index | When docs change |
+| `[PROJECT]_Session.md` | Current state, recent changes | **Every session** |
+| `[PROJECT]_Tasks.md` | Task tracker with status | As tasks change |
+| `[PROJECT]_Prompt_History.md` | Audit trail of prompts/actions | Each significant prompt |
+
+### Log Files (Optional - Use as Needed)
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| `[PROJECT]_Activity_Log.md` | What was done (DEP, DB, CFG) | Deployments, DB changes |
+| `[PROJECT]_Decision_Log.md` | Why decisions were made | Architectural choices |
+| `[PROJECT]_Issue_Log.md` | Problems and resolutions | Track recurring issues |
+| `[PROJECT]_Session_Summary.md` | One-line per session | Quick history reference |
+| `[PROJECT]_Deployment.md` | TEST/PROD status | Multi-environment projects |
+| `[PROJECT]_Compaction_Log.md` | Context loss events | Debug context issues |
+
+### Project Documentation (Optional - For Complex Projects)
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| `[PROJECT]_Plan.md` | Multi-phase project plan | Large features/initiatives |
+| `[PROJECT]_Inventory.md` | Component/endpoint listing | Complex codebases |
+| `[PROJECT]_Strategy.md` | AI workflow documentation | Long-running AI work |
+| `[PROJECT]_Exceptions.md` | Technical workarounds | Edge cases accumulate |
+
+---
+
+## Key Project Files
+
+### Configuration
+| File | Purpose |
+|------|---------|
+| `[path/to/config]` | Main configuration |
+| `[path/to/env]` | Environment variables |
+
+### Entry Points
+| File | Purpose |
+|------|---------|
+| `[path/to/main]` | Application entry point |
+| `[path/to/routes]` | Route definitions |
+
+### Important Directories
+| Directory | Contents |
+|-----------|----------|
+| `src/` | Source code |
+| `tests/` | Test files |
+| `docs/` | Documentation |
+
+---
+
+## External References
+
+| Resource | URL/Location | Purpose |
+|----------|--------------|---------|
+| Repository | [URL] | Source code |
+| Documentation | [URL] | External docs |
+| Issue Tracker | [URL] | Bug/feature tracking |
+
+---
+
+## Reading Order by Activity
+
+### Starting a New Session
+1. `CLAUDE.md` - Refresh project understanding
+2. `[PROJECT]_Session.md` - Current state
+3. `[PROJECT]_Tasks.md` - What to work on
+
+### Planning New Work
+1. All core files above
+2. `[PROJECT]_Plan.md` - Current plans
+3. `[PROJECT]_Strategy.md` - Approach documentation
+
+### Debugging Issues
+1. `[PROJECT]_Session.md` - Recent changes
+2. `[PROJECT]_Issue_Log.md` - Known issues
+3. `[PROJECT]_Exceptions.md` - Workarounds
+
+### Deployment
+1. `[PROJECT]_Deployment.md` - Current status
+2. `[PROJECT]_Activity_Log.md` - Recent deployments
+3. `[PROJECT]_Session.md` - What's ready
+
+### Reviewing History
+1. `[PROJECT]_Session_Summary.md` - Quick overview
+2. `[PROJECT]_Prompt_History.md` - Detailed history
+3. `[PROJECT]_Decision_Log.md` - Why things were done
+
+---
+
+## Notes
+
+<!-- Add any project-specific notes about documentation here -->

@@ -1,0 +1,16 @@
+# Archive folder - contains historical/reference materials not needed for public release
+Archive/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*~

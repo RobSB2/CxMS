@@ -1,0 +1,186 @@
+# [Project Name] - Project Inventory
+
+**Template Version:** 1.0
+**Purpose:** Comprehensive list of all components, endpoints, and handlers
+**Generated:** [DATE]
+**Last Updated:** [DATE]
+**Last Crawl:** [DATE] (if applicable)
+
+---
+
+## Summary
+
+| Category | Total | Documented | Remaining |
+|----------|-------|------------|-----------|
+| Pages/Views | X | X | X |
+| API Endpoints | X | X | X |
+| Form Handlers | X | X | X |
+| Components | X | X | X |
+| **Total** | **X** | **X** | **X** |
+
+---
+
+## Legend
+
+| Symbol | Meaning |
+|--------|---------|
+| `[x]` | Complete/Current/Documented |
+| `[ ]` | Needs attention/update |
+| `[nav]` | Navigation component |
+| `[dsp]` | Display partial/fragment |
+| `[old]` | Deprecated/old version |
+| `[skip]` | Intentionally skipped |
+
+---
+
+## 1. [Component Area 1 - e.g., "Main Application"]
+
+### [Sub-area - e.g., "Pages"]
+| Status | Path/Name | Description | Notes |
+|--------|-----------|-------------|-------|
+| [x] | `/path/to/file` | [Description] | [Notes] |
+| [ ] | `/path/to/file` | [Description] | Needs update |
+| [old] | `/path/to/old` | [Description] | Deprecated |
+
+### [Sub-area - e.g., "Components"]
+| Status | Path/Name | Description | Used By |
+|--------|-----------|-------------|---------|
+| [x] | `/components/Header` | Header component | All pages |
+| [x] | `/components/Footer` | Footer component | All pages |
+
+---
+
+## 2. [Component Area 2 - e.g., "Admin Module"]
+
+### Pages
+| Status | Path/Name | Description | Notes |
+|--------|-----------|-------------|-------|
+| [x] | `/admin/index` | Admin dashboard | |
+| [x] | `/admin/users` | User management | |
+
+### Components
+| Status | Path/Name | Description | Notes |
+|--------|-----------|-------------|-------|
+| [nav] | `/admin/nav` | Admin navigation | Included in all admin pages |
+
+---
+
+## 3. [Component Area 3]
+
+...
+
+---
+
+## X. API Endpoints
+
+### [Module] API (`/api/module/`)
+
+| Status | Endpoint | Method | Description | Auth Required |
+|--------|----------|--------|-------------|---------------|
+| [x] | `GET /items` | GET | List all items | Yes |
+| [x] | `POST /items` | POST | Create item | Yes |
+| [x] | `GET /items/:id` | GET | Get single item | Yes |
+| [x] | `PUT /items/:id` | PUT | Update item | Yes |
+| [x] | `DELETE /items/:id` | DELETE | Delete item | Yes |
+
+### [Another Module] API (`/api/other/`)
+
+| Status | Endpoint | Method | Description | Auth Required |
+|--------|----------|--------|-------------|---------------|
+| [x] | `endpoint.php` | GET/POST | [Description] | Yes/No |
+
+---
+
+## X+1. Form Handlers
+
+| Status | Handler | Form Source | Method | Description |
+|--------|---------|-------------|--------|-------------|
+| [x] | `process_form.php` | `form.html` | POST | Process main form |
+| [x] | `upload_handler.php` | `upload.html` | POST | Handle file uploads |
+
+---
+
+## X+2. Background Jobs / Scheduled Tasks
+
+| Status | Job | Schedule | Description |
+|--------|-----|----------|-------------|
+| [x] | `cleanup.php` | Daily 2am | Clean temp files |
+| [x] | `report.php` | Weekly Mon | Generate reports |
+
+---
+
+## X+3. JavaScript Handlers
+
+### [Module] Event Handlers
+
+| Status | Function/Selector | File | Description |
+|--------|-------------------|------|-------------|
+| [x] | `handleSubmit()` | `main.js` | Form submission |
+| [x] | `$('#btn').click()` | `module.js` | Button click handler |
+| [x] | `validateForm()` | `validation.js` | Form validation |
+
+### AJAX Calls
+
+| Status | Selector/Trigger | Endpoint | Description |
+|--------|------------------|----------|-------------|
+| [x] | `#search-btn` | `/api/search` | Search functionality |
+| [x] | `#save-btn` | `/api/save` | Save data |
+
+---
+
+## X+4. Database Tables (if applicable)
+
+| Status | Table | Purpose | Records (approx) |
+|--------|-------|---------|------------------|
+| [x] | `users` | User accounts | ~1000 |
+| [x] | `items` | Main data | ~50000 |
+| [x] | `logs` | Activity logs | ~1M |
+
+---
+
+## X+5. External Integrations
+
+| Status | Service | Purpose | Documentation |
+|--------|---------|---------|---------------|
+| [x] | [Service Name] | [Purpose] | [URL] |
+| [x] | [API Name] | [Purpose] | [URL] |
+
+---
+
+## Excluded from Inventory
+
+These are intentionally not tracked:
+- `/vendor/` - Third-party libraries
+- `/node_modules/` - NPM packages
+- `*_backup_*/` - Backup directories
+- `*.bak` - Backup files
+- Test fixtures
+
+---
+
+## Discovery Notes
+
+### How This Inventory Was Created
+1. [Method used - manual review, automated crawl, etc.]
+2. [Tools used if any]
+3. [Date of last full review]
+
+### Areas Needing Review
+- [ ] [Area that needs re-crawling]
+- [ ] [New functionality not yet documented]
+
+---
+
+## Inventory Template
+
+For adding new sections:
+
+```markdown
+## X. [Section Name]
+
+### [Sub-section]
+| Status | Path/Name | Description | Notes |
+|--------|-----------|-------------|-------|
+| [x] | `path` | [Description] | [Notes] |
+| [ ] | `path` | [Description] | [Notes] |
+```

@@ -1,0 +1,247 @@
+# [Project Name] - Technical Exceptions & Workarounds
+
+**Template Version:** 1.0
+**Purpose:** Document technical exceptions, workarounds, and special handling
+**Created:** [DATE]
+**Last Updated:** [DATE]
+**Total Exceptions:** [X]
+
+---
+
+## Overview
+
+This document tracks technical exceptions to standard patterns, workarounds for edge cases, and special handling required. These are intentional deviations that should be preserved and understood.
+
+**Why track exceptions?**
+- Prevent "fixing" intentional workarounds
+- Understand why code deviates from patterns
+- Know when exceptions can be removed
+- Help future developers (and AI) understand the codebase
+
+---
+
+## Exception Categories
+
+| Code | Category | Description |
+|------|----------|-------------|
+| CSS | Styling | CSS overrides and style exceptions |
+| PATH | Paths | URL/file path mapping exceptions |
+| DB | Database | Database-specific workarounds |
+| API | API | API behavior workarounds |
+| INT | Integration | External system integration issues |
+| CFG | Configuration | Configuration exceptions |
+| SEC | Security | Security-related exceptions |
+| PERF | Performance | Performance optimizations/workarounds |
+| COMPAT | Compatibility | Browser/system compatibility fixes |
+| LEGACY | Legacy | Legacy system accommodations |
+
+---
+
+## Active Exceptions
+
+### EXC-001: [Exception Name]
+**Category:** [CSS/PATH/DB/API/INT/CFG/SEC/PERF/COMPAT/LEGACY]
+**Date Added:** [DATE]
+**Added By:** [Name/AI]
+**Status:** Active | Under Review | Scheduled for Removal
+
+**Affects:**
+- `[path/to/file1]`
+- `[path/to/file2]`
+
+**Problem:**
+[What issue does this exception solve? What would happen without it?]
+
+**Solution:**
+[How was it solved? What's the workaround?]
+
+**Code/Configuration:**
+```[language]
+// Example of the exception
+[Code snippet showing the workaround]
+```
+
+**Rationale:**
+[Why this approach was chosen. Why not fix it "properly"?]
+
+**Side Effects:**
+- [Any side effects or limitations]
+- [Things to be aware of]
+
+**Dependencies:**
+- [What this exception depends on]
+- [What depends on this exception]
+
+**Future Consideration:**
+- **Remove When:** [Conditions that would allow removal]
+- **Revisit:** [Date or trigger for review]
+
+**Related:**
+- DEC-XXX (if decision was documented)
+- ISSUE-XXX (if related to an issue)
+- Other exceptions: EXC-XXX
+
+---
+
+### EXC-002: [Exception Name]
+**Category:** [Category]
+**Date Added:** [DATE]
+**Status:** Active
+
+**Affects:**
+- `[files]`
+
+**Problem:**
+[Problem description]
+
+**Solution:**
+[Solution description]
+
+**Code/Configuration:**
+```[language]
+[Code]
+```
+
+**Rationale:**
+[Rationale]
+
+**Future Consideration:**
+- **Remove When:** [Condition]
+
+---
+
+## Exceptions by Category
+
+### CSS Exceptions
+| ID | Name | Files Affected | Status |
+|----|------|----------------|--------|
+| EXC-001 | [Name] | X files | Active |
+
+### PATH Exceptions
+| ID | Name | Files Affected | Status |
+|----|------|----------------|--------|
+| - | - | - | - |
+
+### DB Exceptions
+| ID | Name | Tables Affected | Status |
+|----|------|-----------------|--------|
+| - | - | - | - |
+
+### API Exceptions
+| ID | Name | Endpoints Affected | Status |
+|----|------|-------------------|--------|
+| - | - | - | - |
+
+### Integration Exceptions
+| ID | Name | Systems Affected | Status |
+|----|------|------------------|--------|
+| - | - | - | - |
+
+### Configuration Exceptions
+| ID | Name | Config Files | Status |
+|----|------|--------------|--------|
+| - | - | - | - |
+
+---
+
+## Summary by Category
+
+| Category | Active | Under Review | Total |
+|----------|--------|--------------|-------|
+| CSS | 0 | 0 | 0 |
+| PATH | 0 | 0 | 0 |
+| DB | 0 | 0 | 0 |
+| API | 0 | 0 | 0 |
+| INT | 0 | 0 | 0 |
+| CFG | 0 | 0 | 0 |
+| SEC | 0 | 0 | 0 |
+| PERF | 0 | 0 | 0 |
+| COMPAT | 0 | 0 | 0 |
+| LEGACY | 0 | 0 | 0 |
+| **Total** | **0** | **0** | **0** |
+
+---
+
+## Removed Exceptions
+
+Exceptions that have been removed (kept for historical reference).
+
+### EXC-XXX: [Removed Exception Name] - REMOVED
+**Category:** [Category]
+**Added:** [DATE]
+**Removed:** [DATE]
+**Reason for Removal:** [Why it was removed - e.g., "underlying issue fixed", "no longer needed"]
+
+**Original Problem:**
+[Brief description]
+
+**How It Was Resolved:**
+[What changed that allowed removal]
+
+---
+
+## Review Schedule
+
+Exceptions should be reviewed:
+- [ ] When upgrading frameworks or libraries
+- [ ] When refactoring affected components
+- [ ] Quarterly for continued relevance
+- [ ] When related issues are resolved
+- [ ] Before major releases
+
+**Next Scheduled Review:** [DATE]
+
+---
+
+## Exception Template
+
+Copy when adding new exceptions:
+
+```markdown
+### EXC-XXX: [Exception Name]
+**Category:** [CSS/PATH/DB/API/INT/CFG/SEC/PERF/COMPAT/LEGACY]
+**Date Added:** [DATE]
+**Added By:** [Name/AI]
+**Status:** Active
+
+**Affects:**
+- `[path/to/file]`
+
+**Problem:**
+[What issue does this solve?]
+
+**Solution:**
+[How was it solved?]
+
+**Code/Configuration:**
+```[language]
+[Code snippet]
+```
+
+**Rationale:**
+[Why this approach?]
+
+**Side Effects:**
+- [Side effects]
+
+**Dependencies:**
+- [Dependencies]
+
+**Future Consideration:**
+- **Remove When:** [Condition]
+- **Revisit:** [Date]
+
+**Related:**
+- DEC-XXX, ISSUE-XXX, EXC-XXX
+```
+
+---
+
+## Guidelines for Adding Exceptions
+
+1. **Document immediately** - Don't wait, document when you add the workaround
+2. **Be specific** - Include exact code/config, not vague descriptions
+3. **Explain the "why"** - Future developers need to understand the reasoning
+4. **Set review triggers** - Define when to revisit
+5. **Link related items** - Connect to decisions, issues, other exceptions
+6. **Keep it current** - Update when circumstances change

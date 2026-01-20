@@ -1,0 +1,98 @@
+# [Project Name] - Task Tracker
+
+**Template Version:** 1.0
+**Created:** [DATE]
+**Purpose:** Track development tasks, status, and dependencies
+
+---
+
+## Active Tasks
+
+### TASK-001: [Task Name]
+**Status:** 🟡 In Progress
+**Priority:** Medium
+**Started:** [Date]
+**Target:** TBD
+
+**Description:**
+[What this task accomplishes]
+
+**Checklist:**
+- [ ] Step 1
+- [ ] Step 2
+- [ ] Step 3
+
+**Related Files:**
+- `file.md`
+
+**Blocked By:** None
+
+**Notes:**
+- [Additional context]
+
+---
+
+## Pending Tasks
+
+### TASK-002: [Task Name]
+**Status:** ⚪ Not Started
+**Priority:** Medium
+**Blocked By:** None
+
+**Description:**
+[Brief description]
+
+---
+
+## Completed Tasks
+
+<!-- Move completed tasks here -->
+
+---
+
+## Status Legend
+
+| Icon | Status | Description |
+|------|--------|-------------|
+| 🟢 | Complete | Finished and verified |
+| 🟡 | In Progress | Currently being worked on |
+| 🟠 | Pending | Ready to start |
+| 🔴 | Blocked | Cannot proceed |
+| ⚪ | Not Started | In backlog |
+
+---
+
+## Task Template
+
+Copy when adding new tasks:
+
+```markdown
+### TASK-XXX: [Task Name]
+**Status:** ⚪ Not Started
+**Priority:** High | Medium | Low
+**Started:** -
+**Target:** TBD
+
+**Description:**
+[What this task accomplishes]
+
+**Checklist:**
+- [ ] Step 1
+- [ ] Step 2
+
+**Related Files:**
+-
+
+**Blocked By:** None
+
+**Notes:**
+-
+```
+
+---
+
+## Change Log
+
+| Date | Task | Change |
+|------|------|--------|
+| [Date] | - | Initial tracker created |

@@ -1,0 +1,173 @@
+# [Project Name] - Compaction Log
+
+**Template Version:** 1.0
+**Purpose:** Track context compaction events and what was preserved/lost
+**Created:** [DATE]
+**Why:** Helps recover context and identify patterns in context loss
+
+---
+
+## What is Context Compaction?
+
+Context compaction occurs when:
+- AI session reaches token limit
+- User manually triggers /compact
+- Session ends unexpectedly
+- Long conversations get summarized
+
+**Impact:** Recent context may be lost or summarized, requiring recovery.
+
+---
+
+## Compaction Events
+
+### COMPACT-001: [DATE TIME]
+**Trigger:** Manual /compact | Auto-compaction | Session end | Unexpected
+**Session:** [Session number from Session_Summary]
+
+**Context Size:**
+- Before: [Approximate - e.g., "~50 messages", "~100k tokens"]
+- After: [Approximate - e.g., "~10 messages", "~20k tokens"]
+
+**Session.md Updated Before Compaction:** ✅ Yes | ❌ No
+
+**Key Information Preserved:**
+- [Item 1 - what was kept in summary]
+- [Item 2 - critical context maintained]
+- [Item 3]
+
+**Information Potentially Lost:**
+- [Item 1 - what might not have been captured]
+- [Item 2 - detailed discussion not summarized]
+- [Item 3]
+
+**Recovery Actions Taken:**
+- [x] Updated Session.md before compaction
+- [ ] Verified critical context in files
+- [ ] Noted any gaps in this log
+- [ ] Informed user of potential loss
+
+**Impact Assessment:**
+- Critical info lost: Yes | No
+- Work needs to be redone: Yes | No
+- Context successfully recovered: Yes | Partial | No
+
+**Notes:**
+[Any observations about what was lost or issues encountered]
+
+**Lessons Learned:**
+[What to do differently next time]
+
+---
+
+### COMPACT-002: [DATE TIME]
+...
+
+---
+
+## Compaction Statistics
+
+| Month | Events | Planned | Unplanned | Data Loss |
+|-------|--------|---------|-----------|-----------|
+| [Month] | X | X | X | X incidents |
+| **Total** | **X** | **X** | **X** | **X** |
+
+---
+
+## Common Causes of Context Loss
+
+### Cause 1: Session.md Not Updated
+**Frequency:** [X times]
+**Impact:** High - recent work context lost
+**Prevention:** Always update Session.md before ending or compacting
+
+### Cause 2: Unexpected Session End
+**Frequency:** [X times]
+**Impact:** Medium - depends on recent work
+**Prevention:** Use mid-session checkpoints for long sessions
+
+### Cause 3: Auto-Compaction During Complex Work
+**Frequency:** [X times]
+**Impact:** Variable
+**Prevention:** Monitor token usage, checkpoint before complex operations
+
+---
+
+## Recovery Procedures
+
+### If Session.md Was Updated
+1. Read Session.md - context should be preserved
+2. Verify against actual file state
+3. Continue work normally
+
+### If Session.md Was NOT Updated
+1. Ask AI: "What do you remember from this session?"
+2. Check git status/diff for recent changes
+3. Review file timestamps for recently modified files
+4. Manually reconstruct Session.md from available info
+5. Log the incident here with lessons learned
+
+### If Critical Context Was Lost
+1. Document what was lost in this log
+2. Check if information exists elsewhere (code comments, commit messages)
+3. If work must be redone, log the time impact
+4. Update processes to prevent recurrence
+
+---
+
+## Prevention Checklist
+
+**Before Long Sessions:**
+- [ ] Note session start time
+- [ ] Plan checkpoint intervals (every 30-60 min)
+- [ ] Keep Session.md open for quick updates
+
+**During Work:**
+- [ ] Update Session.md after significant milestones
+- [ ] Use mid-session checkpoint prompt when needed
+- [ ] Be aware of conversation length
+
+**Before Ending:**
+- [ ] Use Session End prompt
+- [ ] Verify Session.md is current
+- [ ] Confirm update with AI
+
+---
+
+## Compaction Entry Template
+
+Copy when logging compaction events:
+
+```markdown
+### COMPACT-XXX: [DATE TIME]
+**Trigger:** Manual /compact | Auto-compaction | Session end | Unexpected
+**Session:** [Session number]
+
+**Context Size:**
+- Before: [Approximate]
+- After: [Approximate]
+
+**Session.md Updated Before Compaction:** ✅ Yes | ❌ No
+
+**Key Information Preserved:**
+- [Item]
+
+**Information Potentially Lost:**
+- [Item]
+
+**Recovery Actions Taken:**
+- [ ] Updated Session.md before compaction
+- [ ] Verified critical context in files
+- [ ] Noted any gaps in this log
+
+**Impact Assessment:**
+- Critical info lost: Yes | No
+- Work needs to be redone: Yes | No
+- Context successfully recovered: Yes | Partial | No
+
+**Notes:**
+[Observations]
+
+**Lessons Learned:**
+[What to do differently]
+```

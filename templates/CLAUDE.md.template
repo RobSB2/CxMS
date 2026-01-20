@@ -1,0 +1,160 @@
+# CLAUDE.md
+
+**Template Version:** 1.0
+**CxMS:** Agent Context Management System
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+---
+
+## MANDATORY REQUIREMENTS
+
+### Session Start Requirements
+
+Before ANY work, you MUST:
+1. Read this file completely
+2. Read `[PROJECT]_Session.md` completely
+3. Read `[PROJECT]_Tasks.md` completely
+4. Provide verification summary to user
+
+**After reading, you MUST provide:**
+- Current active task (from Tasks.md)
+- Last session date (from Session.md)
+- What was done last session (from Session.md)
+- Recommended next action
+
+**If you cannot provide this summary, you have not read the required files.**
+
+### Session End Requirements
+
+Before ending OR when context compacts, you MUST:
+1. Update `[PROJECT]_Session.md` with all changes
+2. Update `[PROJECT]_Tasks.md` if task status changed
+3. Log any significant decisions in `[PROJECT]_Decision_Log.md` (if using)
+4. Confirm update completion to user
+
+```
+┌────────────────────────────────────────────────────────┐
+│  BEFORE ENDING ANY SESSION OR COMPACTING:              │
+│                                                        │
+│  You MUST update [PROJECT]_Session.md                  │
+│                                                        │
+│  FAILURE TO DO THIS = LOST WORK                        │
+└────────────────────────────────────────────────────────┘
+```
+
+### These requirements are NON-NEGOTIABLE
+Failure to follow them results in lost work and wasted time.
+
+---
+
+## Output Preferences
+<!-- Customize: Your preferences for AI output -->
+Suppress showing any code in output unless explicitly asked.
+
+## Overview
+<!-- Replace with your project description -->
+This is **[PROJECT NAME]**, a [brief description of what it does].
+
+## Project Structure
+
+| Directory | Purpose | Database |
+|-----------|---------|----------|
+| `src/` | Main source code | - |
+| `tests/` | Test files | - |
+
+## Tech Stack
+
+- **Backend**: [Language] [Version], [Framework]
+- **Frontend**: [Framework/Library]
+- **Database**: [Type] [Version]
+- **Build**: [Build tool if any]
+
+## Key Files
+
+- `[path/to/config]` - Configuration
+- `[path/to/entry]` - Main entry point
+
+## Database Connections
+<!-- If applicable -->
+Database credentials are in `[path/to/db/config]`.
+
+## Development Commands
+
+```bash
+# Install dependencies
+[command]
+
+# Run development server
+[command]
+
+# Run tests
+[command]
+
+# Build for production
+[command]
+```
+
+## Development Preferences
+<!-- Your preferences for new code -->
+- Prefer [X] over [Y] for [reason]
+- New features should go in [directory]
+- Follow [coding standard/style guide]
+
+---
+
+## Document Reading Order
+
+For full context, read in this order:
+1. This file (CLAUDE.md)
+2. `[PROJECT]_Context.md` - Documentation index
+3. `[PROJECT]_Session.md` - Current state
+4. `[PROJECT]_Tasks.md` - What needs doing
+
+For specific activities:
+- **Planning:** Also read `[PROJECT]_Plan.md`, `[PROJECT]_Strategy.md`
+- **Development:** Also read `[PROJECT]_Inventory.md`, `[PROJECT]_Exceptions.md`
+- **Review:** Also read `[PROJECT]_Decision_Log.md`, `[PROJECT]_Activity_Log.md`
+
+---
+
+## Documentation Index
+
+### Core Files (Required)
+| File | Purpose | Update Frequency |
+|------|---------|------------------|
+| `CLAUDE.md` | Project overview (this file) | Rarely |
+| `[PROJECT]_Context.md` | Documentation index | When docs change |
+| `[PROJECT]_Session.md` | Current state | **Every session** |
+| `[PROJECT]_Tasks.md` | Task tracker | As tasks change |
+| `[PROJECT]_Prompt_History.md` | Audit trail | Each significant prompt |
+
+### Log Files (Optional)
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| `[PROJECT]_Activity_Log.md` | What was done (deployments, DB changes) | Track significant actions |
+| `[PROJECT]_Decision_Log.md` | Why decisions were made | Architectural choices |
+| `[PROJECT]_Issue_Log.md` | Problems encountered | Debug patterns |
+| `[PROJECT]_Session_Summary.md` | Quick session reference | Fast overview needed |
+| `[PROJECT]_Deployment.md` | TEST/PROD status | Multi-environment |
+| `[PROJECT]_Compaction_Log.md` | Context loss events | Debug context issues |
+
+### Project Documentation (Optional)
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| `[PROJECT]_Plan.md` | Multi-phase project plan | Large features |
+| `[PROJECT]_Inventory.md` | Component listing | Complex codebases |
+| `[PROJECT]_Strategy.md` | AI workflow docs | Long-running AI work |
+| `[PROJECT]_Exceptions.md` | Technical workarounds | Edge cases exist |
+
+---
+
+## Document Version Control
+
+| Document | Version | Last Updated | Last Verified |
+|----------|---------|--------------|---------------|
+| CLAUDE.md | 1.0 | [DATE] | [DATE] |
+| Session.md | - | [dynamic] | [dynamic] |
+| Tasks.md | - | [dynamic] | [dynamic] |
+
+**Verification means:** AI read file and confirmed contents match project state
