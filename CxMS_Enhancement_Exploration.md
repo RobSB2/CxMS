@@ -1011,6 +1011,147 @@ The goal is appropriate communication, not minimal communication.
 
 ---
 
+## Enhancement 9: Performance Monitoring & Validation
+
+### Problem Statement
+
+CxMS claims to improve AI session productivity, but without metrics:
+- No way to validate claims objectively
+- No data for case studies
+- No feedback loop for improvement
+- Users can't measure ROI of implementation effort
+
+**Current case study claims (qualitative):**
+- "Eliminated context rebuilding time"
+- "Zero context loss incidents"
+- "Session productivity significantly improved"
+
+**Needed: Quantitative validation.**
+
+### Proposed Solutions
+
+#### 9.1 Session Metrics Tracking
+
+Add metrics section to Session.md:
+
+```markdown
+## Session Metrics
+
+| Metric | This Session | Running Avg |
+|--------|--------------|-------------|
+| Context restore time | ~10 sec | ~12 sec |
+| AI re-explain requests | 0 | 0.2 |
+| Compaction events | 0 | 0.1 |
+| Docs referenced correctly | 5 | 4.3 |
+| Session duration | 2 hrs | 1.8 hrs |
+```
+
+#### 9.2 Performance Review Template
+
+Periodic review (monthly or per-project-phase):
+
+```markdown
+# CxMS_Performance_Review.md
+
+**Review Period:** [Date range]
+**Project:** [Name]
+**Sessions Tracked:** [N]
+
+## Quantitative Metrics
+
+| Metric | Before CxMS | With CxMS | Change |
+|--------|-------------|-----------|--------|
+| Avg context rebuild time | 20 min | 0 min | -100% |
+| Context loss incidents | 3/month | 0/month | -100% |
+| AI clarification requests | 8/session | 1/session | -87% |
+| Compaction frequency | High | Low | Improved |
+
+## Qualitative Assessment
+
+- Consistency: [Rating 1-5]
+- Decision traceability: [Rating 1-5]
+- Session continuity: [Rating 1-5]
+
+## Issues Identified
+
+- [Any problems with CxMS implementation]
+
+## Recommendations
+
+- [Adjustments to make]
+```
+
+#### 9.3 Case Study Update Workflow
+
+Process for updating published case studies with real data:
+
+```markdown
+## Case Study Data Collection
+
+1. **Baseline (Week 1)**
+   - Document current state before/after CxMS
+   - Note qualitative observations
+
+2. **Tracking Period (30-60 days)**
+   - Log metrics per session
+   - Track incidents/issues
+
+3. **Review & Compile**
+   - Run Performance Review template
+   - Calculate aggregates
+
+4. **Update Case Study**
+   - Replace qualitative claims with data
+   - Add "Measured Results" section
+   - Push to GitHub
+
+5. **Ongoing**
+   - Periodic re-reviews (quarterly?)
+   - Update case study with long-term data
+```
+
+#### 9.4 Standard Metrics Definition
+
+Consistent metrics across all CxMS implementations:
+
+```markdown
+## CxMS Standard Metrics
+
+### Required Metrics
+| Metric | Definition | How to Measure |
+|--------|------------|----------------|
+| Context Restore Time | Time from session start to productive work | Timestamp difference |
+| Re-explain Requests | AI asks for info that's in docs | Count per session |
+| Compaction Events | Context window exceeded | Count per session |
+| Doc Reference Accuracy | AI correctly uses documented info | Observation |
+
+### Optional Metrics
+| Metric | Definition |
+|--------|------------|
+| Session Duration | Total productive session time |
+| Tasks Completed | Work items finished per session |
+| Decision Consistency | Decisions align with Decision Log |
+| File Update Compliance | Session.md updated before end |
+```
+
+### Implementation Approach
+
+**Phase 1: Define**
+- Finalize standard metrics
+- Create Performance Review template
+- Add metrics section to Session.md template
+
+**Phase 2: Pilot**
+- Track metrics for LPR LandTools (30-60 days)
+- Track metrics for CxMS development (dogfooding)
+
+**Phase 3: Validate & Publish**
+- Compile data into Performance Review
+- Update LPR case study with real metrics
+- Push to GitHub
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
@@ -1019,10 +1160,11 @@ The goal is appropriate communication, not minimal communication.
 | Token Usage & Conservation | Medium | High | 2 |
 | Context Usage & Conservation | Medium | High | 3 |
 | Superfluous Communication Suppression | Low | High | 4 |
-| Periodic Context Verification | Low | Medium | 5 |
-| Session Handoff Document | Low | Medium | 6 |
-| Multi-Project Dashboard | Medium | Medium | 7 |
-| Context Compression | High | Medium | 8 |
+| Performance Monitoring & Validation | Low | High | 5 |
+| Periodic Context Verification | Low | Medium | 6 |
+| Session Handoff Document | Low | Medium | 7 |
+| Multi-Project Dashboard | Medium | Medium | 8 |
+| Context Compression | High | Medium | 9 |
 
 ---
 
@@ -1049,6 +1191,7 @@ The goal is appropriate communication, not minimal communication.
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-20 | Added Enhancement 9: Performance Monitoring & Validation | AI + Human |
 | 2026-01-20 | Added Enhancement 8: Superfluous Communication Suppression | AI + Human |
 | 2026-01-20 | Added Enhancement 7: Context Usage & Conservation | AI + Human |
 | 2026-01-20 | Added Enhancement 6: Token Usage & Conservation | AI + Human |
