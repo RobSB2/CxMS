@@ -1158,11 +1158,33 @@ Consistent metrics across all CxMS implementations:
 | Decision Log Hit Rate | Past decisions referenced when relevant | Observation |
 
 ### File Size Metrics
-| Metric | Definition | Target |
-|--------|------------|--------|
-| Session.md Line Count | Lines in session file | <150 lines |
-| Total CxMS Footprint | Sum of all CxMS file lines | <800 lines |
+| Metric | Definition | Guideline |
+|--------|------------|-----------|
+| Session.md Line Count | Lines in session file | ~150 lines typical |
+| Total CxMS Footprint | Sum of all CxMS file lines | ~800 lines typical |
 | Growth Rate | Lines added per session | Monitor trend |
+
+**IMPORTANT: Context Value > Token Cost**
+
+The purpose of CxMS is context preservation. Never sacrifice useful context for arbitrary token savings.
+
+**Right-sizing principles:**
+- Prune **redundant/stale** content, not useful context
+- A 200+ line Session.md is fine if the detail is justified (e.g., major deployment)
+- Guidelines are soft targets, not hard limits
+- If context would be lost by pruning, don't prune
+
+**What TO prune:**
+- Duplicate information across files
+- Outdated session details (move to archive after N sessions)
+- Verbose prose that could be a table
+- Template boilerplate no longer needed
+
+**What NOT to prune:**
+- Recent session context
+- Active task details
+- Decisions that might be referenced
+- Anything you'd regret not having next session
 ```
 
 ### Implementation Approach
