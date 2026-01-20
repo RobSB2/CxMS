@@ -1125,13 +1125,44 @@ Consistent metrics across all CxMS implementations:
 | Compaction Events | Context window exceeded | Count per session |
 | Doc Reference Accuracy | AI correctly uses documented info | Observation |
 
-### Optional Metrics
-| Metric | Definition |
-|--------|------------|
-| Session Duration | Total productive session time |
-| Tasks Completed | Work items finished per session |
-| Decision Consistency | Decisions align with Decision Log |
-| File Update Compliance | Session.md updated before end |
+### Compliance Metrics
+| Metric | Definition | How to Measure |
+|--------|------------|----------------|
+| Mid-Session Update Compliance | Session.md updated every N work packages | Check timestamps |
+| Pre-Compaction Save Compliance | Emergency state save when warning appears | Yes/No per compaction |
+| Session End Compliance | Full update completed before session end | Yes/No per session |
+| Decision Log Compliance | Decisions documented with rationale | Count undocumented |
+
+### Context Health Metrics
+| Metric | Definition | How to Measure |
+|--------|------------|----------------|
+| Token Budget Utilization | % of context window consumed | Estimate or tool |
+| Files Loaded Per Session | Number of CxMS files read | Count |
+| Context Freshness | Time since key files updated | Timestamp check |
+| Documentation Debt | Sessions since last file pruning | Count |
+
+### Quality Metrics
+| Metric | Definition | How to Measure |
+|--------|------------|----------------|
+| User Correction Frequency | User corrects AI about documented info | Count per session |
+| Stale Context Incidents | AI uses outdated information | Count per session |
+| Orphaned References | Links to moved/deleted files | Audit periodically |
+| Cross-Session Accuracy | Context carried over correctly | Observation |
+
+### Efficiency Metrics
+| Metric | Definition | How to Measure |
+|--------|------------|----------------|
+| Session Duration | Total productive session time | Timestamp |
+| Tasks Completed | Work items finished per session | Count |
+| Time to First Output | Session start to first productive action | Timestamp |
+| Decision Log Hit Rate | Past decisions referenced when relevant | Observation |
+
+### File Size Metrics
+| Metric | Definition | Target |
+|--------|------------|--------|
+| Session.md Line Count | Lines in session file | <150 lines |
+| Total CxMS Footprint | Sum of all CxMS file lines | <800 lines |
+| Growth Rate | Lines added per session | Monitor trend |
 ```
 
 ### Implementation Approach
