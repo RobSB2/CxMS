@@ -14,3 +14,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *~
+
+# Local-only files (not for public repo)
+*.local.md
