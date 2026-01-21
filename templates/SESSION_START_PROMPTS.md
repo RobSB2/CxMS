@@ -173,18 +173,18 @@ We'll be doing planning work today.
 
 ---
 
-## Performance Review Start
+## Performance Log Review
 
 **Use when doing periodic CxMS effectiveness review (every 30-60 days):**
 
 ```
-We're doing a CxMS Performance Review. Read:
+We're doing a CxMS Performance Log review. Read:
 1. CLAUDE.md
 2. [PROJECT]_Session.md (especially Session Metrics section)
 3. [PROJECT]_Tasks.md
 
 Compile metrics from the tracking period and help me create/update:
-[PROJECT]_Performance_Review.md
+[PROJECT]_Performance_Log.md
 
 Include: quantitative metrics, qualitative assessment, recommendations.
 ```
@@ -221,7 +221,7 @@ Run a CxMS Health Check. Read all CxMS files and generate a status report:
 | Long session | Mid-Session Checkpoint |
 | Verify AI loaded context | Verification Prompt |
 | Planning/design work | Planning Session Start |
-| CxMS effectiveness review | Performance Review Start |
+| CxMS effectiveness review | Performance Log Review |
 
 ---
 

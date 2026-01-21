@@ -1051,7 +1051,7 @@ Add metrics section to Session.md:
 Periodic review (monthly or per-project-phase):
 
 ```markdown
-# CxMS_Performance_Review.md
+# CxMS_Performance_Log.md
 
 **Review Period:** [Date range]
 **Project:** [Name]
@@ -1331,20 +1331,435 @@ Run a CxMS Health Check. Read all CxMS files and generate a status report:
 
 ---
 
+## Enhancement 11: Log Aging & Archival Strategy
+
+### Problem Statement
+
+As CxMS files accumulate entries over time, they become:
+- Token-heavy (more context loaded each session)
+- Slower to parse for relevant information
+- Cluttered with historical data not needed for current work
+
+**Affected Templates (append-only, grow unbounded):**
+| Template | Growth Pattern |
+|----------|----------------|
+| PROJECT_Session.md | Every session adds history |
+| PROJECT_Tasks.md | Completed tasks accumulate |
+| PROJECT_Prompt_History.md | Every prompt logged (fastest growth) |
+| PROJECT_Activity_Log.md | Append-only action log |
+| PROJECT_Decision_Log.md | Append-only decisions |
+| PROJECT_Issue_Log.md | Append-only problems |
+| PROJECT_Compaction_Log.md | Append-only events |
+| PROJECT_Deployment.md | Deployment history grows |
+| PROJECT_Performance_Log.md | Metrics accumulate |
+
+**Templates that don't need aging (static/bounded):**
+- CLAUDE.md, Context.md, Plan.md, Inventory.md, Strategy.md, Exceptions.md, Session_Summary.md
+
+### Proposed Solution: Two-Stage Aging
+
+#### 11.1 File Lifecycle
+
+```
+Current → Aging → Archive
+   │         │        │
+   │         │        └── ZIP file (long-term, AI needs extraction)
+   │         └── Markdown (recent history, AI-readable)
+   └── Active file (current work)
+```
+
+**Stage 1: Aging Files (Markdown)**
+- Move older entries from active files to `[PROJECT]_Aging_[Type].md`
+- Keep as plain markdown (AI can still read without extraction)
+- Example: `CxMS_Aging_Session.md`, `CxMS_Aging_Tasks.md`
+
+**Stage 2: Archive (ZIP) - Optional**
+- After 6+ months, compress aging files to ZIP
+- Naming: `[PROJECT]_Archive_[Type]_[DateRange].zip`
+- Example: `CxMS_Archive_Session_2026-H1.zip`
+- Requires extraction for AI access (friction by design)
+
+#### 11.2 Aging Triggers
+
+| Trigger | Action |
+|---------|--------|
+| File exceeds 200 lines | Review for aging candidates |
+| Entry older than 30 days | Move to aging file |
+| Task completed 5+ sessions ago | Move to aging |
+| Session older than 10 sessions | Move to aging |
+| Quarterly review | Archive aging files >6 months old |
+
+#### 11.3 Aging File Structure
+
+```markdown
+# [PROJECT]_Aging_Session.md
+
+**Purpose:** Historical session entries moved from active Session.md
+**Covers:** [Date range]
+**Entries:** [Count]
+
+---
+
+## Archived Sessions
+
+### Session 5 - 2026-01-15
+[Full session details preserved here]
+
+### Session 4 - 2026-01-10
+[Full session details preserved here]
+
+...
+```
+
+#### 11.4 What to Keep in Active vs Age
+
+| File | Keep in Active | Move to Aging |
+|------|----------------|---------------|
+| Session.md | Current + last 2-3 sessions | Older sessions |
+| Tasks.md | Active + pending + recently completed | Completed 5+ sessions ago |
+| Prompt_History.md | Current session prompts | Previous sessions |
+| Activity_Log.md | Last 30 days | Older entries |
+| Decision_Log.md | All (reference value) | Consider never aging |
+| Issue_Log.md | Open + last 5 resolved | Older resolved |
+
+#### 11.5 Simplified Alternative: Skip ZIP
+
+Based on analysis, the ZIP stage may be over-engineered:
+
+**Recommended Approach:**
+1. **Use aging markdown files** - Yes, implement this
+2. **Skip ZIP compression** - Keep as markdown for AI readability
+3. **Use git for deep history** - Git already preserves everything
+4. **Delete aging files after 1 year** - Git has the history if needed
+
+**Benefits:**
+- 90% of value with minimal complexity
+- AI can always read context without extraction
+- Git provides infinite archive for free
+
+#### 11.6 Agent Instructions
+
+Add to CLAUDE.md.template:
+
+```markdown
+### Log File Aging
+
+When log files grow large (>200 lines), proactively offer to age old entries:
+
+1. **Check file sizes** at session start
+2. **Identify aging candidates:**
+   - Session entries >10 sessions old
+   - Tasks completed >5 sessions ago
+   - Activity/Issue entries >30 days old
+3. **Offer to create/update aging files:**
+   - `[PROJECT]_Aging_Session.md`
+   - `[PROJECT]_Aging_Tasks.md`
+   - etc.
+4. **Move entries, don't delete** - Preserve full history
+5. **Update active file** with reference to aging file
+
+**Do NOT age:**
+- Decision_Log entries (high reference value)
+- Any entry user marks as "keep active"
+- Current session or recent context
+```
+
+### Implementation Approach
+
+**Phase 1: Templates**
+- Create `PROJECT_Aging_[Type].md.template` for each aging-eligible file
+- Add aging instructions to CLAUDE.md.template
+- Document triggers and thresholds
+
+**Phase 2: Pilot**
+- Apply to CxMS own files first (dogfooding)
+- Test with LPR LandTools
+- Refine thresholds based on real usage
+
+**Phase 3: Tooling (Optional)**
+- Script to check file sizes and suggest aging
+- Script to move entries automatically
+- Integration with health check (E10)
+
+---
+
+## Enhancement 12: Multi-Agent CxMS Orchestration
+
+### Problem Statement
+
+Current CxMS handles single-agent sessions well, but enterprise scenarios involve:
+- Multiple Claude Code CLI sessions running in parallel
+- Cross-project dependencies (changes in one project affect another)
+- Microservices architectures with many modules
+- Need for automated coordination without manual intervention
+
+**Real-World Scenario:**
+LPR LandTools has modules: Pricing, Lookup, Combined-Sheet, ProdReports, Authenticate. Each could have its own Claude Code session. When CxMS templates change, ALL projects need updating (as we just did manually with CxMS → LPR).
+
+**Current Pain Points:**
+- Manual cross-project updates (time-consuming, error-prone)
+- No awareness between concurrent sessions
+- No automated propagation of CxMS improvements
+- Scaling issues with 3+ projects
+
+### Proposed Solution: CxMS Orchestration Layer
+
+#### 12.1 Architecture Options
+
+**Option A: CxMS Helper Agent**
+```
+┌─────────────────────────────────────────────────────────┐
+│                 CxMS Orchestrator Agent                  │
+│  (Dedicated Claude Code session for CxMS management)    │
+├─────────────────────────────────────────────────────────┤
+│  Responsibilities:                                       │
+│  - Monitor all project CxMS files                       │
+│  - Propagate template updates                           │
+│  - Coordinate cross-project changes                     │
+│  - Manage notification system (E1)                      │
+│  - Run health checks (E10) across projects              │
+└─────────────────────────────────────────────────────────┘
+         │              │              │
+         ▼              ▼              ▼
+    ┌─────────┐   ┌─────────┐   ┌─────────┐
+    │ Project │   │ Project │   │ Project │
+    │    A    │   │    B    │   │    C    │
+    │ Session │   │ Session │   │ Session │
+    └─────────┘   └─────────┘   └─────────┘
+```
+
+**Option B: Ralph-Style Iteration Loop**
+Integrate with Ralph Wiggum plugin for automated iteration:
+```
+┌─────────────────────────────────────────────────────────┐
+│              Ralph + CxMS Integration                    │
+├─────────────────────────────────────────────────────────┤
+│  While (not all_projects_updated):                      │
+│    1. Read CxMS master templates                        │
+│    2. For each registered project:                      │
+│       - Compare local CxMS files to templates           │
+│       - If outdated: spawn subagent to update           │
+│       - Run health check                                │
+│       - If health check fails: retry                    │
+│    3. Emit completion when all pass                     │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Option C: Anthropic Multi-Agent Pattern**
+Use orchestrator-worker pattern (like Anthropic's research system):
+```
+┌─────────────────────────────────────────────────────────┐
+│           Lead Agent (Opus - Orchestrator)              │
+│  - Understands full CxMS system                         │
+│  - Plans cross-project changes                          │
+│  - Delegates to workers                                 │
+│  - Validates results                                    │
+└─────────────────────────────────────────────────────────┘
+         │              │              │
+         ▼              ▼              ▼
+┌─────────────┐ ┌─────────────┐ ┌─────────────┐
+│   Worker    │ │   Worker    │ │   Worker    │
+│  (Sonnet)   │ │  (Sonnet)   │ │  (Sonnet)   │
+│ Project A   │ │ Project B   │ │ Project C   │
+│  Updates    │ │  Updates    │ │  Updates    │
+└─────────────┘ └─────────────┘ └─────────────┘
+```
+
+#### 12.2 CxMS Registry File
+
+Central registry of all CxMS-managed projects:
+
+```markdown
+# CxMS_Registry.md
+
+**Purpose:** Track all projects using CxMS for orchestration
+**Location:** Central coordination directory
+
+## Registered Projects
+
+| Project | Path | CxMS Version | Last Sync | Status |
+|---------|------|--------------|-----------|--------|
+| CxMS | C:\...\Context_Management_System | 1.2 | 2026-01-21 | Primary |
+| LPR LandTools | C:\Users\Public\PhpstormProjects | 1.2 | 2026-01-21 | Active |
+| [Project C] | [path] | [version] | [date] | [status] |
+
+## Sync Rules
+
+| Change Type | Propagation | Requires |
+|-------------|-------------|----------|
+| Template update | All projects | Manual trigger or schedule |
+| Enhancement added | Notify only | User decision |
+| Breaking change | All projects | User confirmation |
+
+## Health Check Schedule
+
+| Project | Frequency | Last Check | Status |
+|---------|-----------|------------|--------|
+| CxMS | Daily | 2026-01-21 | ✅ |
+| LPR | Daily | 2026-01-21 | ✅ |
+```
+
+#### 12.3 Enterprise Microservices Scenario
+
+For large projects with multiple modules:
+
+```markdown
+# Enterprise CxMS Configuration
+
+## Module Registry
+
+| Module | Type | Path | Dependencies | Owner Session |
+|--------|------|------|--------------|---------------|
+| pricing | Microservice | /modules/pricing | auth, db | CCC-Session-A |
+| lookup | Microservice | /modules/lookup | db | CCC-Session-B |
+| combined-sheet | Microservice | /modules/combined | pricing, lookup | CCC-Session-C |
+| auth | Shared | /shared/auth | - | CCC-Session-D |
+
+## Dependency Graph
+
+┌─────────────────┐
+│ combined-sheet  │
+└───────┬─────────┘
+        │ depends on
+   ┌────┴────┐
+   ▼         ▼
+┌──────┐ ┌──────┐
+│pricing│ │lookup│
+└───┬───┘ └───┬──┘
+    │         │
+    └────┬────┘
+         ▼
+     ┌──────┐
+     │  db  │
+     └──────┘
+
+## Change Propagation Rules
+
+When module X changes:
+1. Identify dependent modules
+2. Notify their sessions
+3. Trigger health checks
+4. Update dependency timestamps
+```
+
+#### 12.4 Integration with Ralph Wiggum
+
+Ralph provides iterative automation; CxMS provides context persistence:
+
+```markdown
+## Ralph + CxMS Workflow
+
+1. **Ralph Loop Starts**
+   - Read CxMS context files
+   - Understand current state
+
+2. **Work Iteration**
+   - Make changes
+   - Run tests
+   - If fail: retry with CxMS context intact
+
+3. **Completion**
+   - Update CxMS Session.md
+   - Update Activity_Log
+   - Emit completion signal
+
+4. **Cross-Project Propagation**
+   - If CxMS template changed: trigger orchestrator
+   - Orchestrator spawns Ralph loops for each project
+   - Each loop updates that project's CxMS files
+```
+
+#### 12.5 Notification Protocol (Extends E1)
+
+Enhanced for multi-agent scenarios:
+
+```markdown
+## CROSS_PROJECT_NOTIFICATIONS.md
+
+### Notification Types
+
+| Type | Priority | Action Required |
+|------|----------|-----------------|
+| TEMPLATE_UPDATE | High | Update CxMS files |
+| BREAKING_CHANGE | Critical | Stop work, update, verify |
+| ENHANCEMENT_ADDED | Low | Informational |
+| HEALTH_CHECK_FAIL | Medium | Investigate |
+
+### Active Notifications
+
+#### NOTIF-2026-01-21-001
+**Type:** TEMPLATE_UPDATE
+**From:** CxMS Orchestrator
+**To:** ALL_PROJECTS
+**Change:** Performance_Review → Performance_Log rename
+**Affected Files:** CLAUDE.md, SESSION_START_PROMPTS.md, +6 others
+**Action:** Update local references
+**Status:**
+- [x] CxMS - Complete
+- [x] LPR - Complete
+- [ ] Project C - Pending
+```
+
+### Implementation Considerations
+
+**Token Usage Warning:**
+Anthropic notes multi-agent systems use ~15x more tokens than single chats. CxMS orchestration should:
+- Use Haiku for simple propagation tasks
+- Reserve Opus for complex coordination decisions
+- Cache context to avoid re-reading unchanged files
+
+**Challenges:**
+- No native multi-session awareness in Claude Code CLI
+- File system is the coordination mechanism (like E1)
+- Requires discipline in file update protocols
+- Ralph plugin availability/integration
+
+**Benefits:**
+- Automated cross-project consistency
+- Reduced manual coordination overhead
+- Scalable to many projects
+- Enterprise-ready architecture
+
+### Implementation Approach
+
+**Phase 1: Foundation**
+- Implement E1 (Cross-Agent Coordination) first
+- Create CxMS Registry file format
+- Define notification protocol
+
+**Phase 2: Manual Orchestration**
+- Human triggers cross-project updates
+- Single Claude Code session coordinates
+- Validate file-based coordination works
+
+**Phase 3: Automated Orchestration**
+- Integrate with Ralph or similar automation
+- Implement orchestrator-worker pattern
+- Add scheduling for periodic sync
+
+**Phase 4: Enterprise Scale**
+- Microservices module registry
+- Dependency-aware propagation
+- Multi-team coordination
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
 |-------------|------------|--------|----------|
 | E9: Performance Monitoring & Validation | Low | High | 1 (IMPLEMENTED) |
-| E10: CxMS Health Check | Low | High | 2 (Ready to implement) |
-| E1: Cross-Agent Coordination | Medium | High | 3 |
-| E6: Token Usage & Conservation | Medium | High | 4 |
-| E7: Context Usage & Conservation | Medium | High | 5 |
-| E8: Superfluous Communication Suppression | Low | High | 6 |
-| E2: Auto-save Triggers | Low | Medium | 7 |
-| E3: Structured AI Instructions | Low | Medium | 8 |
-| E4: File Validation Protocols | Medium | Medium | 9 |
-| E5: Context Compression | High | Medium | 10 |
+| E10: CxMS Health Check | Low | High | 2 (Implemented in templates) |
+| E11: Log Aging & Archival | Low | High | 3 |
+| E1: Cross-Agent Coordination | Medium | High | 4 |
+| E12: Multi-Agent CxMS Orchestration | High | Very High | 5 (Enterprise) |
+| E6: Token Usage & Conservation | Medium | High | 6 |
+| E7: Context Usage & Conservation | Medium | High | 7 |
+| E8: Superfluous Communication Suppression | Low | High | 8 |
+| E2: Auto-save Triggers | Low | Medium | 9 |
+| E3: Structured AI Instructions | Low | Medium | 10 |
+| E4: File Validation Protocols | Medium | Medium | 11 |
+| E5: Context Compression | High | Medium | 12 |
 
 ---
 
@@ -1371,6 +1786,8 @@ Run a CxMS Health Check. Read all CxMS files and generate a status report:
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-21 | Added Enhancement 12: Multi-Agent CxMS Orchestration | AI + Human |
+| 2026-01-21 | Added Enhancement 11: Log Aging & Archival Strategy | AI + Human |
 | 2026-01-20 | Added Enhancement 10: CxMS Health Check (Staleness Audit) | AI + Human |
 | 2026-01-20 | Added Enhancement 9: Performance Monitoring & Validation | AI + Human |
 | 2026-01-20 | Added Enhancement 8: Superfluous Communication Suppression | AI + Human |

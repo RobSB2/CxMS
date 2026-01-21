@@ -164,7 +164,7 @@ For specific activities:
 | `[PROJECT]_Session_Summary.md` | Quick session reference | Fast overview needed |
 | `[PROJECT]_Deployment.md` | TEST/PROD status | Multi-environment |
 | `[PROJECT]_Compaction_Log.md` | Context loss events | Debug context issues |
-| `[PROJECT]_Performance_Review.md` | CxMS effectiveness metrics | Periodic review (30-60 days) |
+| `[PROJECT]_Performance_Log.md` | CxMS effectiveness metrics | Periodic review (30-60 days) |
 
 ### Project Documentation (Optional)
 | File | Purpose | When to Use |

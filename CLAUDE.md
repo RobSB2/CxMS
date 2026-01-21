@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Version:** 1.0
+**Version:** 1.2
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -20,7 +20,7 @@ Context_Managment_System/
 ├── CxMS_Introduction_and_Guide.md               # START HERE - Overview, training, history
 ├── CxMS_Practical_Implementation_Guide.md       # THE SYSTEM - templates and patterns
 │
-├── templates/                                   # Reusable project templates (16 total)
+├── templates/                                   # Reusable project templates (17 total)
 │   │
 │   │── # Core Templates (Required)
 │   ├── CLAUDE.md.template                       # Project overview with mandatory requirements
@@ -37,7 +37,7 @@ Context_Managment_System/
 │   ├── PROJECT_Session_Summary.md.template      # Quick session reference
 │   ├── PROJECT_Deployment.md.template           # TEST/PROD tracking
 │   ├── PROJECT_Compaction_Log.md.template       # Context loss events
-│   ├── PROJECT_Performance_Review.md.template   # CxMS effectiveness metrics (E9)
+│   ├── PROJECT_Performance_Log.md.template      # CxMS effectiveness metrics (E9)
 │   │
 │   │── # Project Documentation Templates (Optional)
 │   ├── PROJECT_Plan.md.template                 # Multi-phase project planning
@@ -48,11 +48,15 @@ Context_Managment_System/
 ├── case-studies/                                # Real-world implementations
 │   └── LPR_LandTools_Case_Study.md              # Enterprise land management example
 │
-├── CxMS_Enhancement_Exploration.md              # Future enhancement ideas (RFC)
+├── CxMS_Enhancement_Exploration.md              # 12 enhancements documented (RFC)
 │
-├── # CxMS Self-Tracking (dogfooding)
+├── # CxMS Self-Tracking (dogfooding - 7 files)
 ├── CxMS_Session.md                              # Current development state
 ├── CxMS_Tasks.md                                # Development task tracker
+├── CxMS_Performance_Log.md                      # Metrics tracking
+├── CxMS_Activity_Log.md                         # Activity history
+├── CxMS_Decision_Log.md                         # Design decisions
+├── CxMS_Prompt_History.md                       # Prompt audit trail
 │
 └── Archive/                                     # Historical reference
     └── v1-theoretical/                          # Original documentation
@@ -64,7 +68,7 @@ Context_Managment_System/
 |----------|---------|
 | `CxMS_Introduction_and_Guide.md` | **Start here** - Overview, training, history, and why to use CxMS |
 | `CxMS_Practical_Implementation_Guide.md` | The formalized 5-file system with templates |
-| `templates/` | Ready-to-use templates for new projects (16 templates) |
+| `templates/` | Ready-to-use templates for new projects (17 templates) |
 
 ## The CxMS File System
 
@@ -79,7 +83,7 @@ Every project using CxMS needs these files:
 | `[PROJECT]_Tasks.md` | Dynamic | As tasks change | `PROJECT_Tasks.md.template` |
 | `[PROJECT]_Prompt_History.md` | Append-only | Each prompt | `PROJECT_Prompt_History.md.template` |
 
-### Log Files (Optional - 6 files)
+### Log Files (Optional - 7 files)
 For tracking activities, decisions, and issues:
 
 | File | Purpose | When to Use |
@@ -90,6 +94,7 @@ For tracking activities, decisions, and issues:
 | `[PROJECT]_Session_Summary.md` | Quick session reference | Fast overview needed |
 | `[PROJECT]_Deployment.md` | TEST/PROD status | Multi-environment projects |
 | `[PROJECT]_Compaction_Log.md` | Context loss events | Debug context issues |
+| `[PROJECT]_Performance_Log.md` | CxMS effectiveness metrics | Periodic review (30-60 days) |
 
 ### Project Documentation (Optional - 4 files)
 For complex projects:
@@ -101,7 +106,7 @@ For complex projects:
 | `[PROJECT]_Strategy.md` | AI workflow documentation | Long-running AI work |
 | `[PROJECT]_Exceptions.md` | Technical workarounds | Edge cases accumulate |
 
-**Total: 5 required + 6 logs + 4 project docs = 15 files maximum**
+**Total: 5 required + 7 logs + 4 project docs = 16 files maximum**
 
 ## Using This Repository
 
@@ -165,3 +170,4 @@ When working in this repo:
 | Complex codebase | `PROJECT_Inventory.md.template` |
 | AI workflow docs | `PROJECT_Strategy.md.template` |
 | Technical workarounds | `PROJECT_Exceptions.md.template` |
+| CxMS effectiveness metrics | `PROJECT_Performance_Log.md.template` |

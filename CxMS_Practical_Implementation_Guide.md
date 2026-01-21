@@ -470,7 +470,7 @@ Don't update `CLAUDE.md` every session. It's for stable project info.
 
 3. **Periodic Review**
    - Every 30-60 days, compile metrics
-   - Use `PROJECT_Performance_Review.md.template`
+   - Use `PROJECT_Performance_Log.md.template`
    - Update case study with real data
 
 ### Important Principle
