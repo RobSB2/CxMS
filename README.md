@@ -213,7 +213,7 @@ CxMS was developed and validated through real production use:
 - **Session productivity:** Significantly improved
 
 **Ongoing Development:**
-- 12 enhancements in RFC stage (performance monitoring, health checks, multi-agent orchestration)
+- 13 enhancements in RFC stage (performance monitoring, health checks, multi-agent orchestration, community telemetry)
 - CxMS uses itself for development tracking (dogfooding)
 - Active metrics collection for validation
 
@@ -252,7 +252,7 @@ Context_Management_System/
 ├── case-studies/                          # Real-world implementations
 │   └── LPR_LandTools_Case_Study.md        # Enterprise land management platform
 │
-├── CxMS_Enhancement_Exploration.md        # 12 enhancements documented (RFC)
+├── CxMS_Enhancement_Exploration.md        # 13 enhancements documented (RFC)
 │
 ├── # CxMS Self-Tracking (dogfooding)
 ├── CxMS_Session.md                        # CxMS development state
@@ -271,7 +271,10 @@ Context_Management_System/
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit issues or pull requests.
+Contributions welcome:
+
+- **Issues/PRs:** Bug reports, feature ideas, documentation improvements
+- **Case Studies:** Share your CxMS experience to help validate and improve the system (see [Enhancement 13](CxMS_Enhancement_Exploration.md) for submission format)
 
 ---
 

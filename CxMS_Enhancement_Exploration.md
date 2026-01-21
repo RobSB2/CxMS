@@ -1744,6 +1744,250 @@ Anthropic notes multi-agent systems use ~15x more tokens than single chats. CxMS
 
 ---
 
+## Enhancement 13: Community Telemetry & Case Study Pipeline
+
+### Problem Statement
+
+CxMS effectiveness claims are currently based on limited case studies (LPR LandTools). Without broader data:
+- No validation across diverse project types and team sizes
+- Case studies are manually written, high-friction
+- No feedback loop from the community to improve CxMS
+- Users implementing CxMS can't easily contribute their results
+- Claims of effectiveness lack statistical backing
+
+**What we have:** 1 case study, qualitative claims
+**What we need:** Many case studies, quantitative data, diverse scenarios
+
+### Proposed Solution: Opt-In Telemetry & Case Study Submission
+
+#### 13.1 Data Collection Framework
+
+**What to Collect (Anonymized):**
+
+| Category | Data Points | Purpose |
+|----------|-------------|---------|
+| Project Profile | Type (web, API, data, etc.), team size, AI tool used | Segmentation |
+| CxMS Configuration | Which templates used, optional files adopted | Usage patterns |
+| Performance Metrics | From Performance_Log.md (E9) | Effectiveness validation |
+| Qualitative Feedback | What worked, pain points, suggestions | Improvement insights |
+
+**What NOT to Collect:**
+- Project names or company identifiers
+- Code snippets or proprietary details
+- Personal information
+- Anything not explicitly shared by user
+
+#### 13.2 Submission Mechanisms
+
+**Option A: GitHub Issue Template (Recommended - Low Friction)**
+
+```markdown
+# .github/ISSUE_TEMPLATE/cxms-case-study.md
+
+name: CxMS Case Study Submission
+about: Share your CxMS experience to help improve the system
+title: "[CASE STUDY] Project Type - Duration"
+labels: case-study, community
+---
+
+## Project Profile (Anonymous)
+
+**Project Type:** [Web App / API / Data Pipeline / DevOps / Other]
+**Team Size:** [Solo / 2-5 / 6-10 / 10+]
+**AI Tool:** [Claude Code CLI / Cursor / Other]
+**CxMS Version:** [e.g., 1.2]
+**Duration Using CxMS:** [e.g., 3 months]
+
+## CxMS Configuration
+
+**Core Files Used:**
+- [ ] CLAUDE.md
+- [ ] Session.md
+- [ ] Tasks.md
+- [ ] Context.md
+- [ ] Prompt_History.md
+
+**Optional Files Used:**
+- [ ] Activity_Log.md
+- [ ] Decision_Log.md
+- [ ] Issue_Log.md
+- [ ] Deployment.md
+- [ ] Performance_Log.md
+- [ ] Other: ___
+
+## Performance Metrics
+
+| Metric | Before CxMS | With CxMS |
+|--------|-------------|-----------|
+| Context restore time | ___ min | ___ min |
+| Re-explain requests per session | ___ | ___ |
+| Compaction events per week | ___ | ___ |
+| Session continuity (1-5) | ___ | ___ |
+
+## Qualitative Assessment
+
+**What Worked Well:**
+-
+
+**Pain Points / Challenges:**
+-
+
+**Suggestions for Improvement:**
+-
+
+## Permission
+
+- [ ] I consent to this data being used in aggregated CxMS effectiveness reports
+- [ ] I consent to this being published as an anonymized case study
+- [ ] I'm willing to be contacted for follow-up questions (provide contact method below)
+
+**Contact (optional):**
+```
+
+**Option B: Google Form → GitHub Issue**
+- Lower friction (form-based)
+- Auto-creates GitHub issue via webhook
+- Structured data easier to aggregate
+
+**Option C: CLI Command (Future)**
+```bash
+# Hypothetical future tooling
+cxms report --submit
+# Reads Performance_Log.md, prompts for qualitative feedback
+# Submits to GitHub with user confirmation
+```
+
+#### 13.3 Anonymization Protocol
+
+```markdown
+## Data Sanitization Rules
+
+Before submission, users should:
+
+1. **Remove identifiers:**
+   - Project/company names → "Project A", "Enterprise Client"
+   - Team member names → roles only ("developer", "PM")
+   - URLs/paths → generic placeholders
+
+2. **Generalize specifics:**
+   - "Built healthcare billing system" → "Built domain-specific data processing system"
+   - Exact dates → relative durations ("3 months", "Q1 2026")
+
+3. **Keep metrics raw:**
+   - Numbers don't need anonymization
+   - Percentages and ratios are safe
+
+## What's Safe to Share
+
+✅ Project type (web, API, etc.)
+✅ Team size ranges
+✅ CxMS files used
+✅ Numeric metrics
+✅ General challenges/successes
+✅ Suggestions for CxMS improvement
+
+## What to Remove
+
+❌ Company/client names
+❌ Proprietary business logic descriptions
+❌ Code snippets
+❌ Internal URLs or file paths
+❌ Personal information
+```
+
+#### 13.4 Aggregation & Reporting
+
+**Quarterly Community Report:**
+
+```markdown
+# CxMS Community Effectiveness Report - Q1 2026
+
+## Submissions Summary
+- Total case studies: 47
+- Project types: Web (40%), API (25%), Data (20%), Other (15%)
+- Team sizes: Solo (30%), 2-5 (45%), 6+ (25%)
+
+## Aggregate Metrics
+
+| Metric | Median Before | Median After | Improvement |
+|--------|---------------|--------------|-------------|
+| Context restore time | 15 min | 2 min | -87% |
+| Re-explain requests | 4/session | 0.5/session | -88% |
+| Compaction events | 2/week | 0.3/week | -85% |
+
+## Top Benefits Reported
+1. Session continuity (mentioned in 85% of submissions)
+2. Decision traceability (72%)
+3. Reduced context rebuilding (68%)
+
+## Top Challenges Reported
+1. Initial setup overhead (45%)
+2. File maintenance discipline (38%)
+3. Token overhead in long sessions (22%)
+
+## Improvement Suggestions (Themes)
+- Automated health checks (→ E10 addresses this)
+- Better aging/archival (→ E11 addresses this)
+- Cross-project coordination (→ E1, E12 address this)
+```
+
+#### 13.5 Incentives for Contribution
+
+| Incentive | Description |
+|-----------|-------------|
+| Recognition | Contributors listed in README (opt-in) |
+| Early Access | Preview of new enhancements |
+| Influence | Submissions inform roadmap priorities |
+| Community | Join CxMS community discussions |
+
+#### 13.6 Privacy & Data Policy
+
+```markdown
+## CxMS Telemetry Data Policy
+
+**Collection:** Opt-in only, user-initiated submissions
+**Storage:** GitHub Issues (public) or aggregated reports
+**Usage:** Improve CxMS, validate effectiveness, community case studies
+**Retention:** Indefinite for public submissions, aggregated data only
+**Deletion:** Users can request issue deletion at any time
+**No Tracking:** No automatic telemetry, no analytics cookies, no PII collection
+
+**Principle:** Users control what they share. CxMS never collects data without explicit action.
+```
+
+### Implementation Approach
+
+**Phase 1: GitHub Infrastructure**
+- Create issue template for case study submission
+- Create labels for categorization (case-study, community, metrics)
+- Document submission process in README
+
+**Phase 2: First Submissions**
+- Submit CxMS self-tracking as first case study
+- Update LPR case study with 30-day metrics
+- Encourage early adopters to submit
+
+**Phase 3: Aggregation**
+- After 10+ submissions, create first community report
+- Identify patterns and common feedback
+- Use data to prioritize enhancement roadmap
+
+**Phase 4: Tooling (Optional)**
+- CLI helper for submission
+- Automated anonymization checks
+- Dashboard for community metrics
+
+### Value Proposition
+
+| Stakeholder | Value |
+|-------------|-------|
+| CxMS Maintainers | Real-world validation, improvement feedback, credibility |
+| Contributors | Recognition, influence on roadmap, community |
+| Potential Adopters | Evidence-based effectiveness data, diverse use cases |
+| AI/Productivity Community | Open dataset on context management effectiveness |
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
@@ -1751,15 +1995,16 @@ Anthropic notes multi-agent systems use ~15x more tokens than single chats. CxMS
 | E9: Performance Monitoring & Validation | Low | High | 1 (IMPLEMENTED) |
 | E10: CxMS Health Check | Low | High | 2 (Implemented in templates) |
 | E11: Log Aging & Archival | Low | High | 3 |
-| E1: Cross-Agent Coordination | Medium | High | 4 |
-| E12: Multi-Agent CxMS Orchestration | High | Very High | 5 (Enterprise) |
-| E6: Token Usage & Conservation | Medium | High | 6 |
-| E7: Context Usage & Conservation | Medium | High | 7 |
-| E8: Superfluous Communication Suppression | Low | High | 8 |
-| E2: Auto-save Triggers | Low | Medium | 9 |
-| E3: Structured AI Instructions | Low | Medium | 10 |
-| E4: File Validation Protocols | Medium | Medium | 11 |
-| E5: Context Compression | High | Medium | 12 |
+| E13: Community Telemetry & Case Study Pipeline | Low | High | 4 |
+| E1: Cross-Agent Coordination | Medium | High | 5 |
+| E12: Multi-Agent CxMS Orchestration | High | Very High | 6 (Enterprise) |
+| E6: Token Usage & Conservation | Medium | High | 7 |
+| E7: Context Usage & Conservation | Medium | High | 8 |
+| E8: Superfluous Communication Suppression | Low | High | 9 |
+| E2: Auto-save Triggers | Low | Medium | 10 |
+| E3: Structured AI Instructions | Low | Medium | 11 |
+| E4: File Validation Protocols | Medium | Medium | 12 |
+| E5: Context Compression | High | Medium | 13 |
 
 ---
 
@@ -1786,6 +2031,7 @@ Anthropic notes multi-agent systems use ~15x more tokens than single chats. CxMS
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-21 | Added Enhancement 13: Community Telemetry & Case Study Pipeline | AI + Human |
 | 2026-01-21 | Added Enhancement 12: Multi-Agent CxMS Orchestration | AI + Human |
 | 2026-01-21 | Added Enhancement 11: Log Aging & Archival Strategy | AI + Human |
 | 2026-01-20 | Added Enhancement 10: CxMS Health Check (Staleness Audit) | AI + Human |
