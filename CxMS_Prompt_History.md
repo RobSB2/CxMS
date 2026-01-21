@@ -211,6 +211,50 @@
 
 ---
 
+### Prompt 4.2: Create GitHub Issue Template
+**Prompt:**
+> create the github issue template for E13. This should have been done before the last commit / push
+
+**Actions Taken:**
+- Created `.github/ISSUE_TEMPLATE/cxms-case-study.md`
+- Structured form with project profile, CxMS config, metrics, qualitative sections
+- Added permission checkboxes for data consent
+
+**Files Changed:**
+| File | Change |
+|------|--------|
+| `.github/ISSUE_TEMPLATE/cxms-case-study.md` | Created |
+
+**Outcome:** Success
+**Related:** E13, ACT-011
+
+---
+
+### Prompt 4.3: Update Other GitHub Docs
+**Prompt:**
+> update all other relevant GitHub docs
+
+**Actions Taken:**
+- Updated E13 implementation status (Phase 1 partial)
+- Updated README Contributing with direct issue link
+- Updated Session.md with template creation
+- Updated Activity_Log with ACT-011
+- Updated Prompt_History (this entry)
+
+**Files Changed:**
+| File | Change |
+|------|--------|
+| `CxMS_Enhancement_Exploration.md` | E13 Phase 1 status |
+| `README.md` | Issue template link |
+| `CxMS_Session.md` | Template creation noted |
+| `CxMS_Activity_Log.md` | ACT-011 added |
+| `CxMS_Prompt_History.md` | Prompts 4.2, 4.3 |
+
+**Outcome:** Success
+**Related:** E13, ACT-011
+
+---
+
 ## Statistics
 
 | Session | Prompts | Files Changed | Major Outcomes |
@@ -218,8 +262,8 @@
 | 1 | 2 | 11+ | v1.0 release, GitHub publish |
 | 2 | 3 | 10+ | E9, E10, AI compatibility |
 | 3 | 4 | 15+ | E11, template rename, dogfooding logs, E12 concept |
-| 4 | 1 | 5 | E13 Community Telemetry |
-| **Total** | **10** | **41+** | |
+| 4 | 3 | 10 | E13 Community Telemetry, GitHub Issue template |
+| **Total** | **12** | **46+** | |
 
 ---
 

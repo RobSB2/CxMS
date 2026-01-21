@@ -23,6 +23,29 @@
 
 ### January 2026
 
+#### ACT-011: TPL - Created GitHub Issue Template for E13
+**Date:** 2026-01-21
+**Performed By:** AI + Human
+**Description:** Created GitHub Issue template for case study submissions
+
+**Details:**
+- Created `.github/ISSUE_TEMPLATE/cxms-case-study.md`
+- Structured form for project profile, CxMS config, metrics, qualitative feedback
+- Permission checkboxes for data usage consent
+- Updated README Contributing section with direct link
+
+**Files Changed:**
+| File | Change |
+|------|--------|
+| `.github/ISSUE_TEMPLATE/cxms-case-study.md` | Created |
+| `README.md` | Added issue template link |
+| `CxMS_Enhancement_Exploration.md` | Marked Phase 1 partial complete |
+
+**Verification:** ✅ Confirmed working
+**Related:** E13, ACT-010
+
+---
+
 #### ACT-010: ENH - Added Enhancement 13 (Community Telemetry)
 **Date:** 2026-01-21
 **Performed By:** AI + Human
@@ -238,8 +261,8 @@
 
 | Month | DOC | REL | TPL | ENH | GIT | Total |
 |-------|-----|-----|-----|-----|-----|-------|
-| Jan 2026 | 3 | 2 | 1 | 5 | 1 | 12 |
-| **Total** | **3** | **2** | **1** | **5** | **1** | **12** |
+| Jan 2026 | 3 | 2 | 2 | 5 | 1 | 13 |
+| **Total** | **3** | **2** | **2** | **5** | **1** | **13** |
 
 ---
 

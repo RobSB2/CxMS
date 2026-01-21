@@ -274,7 +274,7 @@ Context_Management_System/
 Contributions welcome:
 
 - **Issues/PRs:** Bug reports, feature ideas, documentation improvements
-- **Case Studies:** Share your CxMS experience to help validate and improve the system (see [Enhancement 13](CxMS_Enhancement_Exploration.md) for submission format)
+- **Case Studies:** [Submit your CxMS experience](../../issues/new?template=cxms-case-study.md) to help validate and improve the system
 
 ---
 

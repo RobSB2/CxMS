@@ -29,8 +29,8 @@
 | Context Restore Time | ~5 sec |
 | Compaction Events | 0 |
 | Re-explain Requests | 0 |
-| User Corrections | 0 |
-| Tasks Completed | 1 (E13 added) |
+| User Corrections | 1 (issue template timing) |
+| Tasks Completed | 3 (E13, issue template, docs update) |
 | Session End Compliance | Pending |
 
 ---
@@ -50,8 +50,9 @@
    - GitHub Issue template for case study submissions
    - Anonymization protocol
    - Quarterly community report format
-2. Updated README.md (13 enhancements, contributing section)
-3. Updated CxMS_Session.md (this file)
+2. Created `.github/ISSUE_TEMPLATE/cxms-case-study.md`
+3. Updated README.md (13 enhancements, contributing section with issue link)
+4. Updated CxMS_Session.md (this file)
 
 ### Previous Session (Session 3) Summary
 - E11 + E12 added, full dogfooding setup, LPR sync, v1.2 docs
@@ -75,7 +76,7 @@
 ## Context for Next Session
 
 **What to do next:**
-- Create GitHub Issue template for E13 case study submissions
+- Create GitHub labels for E13 (case-study, community, metrics)
 - Monitor CxMS and LPR metrics for 30-60 days
 - Update case study with real performance data
 - Consider prototyping E1 (Cross-Agent Coordination) or E12 (Multi-Agent Orchestration)
