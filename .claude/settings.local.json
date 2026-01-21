@@ -10,7 +10,16 @@
       "Bash(git commit:*)",
       "Bash(git branch:*)",
       "Bash(git remote add:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(jq:*)",
+      "Bash(tree:*)",
+      "Bash(wget:*)",
+      "Bash(fzf:*)",
+      "Bash(bat:*)",
+      "Bash(delta:*)",
+      "Bash(docker --version:*)",
+      "Bash(git --version:*)",
+      "Bash(curl:*)"
     ]
   }
 }
