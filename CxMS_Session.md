@@ -60,7 +60,14 @@
    - Rollout patterns (rolling, canary, blue/green)
    - Semantic versioning for templates
 3. Research: AI CLI config patterns, ITIL deployment/release separation
-4. Raw ideas captured in IDEAS.local.md before formalizing
+4. Raw ideas captured in IDEAS.local.md (7 total):
+   - Deployment Package / Adoption Friction → E14
+   - Multi-Tool Templates research → E14
+   - Universal AI Instructions Format → E14
+   - Session End Checklist → E14
+   - Deployment Location & Version Control → E14
+   - Update & Migration Strategy → E15
+   - Competency Tracking (parked - out of CxMS scope)
 
 ### Previous Session (Session 4) Summary
 - E13 Community Telemetry added, GitHub issue template, labels created
@@ -94,7 +101,7 @@
 - `gh` CLI at `"C:\Program Files\GitHub CLI\gh.exe"` - authenticated as RobSB2
 - `jq` installed for JSON parsing
 - Ralph Wiggum plugin available for iterative automation
-- IDEAS.local.md has 5 raw ideas that fed into E14
+- IDEAS.local.md has 7 ideas captured this session (6 → E14/E15, 1 parked)
 
 **Key files:**
 | File | Why |
