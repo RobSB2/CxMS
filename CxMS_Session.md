@@ -11,12 +11,12 @@
 
 | Field | Value |
 |-------|-------|
-| Status | v1.2 templates, 14 enhancements documented, full dogfooding |
+| Status | v1.2 templates, 15 enhancements documented, full dogfooding |
 | Repo | https://github.com/RobSB2/CxMS |
 | Templates | 17 |
-| Enhancements | 14 (E14 Portability Kit added Session 5) |
+| Enhancements | 15 (E14 + E15 added Session 5) |
 | CxMS Files | 7 self-tracking files |
-| Next | E14 implementation (templates, multi-tool support), monitor metrics |
+| Next | E15 Phase 1 (version fields, MIGRATION.md), E14 templates |
 
 ---
 
@@ -30,7 +30,7 @@
 | Compaction Events | 0 |
 | Re-explain Requests | 0 |
 | User Corrections | 0 |
-| Tasks Completed | 1 (E14 Portability Kit formalized) |
+| Tasks Completed | 2 (E14 Portability Kit, E15 Update Management) |
 | Session End Compliance | Yes |
 
 ---
@@ -39,22 +39,28 @@
 
 ### Repository Contents (as of Session 5)
 - 17 templates in `/templates` (v1.2)
-- 14 enhancements documented (E14 added this session)
+- 15 enhancements documented (E14 + E15 added this session)
 - 7 CxMS self-tracking files
 - 1 case study
 - 2 guide documents
 
 ### What Changed This Session
-1. Added E14 (CxMS Portability Kit) - comprehensive enhancement covering:
+1. Added E14 (CxMS Portability Kit) - initial deployment:
    - Deployment Package structure
    - Existing Project Merge Guidance
    - Multi-Tool Templates (Gemini CLI, Copilot, Cursor, Aider)
    - Universal AI Instructions Format concept
    - Session End Checklist
    - Deployment Location & Version Control patterns
-2. Raw ideas captured in IDEAS.local.md before formalizing
-3. Updated README.md (14 enhancements)
-4. Research on AI CLI config patterns completed
+2. Added E15 (CxMS Update & Release Management) - ongoing maintenance:
+   - Version tracking (template version fields, registry)
+   - Migration documentation (MIGRATION.md)
+   - Update detection (AI-assisted, health check integration)
+   - Update strategies (manual, diff, Copier, modular)
+   - Rollout patterns (rolling, canary, blue/green)
+   - Semantic versioning for templates
+3. Research: AI CLI config patterns, ITIL deployment/release separation
+4. Raw ideas captured in IDEAS.local.md before formalizing
 
 ### Previous Session (Session 4) Summary
 - E13 Community Telemetry added, GitHub issue template, labels created
@@ -66,7 +72,7 @@
 
 | Session | Date | Key Accomplishments |
 |---------|------|---------------------|
-| 5 | 2026-01-21 | E14 Portability Kit (multi-tool, deployment, universal format) |
+| 5 | 2026-01-21 | E14 Portability Kit + E15 Update Management |
 | 4 | 2026-01-21 | E13 Community Telemetry, GitHub docs updated |
 | 3 | 2026-01-21 | E11, E12, full dogfooding (7 files), LPR sync, v1.2 docs |
 | 2 | 2026-01-20 | E9, E10 implemented, v1.1 release |
@@ -79,10 +85,10 @@
 ## Context for Next Session
 
 **What to do next:**
-- Begin E14 Phase 1 implementation (SESSION_END_CHECKLIST.md, existing-project template)
+- E15 Phase 1: Add version fields to templates, create MIGRATION.md
+- E14 Phase 1: SESSION_END_CHECKLIST.md, existing-project template
 - Create multi-tool templates (GEMINI.md, copilot-instructions.md, etc.)
 - Monitor CxMS and LPR metrics for 30-60 days
-- Consider prototyping Universal AI Instructions Format
 
 **Useful Notes:**
 - `gh` CLI at `"C:\Program Files\GitHub CLI\gh.exe"` - authenticated as RobSB2
@@ -93,10 +99,10 @@
 **Key files:**
 | File | Why |
 |------|-----|
-| CxMS_Enhancement_Exploration.md | 14 enhancements documented |
+| CxMS_Enhancement_Exploration.md | 15 enhancements documented |
 | CxMS_Performance_Log.md | Metrics tracking |
 | CxMS_Decision_Log.md | Design rationale |
-| IDEAS.local.md | Raw ideas (multi-tool research, universal format) |
+| IDEAS.local.md | Raw ideas (update strategies, ITIL research) |
 
 ---
 

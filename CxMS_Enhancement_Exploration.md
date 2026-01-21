@@ -2328,6 +2328,281 @@ project/
 - **E1 (Cross-Agent Coordination):** Universal format enables multi-tool coordination
 - **E10 (Health Check):** Include in session end checklist
 - **E11 (Log Aging):** Works with any deployment location
+- **E15 (Update Management):** Handles ongoing maintenance after initial deployment
+
+---
+
+## Enhancement 15: CxMS Update & Release Management
+
+### Problem Statement
+
+E14 (Portability Kit) addresses **initial deployment** of CxMS to projects. But software lifecycle management separates deployment from ongoing updates:
+
+```
+User deploys CxMS v1.2 → Customizes templates → CxMS releases v1.3 → How to update?
+```
+
+**Current Gap:**
+- No version tracking in deployed templates
+- No migration path documentation
+- No tooling to show what changed between versions
+- Users must manually discover and apply updates
+- Risk of losing customizations during updates
+
+**Industry Context:**
+ITIL 4 explicitly separates these as distinct practices:
+- **Deployment Management** = Technical execution of initial setup
+- **Release Management** = Planning and coordinating ongoing changes
+- **Change Management** = Risk assessment and approval
+
+Sources: [ITIL 4 Separation](https://www.vivantio.com/blog/release-management-vs-deployment-management/), [Deployment vs Release](https://www.apwide.com/deployment-vs-release/)
+
+### Proposed Solution: CxMS Update Management System
+
+#### 15.1 Version Tracking
+
+**Template Version Field:**
+Every CxMS template includes a version header:
+
+```markdown
+# [PROJECT]_Session.md
+
+**CxMS Template Version:** 1.3
+**Template:** PROJECT_Session.md.template
+**Last CxMS Update:** 2026-01-21
+```
+
+**Version Registry:**
+Central tracking of all template versions:
+
+```markdown
+# CxMS_Version_Registry.md (in CxMS repo)
+
+| Template | Current Version | Last Updated | Breaking Changes |
+|----------|-----------------|--------------|------------------|
+| CLAUDE.md.template | 1.3 | 2026-01-21 | None since 1.0 |
+| PROJECT_Session.md.template | 1.2 | 2026-01-21 | v1.1 added metrics |
+| PROJECT_Tasks.md.template | 1.0 | 2026-01-20 | None |
+| SESSION_END_CHECKLIST.md | 1.0 | 2026-01-21 | New in v1.3 |
+```
+
+#### 15.2 Migration Documentation
+
+**MIGRATION.md** - Structured upgrade guide:
+
+```markdown
+# CxMS Migration Guide
+
+## How to Use This Guide
+
+1. Check your current version (look for `CxMS Template Version` in your files)
+2. Find the upgrade path section below
+3. Follow steps for each version between yours and latest
+4. Update version fields after applying changes
+
+---
+
+## v1.2 → v1.3
+
+**Release Date:** 2026-01-21
+**Breaking Changes:** None
+**New Features:** E14 Portability Kit, E15 Update Management
+
+### Template Changes
+
+#### PROJECT_Session.md.template
+**Added:** Session Metrics section (insert after TL;DR)
+```markdown
+## Session Metrics
+
+| Metric | This Session |
+|--------|--------------|
+| Context Restore Time | |
+| Compaction Events | |
+| Re-explain Requests | |
+```
+
+#### New Templates
+- `SESSION_END_CHECKLIST.md` - Session wrap-up workflow
+- `CLAUDE.md.existing-project.template` - For retrofitting existing projects
+
+### Migration Steps
+
+1. Add Session Metrics section to your `[PROJECT]_Session.md`
+2. (Optional) Copy `SESSION_END_CHECKLIST.md` to your project
+3. Update `CxMS Template Version` fields to 1.3 in all files
+4. Review CLAUDE.md for any new mandatory requirements
+
+### Rollback
+
+If issues occur, revert files from git history. No database or state changes.
+
+---
+
+## v1.1 → v1.2
+
+[Previous migration instructions...]
+```
+
+#### 15.3 Update Detection
+
+**AI-Assisted Version Check:**
+Add to session start workflow:
+
+```markdown
+## CxMS Version Check (Optional)
+
+At session start, if this is a CxMS-enabled project:
+
+1. Read version field from [PROJECT]_Session.md
+2. Compare to latest version (check CxMS repo or embedded knowledge)
+3. If outdated, inform user:
+   "CxMS v1.3 is available (you have v1.2).
+   Key changes: Session metrics, end checklist.
+   See: https://github.com/RobSB2/CxMS/blob/main/MIGRATION.md"
+4. Continue with session (don't block on updates)
+```
+
+**Health Check Integration (E10):**
+Include version status in health check output:
+
+```
+CxMS Health Check
+┌───────────────────────┬────────────┬─────────────────────────────┐
+│         File          │   Status   │            Notes            │
+├───────────────────────┼────────────┼─────────────────────────────┤
+│ CxMS Version          │ ⚠️ v1.2    │ v1.3 available (see MIGR..) │
+│ [PROJECT]_Session.md  │ ✅ Current │ Last updated today          │
+│ [PROJECT]_Tasks.md    │ ✅ Current │ 3 active tasks              │
+└───────────────────────┴────────────┴─────────────────────────────┘
+```
+
+#### 15.4 Update Strategies
+
+**Strategy 1: Manual Migration (Default)**
+- User reads MIGRATION.md
+- Applies changes manually
+- Full control, no tooling required
+
+**Strategy 2: Diff-Based Guidance**
+```bash
+# Future CxMS CLI or AI prompt
+"Show me what changed in SESSION.md between v1.2 and v1.3"
+
+# Output:
+Lines 23-35: Added Session Metrics section
+Lines 78-82: Updated TL;DR table fields
+No removals or breaking changes.
+```
+
+**Strategy 3: Copier Integration (Power Users)**
+For users who want automated updates:
+
+```bash
+# Initial deployment via Copier
+copier copy gh:RobSB2/CxMS ./my-project --data project_name=MyApp
+
+# Update to latest
+copier update ./my-project
+# Copier shows diffs, handles three-way merge
+# Preserves user customizations where possible
+```
+
+**Strategy 4: Modular Updates (Selective)**
+User chooses which updates to apply:
+
+```markdown
+## v1.3 Update Options
+
+| Component | Description | Required? | Apply? |
+|-----------|-------------|-----------|--------|
+| Session Metrics | Track effectiveness | Recommended | [ ] |
+| End Checklist | Wrap-up workflow | Optional | [ ] |
+| Version Fields | Enable future updates | Required | [x] |
+```
+
+#### 15.5 Rollout Patterns (Borrowed from GitOps)
+
+| Pattern | CxMS Application | When to Use |
+|---------|------------------|-------------|
+| **Rolling** | Update one file at a time, verify each | Default safe approach |
+| **Canary** | Update Session.md first, use for a week, then update others | Major version changes |
+| **Blue/Green** | Keep old files as .backup, switch when confident | Breaking changes |
+| **Big Bang** | Update all files at once | Minor/patch updates |
+
+Source: [GitOps Patterns](https://www.gitops.tech/)
+
+#### 15.6 Change Classification
+
+**Semantic Versioning for Templates:**
+
+| Change Type | Version Bump | Example |
+|-------------|--------------|---------|
+| **Major** | X.0.0 | Restructured Session.md, removed fields |
+| **Minor** | 1.X.0 | Added new section, new optional template |
+| **Patch** | 1.0.X | Fixed typo, clarified instructions |
+
+**Breaking Change Policy:**
+- Breaking changes require major version bump
+- 30-day notice before breaking changes
+- Migration path always documented
+- Rollback instructions provided
+
+#### 15.7 Update Notification Channels
+
+| Channel | Mechanism | Audience |
+|---------|-----------|----------|
+| GitHub Releases | Release notes with MIGRATION.md link | All users |
+| README Badge | Version badge showing latest | Visitors |
+| AI Session Check | Version comparison at session start | Active users |
+| GitHub Discussions | Announcement for major versions | Subscribers |
+
+### Implementation Approach
+
+**Phase 1: Foundation (Implement Now)**
+- Add `CxMS Template Version` field to all templates
+- Create MIGRATION.md with initial structure
+- Create CxMS_Version_Registry.md
+- Document v1.2 → v1.3 migration (current state)
+
+**Phase 2: Detection (Implement Soon)**
+- Add version check to session start prompts
+- Integrate with E10 Health Check
+- Add version badge to README
+
+**Phase 3: Tooling (Future)**
+- Evaluate Copier integration
+- Consider simple diff CLI tool
+- Automate MIGRATION.md generation from commits
+
+**Phase 4: Automation (If Adoption Grows)**
+- GitHub Action to validate migration docs on release
+- Automated breaking change detection
+- Community-contributed migration scripts
+
+### Value Proposition
+
+| Stakeholder | Value |
+|-------------|-------|
+| Existing Users | Clear upgrade path, no fear of missing improvements |
+| New Users | Confidence that system will evolve safely |
+| Contributors | Structured process for proposing changes |
+| Maintainers | Reduced support burden, predictable releases |
+
+### Metrics
+
+| Metric | Target |
+|--------|--------|
+| Users on latest version | >70% within 30 days of release |
+| Migration issues reported | <5 per release |
+| Time to upgrade | <15 minutes for minor versions |
+| Breaking change frequency | <1 per year |
+
+### Related Enhancements
+
+- **E10 (Health Check):** Version status in health report
+- **E13 (Community Telemetry):** Track version distribution in case studies
+- **E14 (Portability Kit):** Initial deployment, E15 handles ongoing updates
 
 ---
 
@@ -2339,16 +2614,17 @@ project/
 | E10: CxMS Health Check | Low | High | 2 (Implemented in templates) |
 | E11: Log Aging & Archival | Low | High | 3 |
 | E13: Community Telemetry & Case Study Pipeline | Low | High | 4 (Phase 1 complete) |
-| E14: CxMS Portability Kit | Medium | Very High | 5 (Adoption enabler) |
-| E1: Cross-Agent Coordination | Medium | High | 6 |
-| E12: Multi-Agent CxMS Orchestration | High | Very High | 7 (Enterprise) |
-| E6: Token Usage & Conservation | Medium | High | 8 |
-| E7: Context Usage & Conservation | Medium | High | 9 |
-| E8: Superfluous Communication Suppression | Low | High | 10 |
-| E2: Auto-save Triggers | Low | Medium | 11 |
-| E3: Structured AI Instructions | Low | Medium | 12 |
-| E4: File Validation Protocols | Medium | Medium | 13 |
-| E5: Context Compression | High | Medium | 14 |
+| E14: CxMS Portability Kit | Medium | Very High | 5 (Initial deployment) |
+| E15: CxMS Update & Release Management | Low | Very High | 6 (Ongoing maintenance) |
+| E1: Cross-Agent Coordination | Medium | High | 7 |
+| E12: Multi-Agent CxMS Orchestration | High | Very High | 8 (Enterprise) |
+| E6: Token Usage & Conservation | Medium | High | 9 |
+| E7: Context Usage & Conservation | Medium | High | 10 |
+| E8: Superfluous Communication Suppression | Low | High | 11 |
+| E2: Auto-save Triggers | Low | Medium | 12 |
+| E3: Structured AI Instructions | Low | Medium | 13 |
+| E4: File Validation Protocols | Medium | Medium | 14 |
+| E5: Context Compression | High | Medium | 15 |
 
 ---
 
@@ -2375,6 +2651,7 @@ project/
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-21 | Added Enhancement 15: CxMS Update & Release Management | AI + Human |
 | 2026-01-21 | Added Enhancement 14: CxMS Portability Kit | AI + Human |
 | 2026-01-21 | Added Enhancement 13: Community Telemetry & Case Study Pipeline | AI + Human |
 | 2026-01-21 | Added Enhancement 12: Multi-Agent CxMS Orchestration | AI + Human |
