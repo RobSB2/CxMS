@@ -1988,6 +1988,349 @@ Before submission, users should:
 
 ---
 
+## Enhancement 14: CxMS Portability Kit
+
+### Problem Statement
+
+CxMS was developed greenfield on a new project. Real-world adoption means:
+- Retrofitting into existing projects with established conventions
+- Projects that already have a CLAUDE.md or other config files
+- Users of different AI tools (Gemini CLI, Cursor, Copilot, Aider)
+- No standardized deployment process or session lifecycle
+
+**Current Friction Points:**
+- Templates assume fresh project start
+- No guidance for merging with existing CLAUDE.md
+- Claude-only focus limits adoption
+- No standardized session end process (SESSION_START_PROMPTS exists, but no end equivalent)
+- Unclear where CxMS files should live and whether to version control them
+
+### Proposed Solution: CxMS Portability Kit
+
+A comprehensive deployment package addressing adoption friction across tools and project states.
+
+#### 14.1 Deployment Package
+
+**Contents:**
+```
+cxms-kit/
+├── README.md                    # Quick start guide
+├── INSTALL.md                   # Detailed setup instructions
+├── setup.sh / setup.ps1         # Optional: Interactive setup script
+│
+├── core/                        # Required templates
+│   ├── CLAUDE.md.template
+│   ├── PROJECT_Session.md.template
+│   └── PROJECT_Tasks.md.template
+│
+├── optional/                    # Choose what you need
+│   ├── logs/
+│   │   ├── PROJECT_Activity_Log.md.template
+│   │   ├── PROJECT_Decision_Log.md.template
+│   │   └── ...
+│   └── project/
+│       ├── PROJECT_Plan.md.template
+│       └── ...
+│
+├── multi-tool/                  # Tool-specific configs
+│   ├── GEMINI.md.template
+│   ├── copilot-instructions.md.template
+│   ├── .cursorrules.template
+│   └── CONVENTIONS.md.template  # For Aider
+│
+├── lifecycle/                   # Session management
+│   ├── SESSION_START_PROMPTS.md
+│   └── SESSION_END_CHECKLIST.md
+│
+└── .gitignore.cxms              # Suggested gitignore entries
+```
+
+**Deployment Modes:**
+| Mode | Command | Result |
+|------|---------|--------|
+| Minimal | `cxms init --minimal` | Core 3 files only |
+| Standard | `cxms init` | Core + common logs |
+| Full | `cxms init --full` | All templates |
+| Tool-specific | `cxms init --tool gemini` | Gemini-flavored templates |
+
+#### 14.2 Existing Project Merge Guidance
+
+**Scenario: Project already has CLAUDE.md**
+
+```markdown
+## Merging CxMS with Existing CLAUDE.md
+
+### Option A: Append CxMS Sections
+Keep your existing content, add CxMS sections at the end:
+
+1. Keep all existing content as-is
+2. Add separator: `---\n## CxMS Integration`
+3. Add these required sections:
+   - Session Management (link to Session.md)
+   - Task Tracking (link to Tasks.md)
+   - Mandatory Requirements (update protocols)
+
+### Option B: CxMS-First Restructure
+Reorganize around CxMS structure:
+
+1. Map existing content to CxMS sections
+2. Move project-specific details to appropriate CxMS files
+3. Keep CLAUDE.md focused on overview + requirements
+
+### Merge Checklist
+- [ ] Existing preferences preserved
+- [ ] Project-specific instructions retained
+- [ ] CxMS mandatory requirements added
+- [ ] Links to Session.md and Tasks.md added
+- [ ] No conflicting instructions
+```
+
+**Template Variant: `CLAUDE.md.existing-project.template`**
+```markdown
+# CLAUDE.md
+
+[Keep your existing project overview here]
+
+---
+
+## CxMS Integration
+
+This project uses CxMS for context management.
+
+### Key Files
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Session.md` | Current state (read at session start) |
+| `[PROJECT]_Tasks.md` | Active work items |
+
+### Mandatory Requirements
+
+[Standard CxMS mandatory requirements section]
+```
+
+#### 14.3 Multi-Tool Templates
+
+**Research Summary - Config Files by Tool:**
+
+| Tool | Config File(s) | Location |
+|------|---------------|----------|
+| Claude Code | `CLAUDE.md` | Project root |
+| Gemini CLI | `GEMINI.md` | `~/.gemini/`, project root, or subdirs |
+| GitHub Copilot | `copilot-instructions.md`, `*.instructions.md` | `.github/`, `.github/instructions/` |
+| Cursor AI | `.cursorrules` (deprecated) → `.mdc` files | `.cursor/rules/` |
+| Aider | `CONVENTIONS.md` | Project root (via `--read` or config) |
+| Replit Agent | None (NL prompts in-app) | N/A |
+| ChatGPT | None (instructions via API/UI) | N/A |
+
+**Templates to Create:**
+
+1. **`GEMINI.md.template`** - Direct port of CLAUDE.md concepts for Gemini CLI
+2. **`copilot-instructions.md.template`** - CxMS integration for GitHub Copilot
+3. **`.cursorrules.template`** - CxMS patterns for Cursor
+4. **`CONVENTIONS.md.template`** - CxMS for Aider users
+
+**Key Observations:**
+- Gemini CLI closest to Claude Code (GEMINI.md ≈ CLAUDE.md)
+- Session.md and Tasks.md are already tool-agnostic
+- Only the "instructions" file needs tool-specific variants
+
+#### 14.4 Universal AI Instructions Format
+
+**Concept:** Instead of maintaining separate templates per tool, define a universal format.
+
+```markdown
+# AI_INSTRUCTIONS.md (Universal Format)
+
+## Project Overview
+[All tools read this - project description, goals, architecture]
+
+## Conventions
+[All tools read this - coding standards, patterns, preferences]
+
+## Context Files
+[All tools read this - key files to reference]
+- Session state: `[PROJECT]_Session.md`
+- Active tasks: `[PROJECT]_Tasks.md`
+- Decisions: `[PROJECT]_Decision_Log.md`
+
+## CxMS Requirements
+[All tools read this - update protocols, mandatory behaviors]
+
+## Tool-Specific Instructions
+### claude
+[Claude-specific instructions if needed]
+
+### gemini
+[Gemini-specific instructions if needed]
+
+### copilot
+[Copilot-specific instructions if needed]
+
+### cursor
+[Cursor-specific instructions if needed]
+```
+
+**Adapter Scripts:**
+Generate tool-specific files from universal format:
+```bash
+cxms generate --from AI_INSTRUCTIONS.md --tool gemini
+# Creates GEMINI.md with relevant sections
+
+cxms generate --from AI_INSTRUCTIONS.md --tool copilot
+# Creates .github/copilot-instructions.md
+```
+
+**Benefits:**
+- One source of truth
+- Automatic sync across tools
+- Users can switch tools without rewriting instructions
+- Potential industry standard if adopted
+
+#### 14.5 Session End Checklist
+
+**Problem:** SESSION_START_PROMPTS.md exists, but no end equivalent.
+
+**`SESSION_END_CHECKLIST.md`:**
+```markdown
+# Session End Checklist
+
+## Quick Version (Copy-Paste Prompt)
+```
+Run session end checklist: update Session.md, mark completed tasks,
+log activities, commit changes with summary.
+```
+
+## Full Checklist
+
+### 1. Update CxMS Files (in order)
+- [ ] `[PROJECT]_Session.md` - Update TL;DR, current state, next session context
+- [ ] `[PROJECT]_Tasks.md` - Mark completed, add new discoveries
+- [ ] `[PROJECT]_Activity_Log.md` - Log significant actions (if used)
+- [ ] `[PROJECT]_Decision_Log.md` - Document any decisions made (if used)
+- [ ] `[PROJECT]_Prompt_History.md` - Append session prompts (if used)
+
+### 2. Check Documentation
+- [ ] README.md - Does it reflect current state?
+- [ ] CLAUDE.md - Any new patterns/conventions to add?
+- [ ] API docs / comments - Updated if code changed?
+
+### 3. Git Hygiene
+- [ ] Commit pending changes
+- [ ] Push to remote (if appropriate)
+- [ ] Note commit hash in Session.md
+
+### 4. Handoff Notes
+- [ ] What should next session know?
+- [ ] Any blockers or open questions?
+- [ ] Suggested next actions?
+
+## Exit Prompt (Comprehensive)
+```
+End of session. Please:
+1. Update [PROJECT]_Session.md with current state and next session context
+2. Mark any completed tasks in [PROJECT]_Tasks.md
+3. Log significant activities in Activity_Log (if applicable)
+4. Document any decisions made in Decision_Log (if applicable)
+5. Commit all changes with descriptive message
+6. Provide session summary
+```
+```
+
+#### 14.6 Deployment Location & Version Control
+
+**Question:** Where should CxMS files live? Should they be tracked in git?
+
+**Location Options:**
+
+| Option | Pros | Cons | Recommendation |
+|--------|------|------|----------------|
+| Project root | Easy to find, follows CLAUDE.md convention | Clutters root | Good for small projects |
+| `.cxms/` folder | Organized, can gitignore easily | AI might not auto-discover | Good for larger projects |
+| `docs/cxms/` | Fits existing docs structure | Buried, longer paths | If docs/ already exists |
+| Hybrid | CLAUDE.md in root, rest in `.cxms/` | Split locations | **Recommended** |
+
+**Hybrid Approach (Recommended):**
+```
+project/
+├── CLAUDE.md                    # Always in root (tools expect it)
+├── .cxms/                       # CxMS working files
+│   ├── [PROJECT]_Session.md
+│   ├── [PROJECT]_Tasks.md
+│   └── [PROJECT]_*.md
+└── ...
+```
+
+**Version Control Patterns:**
+
+| File | Track? | Rationale |
+|------|--------|-----------|
+| CLAUDE.md | Yes | Project config, everyone needs it |
+| Session.md | Maybe | Useful history vs noisy churn |
+| Tasks.md | Maybe | Shows work in progress |
+| Decision_Log.md | Yes | Institutional knowledge |
+| Activity_Log.md | Yes | Audit trail |
+| Prompt_History.md | Probably not | Very noisy, personal |
+
+**Two Patterns Offered:**
+
+1. **Tracked Mode** - Team shares context
+   ```gitignore
+   # .gitignore - Track most CxMS files
+   .cxms/*_Prompt_History.md
+   ```
+
+2. **Local-Only Mode** - Personal workflow
+   ```gitignore
+   # .gitignore - CxMS local only
+   .cxms/*_Session.md
+   .cxms/*_Tasks.md
+   .cxms/*_Prompt_History.md
+   # Keep these tracked
+   !.cxms/*_Decision_Log.md
+   !.cxms/*_Activity_Log.md
+   ```
+
+### Implementation Approach
+
+**Phase 1: Templates & Documentation**
+- Create `CLAUDE.md.existing-project.template`
+- Create `SESSION_END_CHECKLIST.md`
+- Document deployment location options
+- Add `.gitignore.cxms` examples
+
+**Phase 2: Multi-Tool Templates**
+- Create `GEMINI.md.template` (direct port)
+- Create `copilot-instructions.md.template`
+- Create `.cursorrules.template`
+- Create `CONVENTIONS.md.template` (Aider)
+
+**Phase 3: Universal Format**
+- Define `AI_INSTRUCTIONS.md` spec
+- Create adapter script concept
+- Test with 2+ tools
+
+**Phase 4: Deployment Package**
+- Bundle templates into distributable kit
+- Create setup script (optional)
+- Write comprehensive INSTALL.md
+
+### Value Proposition
+
+| Stakeholder | Value |
+|-------------|-------|
+| New Users | Lower barrier to entry |
+| Existing Projects | Clear migration path |
+| Multi-Tool Users | Use CxMS with any AI coding assistant |
+| Teams | Standardized deployment, version control guidance |
+
+### Related Enhancements
+
+- **E1 (Cross-Agent Coordination):** Universal format enables multi-tool coordination
+- **E10 (Health Check):** Include in session end checklist
+- **E11 (Log Aging):** Works with any deployment location
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
@@ -1996,15 +2339,16 @@ Before submission, users should:
 | E10: CxMS Health Check | Low | High | 2 (Implemented in templates) |
 | E11: Log Aging & Archival | Low | High | 3 |
 | E13: Community Telemetry & Case Study Pipeline | Low | High | 4 (Phase 1 complete) |
-| E1: Cross-Agent Coordination | Medium | High | 5 |
-| E12: Multi-Agent CxMS Orchestration | High | Very High | 6 (Enterprise) |
-| E6: Token Usage & Conservation | Medium | High | 7 |
-| E7: Context Usage & Conservation | Medium | High | 8 |
-| E8: Superfluous Communication Suppression | Low | High | 9 |
-| E2: Auto-save Triggers | Low | Medium | 10 |
-| E3: Structured AI Instructions | Low | Medium | 11 |
-| E4: File Validation Protocols | Medium | Medium | 12 |
-| E5: Context Compression | High | Medium | 13 |
+| E14: CxMS Portability Kit | Medium | Very High | 5 (Adoption enabler) |
+| E1: Cross-Agent Coordination | Medium | High | 6 |
+| E12: Multi-Agent CxMS Orchestration | High | Very High | 7 (Enterprise) |
+| E6: Token Usage & Conservation | Medium | High | 8 |
+| E7: Context Usage & Conservation | Medium | High | 9 |
+| E8: Superfluous Communication Suppression | Low | High | 10 |
+| E2: Auto-save Triggers | Low | Medium | 11 |
+| E3: Structured AI Instructions | Low | Medium | 12 |
+| E4: File Validation Protocols | Medium | Medium | 13 |
+| E5: Context Compression | High | Medium | 14 |
 
 ---
 
@@ -2031,6 +2375,7 @@ Before submission, users should:
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-21 | Added Enhancement 14: CxMS Portability Kit | AI + Human |
 | 2026-01-21 | Added Enhancement 13: Community Telemetry & Case Study Pipeline | AI + Human |
 | 2026-01-21 | Added Enhancement 12: Multi-Agent CxMS Orchestration | AI + Human |
 | 2026-01-21 | Added Enhancement 11: Log Aging & Archival Strategy | AI + Human |
