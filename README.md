@@ -1,6 +1,6 @@
 # CxMS - Agent Context Management System
 
-**Version:** 1.0 | **Date:** January 2026
+**Version:** 1.1 | **Date:** January 2026
 
 Persistent memory for AI coding assistants through structured documentation.
 
@@ -35,6 +35,20 @@ You spend 15-30 minutes re-explaining your project, decisions, and progress. **E
 | Re-explain everything | AI reads context files automatically |
 | Decisions forgotten | Decisions documented with rationale |
 | Inconsistent approaches | Consistent patterns maintained |
+
+### Works With Any AI Assistant
+
+CxMS is **AI-agnostic**. It works with any coding assistant that can read files:
+
+| AI Assistant | Compatible | Notes |
+|--------------|------------|-------|
+| Claude Code | ✅ | Auto-reads CLAUDE.md |
+| GitHub Copilot | ✅ | Start session with "Read CLAUDE.md..." |
+| ChatGPT | ✅ | Upload or paste file contents |
+| Cursor | ✅ | Reads project files |
+| Any file-aware AI | ✅ | Same methodology applies |
+
+> **Why "CLAUDE.md"?** Claude Code auto-reads files named `CLAUDE.md`. You can rename it to `COPILOT.md`, `AI_CONTEXT.md`, or anything else - the methodology works the same.
 
 ---
 
