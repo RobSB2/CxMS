@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Template Version:** 1.0
+**Template Version:** 1.1
 **CxMS:** Agent Context Management System
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -29,9 +29,16 @@ Before ANY work, you MUST:
 
 Before ending OR when context compacts, you MUST:
 1. Update `[PROJECT]_Session.md` with all changes
-2. Update `[PROJECT]_Tasks.md` if task status changed
-3. Log any significant decisions in `[PROJECT]_Decision_Log.md` (if using)
-4. Confirm update completion to user
+2. Update Session Metrics section (if tracking enabled)
+3. Update `[PROJECT]_Tasks.md` if task status changed
+4. Log any significant decisions in `[PROJECT]_Decision_Log.md` (if using)
+5. Confirm update completion to user
+
+### Mid-Session Requirements (if metrics tracking enabled)
+
+After significant work packages:
+1. Consider updating Session Metrics (compaction events, tasks completed)
+2. Update Session.md if context is getting full
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -138,6 +145,7 @@ For specific activities:
 | `[PROJECT]_Session_Summary.md` | Quick session reference | Fast overview needed |
 | `[PROJECT]_Deployment.md` | TEST/PROD status | Multi-environment |
 | `[PROJECT]_Compaction_Log.md` | Context loss events | Debug context issues |
+| `[PROJECT]_Performance_Review.md` | CxMS effectiveness metrics | Periodic review (30-60 days) |
 
 ### Project Documentation (Optional)
 | File | Purpose | When to Use |

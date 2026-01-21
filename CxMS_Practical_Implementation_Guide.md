@@ -1,6 +1,6 @@
 # CxMS - Practical Implementation Guide
 
-**Version:** 1.0
+**Version:** 1.1
 **Date:** January 20, 2026
 **Purpose:** Formalized, reusable system for managing AI assistant context across sessions
 
@@ -428,6 +428,57 @@ Don't update `CLAUDE.md` every session. It's for stable project info.
 ### 6. Separate Tasks from State
 `Tasks.md` = what needs to be done (organized by task)
 `Session.md` = what happened (organized by time)
+
+---
+
+## Metrics Tracking (Enhancement 9)
+
+### Why Track Metrics?
+- Validate that CxMS is actually improving productivity
+- Identify patterns in context loss
+- Generate data for case studies
+- Continuous improvement of the system
+
+### What to Track
+
+**Per Session:**
+| Metric | Description |
+|--------|-------------|
+| Context Restore Time | Seconds from session start to productive work |
+| Files Loaded | Number of CxMS files read at session start |
+| Re-explain Requests | Times AI asked for info that's in docs |
+| Compaction Events | Context window exceeded |
+| User Corrections | User corrected AI about documented info |
+| Tasks Completed | Work items finished |
+| Session End Compliance | Updated Session.md before end (Yes/No) |
+
+**Periodic (30-60 days):**
+- Cumulative totals and averages
+- File size trends
+- Compliance rates
+- Qualitative assessment
+
+### How to Implement
+
+1. **Add Metrics Section to Session.md**
+   - Use the template in `PROJECT_Session.md.template` (v1.1+)
+   - Track "This Session" and "Cumulative" metrics
+
+2. **Update Metrics at Session End**
+   - Fill in session metrics before closing
+   - Update cumulative totals
+
+3. **Periodic Review**
+   - Every 30-60 days, compile metrics
+   - Use `PROJECT_Performance_Review.md.template`
+   - Update case study with real data
+
+### Important Principle
+
+> **Context Value > Token Cost**
+>
+> Never sacrifice useful context for arbitrary token savings.
+> Prune redundant/stale content, not useful context.
 
 ---
 

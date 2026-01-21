@@ -1,6 +1,6 @@
 # Session Start Prompts
 
-**Template Version:** 1.0
+**Template Version:** 1.1
 
 Copy and paste these prompts at the start of new Claude Code sessions.
 
@@ -70,6 +70,22 @@ Focus on TASK-[XXX] and continue from where we left off.
 
 ```
 Update [PROJECT]_Session.md with everything from this session before we end.
+Include Session Metrics if tracking is enabled.
+```
+
+---
+
+## Session End Prompt (With Metrics)
+
+**Use when metrics tracking is enabled:**
+
+```
+Before we end, update [PROJECT]_Session.md:
+1. All work completed this session
+2. Session Metrics (compaction events, tasks completed, any corrections needed)
+3. Context for next session
+
+Confirm when done.
 ```
 
 ---
@@ -116,7 +132,7 @@ Then tell me what you now understand about:
 
 ```
 Checkpoint: Update [PROJECT]_Session.md with progress so far.
-Include: completed items, files changed, current state.
+Include: completed items, files changed, current state, metrics (if tracking).
 We'll continue after the update.
 ```
 
@@ -157,6 +173,24 @@ We'll be doing planning work today.
 
 ---
 
+## Performance Review Start
+
+**Use when doing periodic CxMS effectiveness review (every 30-60 days):**
+
+```
+We're doing a CxMS Performance Review. Read:
+1. CLAUDE.md
+2. [PROJECT]_Session.md (especially Session Metrics section)
+3. [PROJECT]_Tasks.md
+
+Compile metrics from the tracking period and help me create/update:
+[PROJECT]_Performance_Review.md
+
+Include: quantitative metrics, qualitative assessment, recommendations.
+```
+
+---
+
 ## Quick Reference
 
 | Situation | Prompt to Use |
@@ -166,11 +200,13 @@ We'll be doing planning work today.
 | Major milestone | Full Context |
 | Continuing specific work | Task-Specific |
 | Before closing | Session End |
+| Before closing (with metrics) | Session End (With Metrics) |
 | Unexpected end | Emergency: Quick Context Dump |
 | AI lost context | Emergency: Context Recovery |
 | Long session | Mid-Session Checkpoint |
 | Verify AI loaded context | Verification Prompt |
 | Planning/design work | Planning Session Start |
+| CxMS effectiveness review | Performance Review Start |
 
 ---
 
