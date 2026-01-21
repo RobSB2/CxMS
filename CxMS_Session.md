@@ -109,10 +109,21 @@
 ## Context for Next Session
 
 **What to do next:**
-- Push final session update to GitHub
 - Monitor CxMS and LPR metrics for 30-60 days
 - Update case study with real performance data after tracking period
 - Consider implementing other enhancements (E1-E8)
+
+**Useful Notes:**
+- `gh` CLI installed but requires `gh auth login` for authentication
+- For public repo checks without auth, use curl with GitHub API:
+  ```bash
+  # Repo info
+  curl -s https://api.github.com/repos/RobSB2/CxMS
+
+  # Recent commits
+  curl -s "https://api.github.com/repos/RobSB2/CxMS/commits?per_page=10" > "$TEMP/commits.json"
+  python -c "import json; [print(c['sha'][:7]+' - '+c['commit']['message'].split(chr(10))[0]) for c in json.load(open(r'C:\\Users\\RobertBriggs\\AppData\\Local\\Temp\\commits.json'))]"
+  ```
 
 **Key files for reference:**
 | File | Why |
