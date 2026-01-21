@@ -31,7 +31,7 @@
 | Re-explain Requests | 0 |
 | User Corrections | 1 (issue template timing) |
 | Tasks Completed | 5 (E13, issue template, labels, gh auth, docs) |
-| Session End Compliance | Pending |
+| Session End Compliance | Yes |
 
 ---
 
@@ -84,10 +84,10 @@
 - Explore "AI + Human vs AI-Only" execution models (see IDEAS.local.md)
 
 **Useful Notes:**
-- `gh` CLI installed but requires `gh auth login`
+- `gh` CLI at `"C:\Program Files\GitHub CLI\gh.exe"` - authenticated as RobSB2
 - `jq` installed for JSON parsing
 - Ralph Wiggum plugin available for iterative automation
-- GitHub commit: f2d7e90 (Session 3 complete)
+- GitHub commit: 6ed054d (Session 4 complete)
 
 **Key files:**
 | File | Why |
