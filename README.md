@@ -103,14 +103,14 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 
 ---
 
-## Templates (16 Total)
+## Templates (17 Total)
 
 ### Core Templates (Required)
 | Template | Purpose |
 |----------|---------|
 | `CLAUDE.md.template` | Project overview with mandatory AI requirements |
 | `PROJECT_Context.md.template` | Documentation index and reading order |
-| `PROJECT_Session.md.template` | Current state - **update every session** |
+| `PROJECT_Session.md.template` | Current state - **update every session** (v1.1 with metrics) |
 | `PROJECT_Tasks.md.template` | Task tracker with status |
 | `PROJECT_Prompt_History.md.template` | Audit trail of prompts and actions |
 | `SESSION_START_PROMPTS.md` | Copy-paste prompts for session starts |
@@ -124,6 +124,7 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 | `PROJECT_Session_Summary.md.template` | One-line per session quick reference |
 | `PROJECT_Deployment.md.template` | Deployment tracking across environments |
 | `PROJECT_Compaction_Log.md.template` | Context loss tracking |
+| `PROJECT_Performance_Review.md.template` | CxMS effectiveness metrics |
 
 ### Project Documentation Templates (Optional)
 | Template | Purpose |

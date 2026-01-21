@@ -1,6 +1,6 @@
 # [Project Name] - Session Context
 
-**Template Version:** 1.0
+**Template Version:** 1.1
 
 ```
 ┌────────────────────────────────────────────────────────┐
@@ -18,6 +18,43 @@
 **Session Number:** [INCREMENT EACH SESSION]
 **Last Updated:** [DATE TIME]
 **Last Updated By:** [Human / AI]
+**Metrics Tracking:** [Started DATE or "Not started"]
+
+---
+
+## Session Metrics (Enhancement 9)
+
+**Tracking Period Start:** [DATE]
+
+### This Session
+| Metric | Value | Notes |
+|--------|-------|-------|
+| Session # | [N] | |
+| Context Restore Time | [seconds] | Time to productive work |
+| Files Loaded | [N] | CxMS files read at start |
+| Re-explain Requests | [N] | AI asked for info in docs |
+| Compaction Events | [N] | Context window exceeded |
+| User Corrections | [N] | User corrected AI about documented info |
+| Tasks Completed | [N] | |
+| Mid-Session Updates | [N] | Updates before session end |
+| Session End Compliance | [Yes/No] | Updated Session.md before end |
+
+### Cumulative (All Sessions)
+| Metric | Total | Avg/Session |
+|--------|-------|-------------|
+| Sessions Tracked | [N] | - |
+| Compaction Events | [N] | [avg] |
+| Re-explain Requests | [N] | [avg] |
+| User Corrections | [N] | [avg] |
+
+### File Size Tracking
+| File | Lines | Status |
+|------|-------|--------|
+| [PROJECT]_Session.md | [N] | [OK/Monitor/Prune] |
+| [PROJECT]_Tasks.md | [N] | [OK/Monitor/Prune] |
+| **Total CxMS Footprint** | [N] | [OK/Monitor] |
+
+*Note: Context Value > Token Cost. Don't prune useful context for arbitrary limits.*
 
 ---
 

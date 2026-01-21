@@ -1,0 +1,133 @@
+# [Project Name] - CxMS Performance Review
+
+**Template Version:** 1.0
+**Review Period:** [Start Date] to [End Date]
+**Sessions Tracked:** [N]
+**Prepared:** [DATE]
+
+---
+
+## Executive Summary
+
+| Metric | Value | Assessment |
+|--------|-------|------------|
+| Sessions Tracked | [N] | |
+| Avg Context Restore Time | [N sec] | [Good/Needs Improvement] |
+| Total Compaction Events | [N] | [Good/Needs Improvement] |
+| Re-explain Requests | [N] | [Good/Needs Improvement] |
+| User Corrections | [N] | [Good/Needs Improvement] |
+| Session End Compliance | [N%] | [Good/Needs Improvement] |
+
+**Overall Assessment:** [Summary statement]
+
+---
+
+## Quantitative Metrics
+
+### Context Restoration
+| Metric | Before CxMS | With CxMS | Change |
+|--------|-------------|-----------|--------|
+| Avg context rebuild time | [N min] | [N sec] | [-%] |
+| Sessions requiring re-explanation | [N/total] | [N/total] | [-%] |
+
+### Context Preservation
+| Metric | Total | Per Session Avg |
+|--------|-------|-----------------|
+| Compaction Events | [N] | [avg] |
+| Context Loss Incidents | [N] | [avg] |
+| Mid-Session Updates | [N] | [avg] |
+| Session End Compliance | [N/total] | [%] |
+
+### Quality Indicators
+| Metric | Total | Per Session Avg |
+|--------|-------|-----------------|
+| Re-explain Requests | [N] | [avg] |
+| User Corrections | [N] | [avg] |
+| Stale Context Incidents | [N] | [avg] |
+| Decision Log References | [N] | [avg] |
+
+### Efficiency
+| Metric | Total | Per Session Avg |
+|--------|-------|-----------------|
+| Tasks Completed | [N] | [avg] |
+| Files Modified | [N] | [avg] |
+| Session Duration (productive) | [N hrs] | [avg] |
+
+---
+
+## File Size Analysis
+
+### Current State
+| File | Lines | Status | Trend |
+|------|-------|--------|-------|
+| [PROJECT]_Session.md | [N] | [OK/Monitor] | [↑/↓/→] |
+| [PROJECT]_Tasks.md | [N] | [OK/Monitor] | [↑/↓/→] |
+| [PROJECT]_Activity_Log.md | [N] | [OK/Monitor] | [↑/↓/→] |
+| [PROJECT]_Decision_Log.md | [N] | [OK/Monitor] | [↑/↓/→] |
+| **Total CxMS Footprint** | [N] | [OK/Monitor] | [↑/↓/→] |
+
+### Recommendations
+- [ ] [File] needs pruning - [reason]
+- [ ] [File] is appropriately sized
+- [ ] Consider archiving [content]
+
+*Note: Context Value > Token Cost. Only prune redundant/stale content, not useful context.*
+
+---
+
+## Qualitative Assessment
+
+### What's Working Well
+1. [Observation]
+2. [Observation]
+3. [Observation]
+
+### Areas for Improvement
+1. [Issue] - [Recommendation]
+2. [Issue] - [Recommendation]
+
+### CxMS Compliance
+| Requirement | Compliance | Notes |
+|-------------|------------|-------|
+| Session start: Read CLAUDE.md + Session.md | [Yes/Partial/No] | |
+| Session end: Update Session.md | [Yes/Partial/No] | |
+| Decisions logged with rationale | [Yes/Partial/No] | |
+| Tasks tracked and updated | [Yes/Partial/No] | |
+
+---
+
+## Session Log
+
+| Session # | Date | Duration | Compactions | Re-explains | Corrections | Compliance |
+|-----------|------|----------|-------------|-------------|-------------|------------|
+| 1 | [DATE] | [hrs] | [N] | [N] | [N] | [Y/N] |
+| 2 | [DATE] | [hrs] | [N] | [N] | [N] | [Y/N] |
+| ... | | | | | | |
+
+---
+
+## Recommendations
+
+### Immediate Actions
+- [ ] [Action item]
+
+### Process Improvements
+- [ ] [Improvement]
+
+### Documentation Updates
+- [ ] [Update needed]
+
+---
+
+## Next Review
+
+**Scheduled:** [DATE]
+**Focus Areas:** [What to watch]
+
+---
+
+## Revision History
+
+| Date | Change | Author |
+|------|--------|--------|
+| [DATE] | Initial review | [Name] |

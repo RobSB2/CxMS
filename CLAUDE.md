@@ -37,6 +37,7 @@ Context_Managment_System/
 │   ├── PROJECT_Session_Summary.md.template      # Quick session reference
 │   ├── PROJECT_Deployment.md.template           # TEST/PROD tracking
 │   ├── PROJECT_Compaction_Log.md.template       # Context loss events
+│   ├── PROJECT_Performance_Review.md.template   # CxMS effectiveness metrics (E9)
 │   │
 │   │── # Project Documentation Templates (Optional)
 │   ├── PROJECT_Plan.md.template                 # Multi-phase project planning
