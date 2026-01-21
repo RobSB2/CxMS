@@ -1,6 +1,6 @@
 # Session Start Prompts
 
-**Template Version:** 1.1
+**Template Version:** 1.2
 
 Copy and paste these prompts at the start of new Claude Code sessions.
 
@@ -191,6 +191,20 @@ Include: quantitative metrics, qualitative assessment, recommendations.
 
 ---
 
+## CxMS Health Check
+
+**Use to validate all CxMS files are in sync (recommended at session end or after major work):**
+
+```
+Run a CxMS Health Check. Read all CxMS files and generate a status report:
+- Show file status (Current/Stale/Missing) in a table
+- Identify inconsistencies between files
+- List specific updates needed
+- Offer to fix any issues found
+```
+
+---
+
 ## Quick Reference
 
 | Situation | Prompt to Use |
@@ -201,6 +215,7 @@ Include: quantitative metrics, qualitative assessment, recommendations.
 | Continuing specific work | Task-Specific |
 | Before closing | Session End |
 | Before closing (with metrics) | Session End (With Metrics) |
+| Validate files in sync | CxMS Health Check |
 | Unexpected end | Emergency: Quick Context Dump |
 | AI lost context | Emergency: Context Recovery |
 | Long session | Mid-Session Checkpoint |

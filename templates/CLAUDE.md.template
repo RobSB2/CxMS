@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Template Version:** 1.1
+**Template Version:** 1.2
 **CxMS:** Agent Context Management System
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -39,6 +39,25 @@ Before ending OR when context compacts, you MUST:
 After significant work packages:
 1. Consider updating Session Metrics (compaction events, tasks completed)
 2. Update Session.md if context is getting full
+
+### CxMS Health Check (Staleness Audit)
+
+When requested or at session end, perform a staleness audit:
+
+1. **Read all CxMS files** - Load current state of each
+2. **Cross-reference data** - Check for inconsistencies:
+   - Task status matches between Tasks.md and Session.md
+   - File counts/deployments align across files
+   - Activity log covers recent deployments
+   - Session.md reflects current work
+3. **Generate Status Report** - Table format with status and notes
+4. **List Required Updates** - Specific issues to fix
+5. **Offer to update** - "Want me to update these files?"
+
+**Status Icons:**
+- ✅ Current/OK - No action needed
+- ⚠️ Stale/Inconsistent - Needs update
+- ❌ Missing - File expected but not found
 
 ```
 ┌────────────────────────────────────────────────────────┐

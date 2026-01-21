@@ -8,7 +8,19 @@
 
 ## Active Tasks
 
-*None currently - v1.0 stable*
+### TASK-003: Metrics Monitoring Period
+**Status:** In Progress
+**Priority:** Medium
+**Description:** Track CxMS metrics for 30-60 days to validate Enhancement 9
+
+**Checklist:**
+- [x] Implement metrics in CxMS_Session.md
+- [x] Implement metrics in LPR_Session.md
+- [ ] Track metrics for 30-60 days
+- [ ] Compile performance review
+- [ ] Update case study with real data
+
+**Next Action:** Continue normal usage while tracking metrics
 
 ---
 
@@ -17,15 +29,15 @@
 ### TASK-001: Enhancement Prototyping
 **Status:** Pending
 **Priority:** Low
-**Description:** Prototype enhancements from CxMS_Enhancement_Exploration.md
+**Description:** Prototype remaining enhancements from CxMS_Enhancement_Exploration.md
 
 Candidates (by priority):
-1. Cross-Agent Coordination Protocol
-2. Token Usage & Conservation
-3. Context Usage & Conservation
-4. Superfluous Communication Suppression
+1. Cross-Agent Coordination Protocol (E1)
+2. Auto-save Triggers (E2)
+3. Structured AI Instructions (E3)
+4. File Validation Protocols (E4)
 
-**Next Action:** Select one enhancement to prototype in real usage
+**Next Action:** Select one enhancement to prototype after metrics period
 
 ---
 
@@ -39,6 +51,16 @@ Candidates (by priority):
 ---
 
 ## Completed
+
+### v1.1 Release - Enhancement 9 (2026-01-20)
+- [x] Add Performance Monitoring enhancement to exploration doc
+- [x] Create PROJECT_Performance_Review.md.template (17th template)
+- [x] Update PROJECT_Session.md.template with metrics
+- [x] Update CLAUDE.md.template with metrics instructions
+- [x] Update SESSION_START_PROMPTS.md with metrics prompts
+- [x] Update CxMS_Practical_Implementation_Guide.md
+- [x] Update README.md with AI compatibility section
+- [x] Add "Context Value > Token Cost" principle
 
 ### v1.0 Release (2026-01-20)
 - [x] Finalize all 16 templates

@@ -1205,19 +1205,146 @@ The purpose of CxMS is context preservation. Never sacrifice useful context for 
 
 ---
 
+## Enhancement 10: CxMS Health Check (Staleness Audit)
+
+### Problem Statement
+
+CxMS files can become inconsistent during active development:
+- Session.md may not reflect completed tasks in Tasks.md
+- Activity_Log.md may miss deployments logged in Deployment.md
+- Prompt_History.md may fall behind actual work
+- Files reference stale data (old counts, pending items that are done)
+
+Without a systematic check, these inconsistencies accumulate and degrade context quality.
+
+**Real-World Example:**
+- Tasks.md shows TASK-002 complete
+- Session.md still shows TASK-002 as pending
+- File count shows 22 when 69 were deployed
+- Activity_Log missing deployment entry
+
+### Proposed Solution: CxMS Health Check Protocol
+
+#### 10.1 Health Check Report Format
+
+```
+CxMS Status Report
+┌───────────────────────┬────────────┬────────────────────────────────────────┐
+│         File          │   Status   │                 Notes                  │
+├───────────────────────┼────────────┼────────────────────────────────────────┤
+│ CLAUDE.md             │ ✅ Current │ Project overview, dev preferences      │
+│ [PROJECT]_Tasks.md    │ ✅ Current │ [status summary]                       │
+│ [PROJECT]_Session.md  │ ⚠️ Stale   │ [what's out of sync]                   │
+│ [PROJECT]_Activity_Log│ ⚠️ Stale   │ [what's missing]                       │
+│ [PROJECT]_Context.md  │ ✅ OK      │ Documentation index                    │
+└───────────────────────┴────────────┴────────────────────────────────────────┘
+
+Needs Update:
+1. [File] - [specific issue]
+2. [File] - [specific issue]
+
+Want me to update these files?
+```
+
+#### 10.2 Status Definitions
+
+| Status | Icon | Meaning |
+|--------|------|---------|
+| Current | ✅ | Recently updated, matches project state |
+| OK | ✅ | Static file, no updates needed |
+| Stale | ⚠️ | Contains outdated information |
+| Missing | ❌ | Expected file not found |
+| Inconsistent | ⚠️ | Conflicts with other CxMS files |
+
+#### 10.3 Cross-File Validation Rules
+
+| Check | Files Compared | Validation |
+|-------|----------------|------------|
+| Task Status Sync | Tasks.md ↔ Session.md | Completed tasks match in both |
+| File Counts | Session.md ↔ Deployment.md | Numbers should align |
+| Activity Completeness | Activity_Log ↔ Deployment.md | Deployments logged as activities |
+| Session Currency | Session.md timestamps | Last update < 24h (if active) |
+| Prompt Trail | Prompt_History ↔ Session work | Major actions documented |
+
+#### 10.4 When to Run Health Check
+
+| Trigger | Priority | Action |
+|---------|----------|--------|
+| Session End | High | Run before final update |
+| After Major Deployment | High | Verify all logs updated |
+| Session Start (optional) | Medium | Quick validation of starting state |
+| Before Compaction | High | Ensure state is captured |
+| Periodically (weekly) | Low | Catch accumulated drift |
+
+#### 10.5 Agent Instructions for Health Check
+
+Add to CLAUDE.md.template:
+
+```markdown
+### CxMS Health Check
+
+When requested or at session end, perform a staleness audit:
+
+1. **Read all CxMS files** - Load current state of each
+2. **Cross-reference data** - Check for inconsistencies:
+   - Task status matches between Tasks.md and Session.md
+   - File counts/deployments align across files
+   - Activity log covers recent deployments
+   - Session.md reflects current work
+3. **Generate Status Report** - Table format with status and notes
+4. **List Required Updates** - Specific issues to fix
+5. **Offer to update** - "Want me to update these files?"
+
+**Status Icons:**
+- ✅ Current/OK - No action needed
+- ⚠️ Stale/Inconsistent - Needs update
+- ❌ Missing - File expected but not found
+```
+
+#### 10.6 Health Check Prompt
+
+Add to SESSION_START_PROMPTS.md:
+
+```
+Run a CxMS Health Check. Read all CxMS files and generate a status report:
+- Show file status (Current/Stale/Missing)
+- Identify inconsistencies between files
+- List specific updates needed
+- Offer to fix any issues found
+```
+
+### Implementation Approach
+
+**Phase 1: Document**
+- Add health check instructions to CLAUDE.md.template
+- Add health check prompt to SESSION_START_PROMPTS.md
+- Document cross-validation rules
+
+**Phase 2: Pilot**
+- Use in LPR LandTools sessions
+- Refine status report format
+- Identify common staleness patterns
+
+**Phase 3: Refine**
+- Add to session lifecycle (optional at start, recommended at end)
+- Track health check compliance in metrics
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
 |-------------|------------|--------|----------|
-| Cross-Agent Coordination | Medium | High | 1 |
-| Token Usage & Conservation | Medium | High | 2 |
-| Context Usage & Conservation | Medium | High | 3 |
-| Superfluous Communication Suppression | Low | High | 4 |
-| Performance Monitoring & Validation | Low | High | 5 |
-| Periodic Context Verification | Low | Medium | 6 |
-| Session Handoff Document | Low | Medium | 7 |
-| Multi-Project Dashboard | Medium | Medium | 8 |
-| Context Compression | High | Medium | 9 |
+| E9: Performance Monitoring & Validation | Low | High | 1 (IMPLEMENTED) |
+| E10: CxMS Health Check | Low | High | 2 (Ready to implement) |
+| E1: Cross-Agent Coordination | Medium | High | 3 |
+| E6: Token Usage & Conservation | Medium | High | 4 |
+| E7: Context Usage & Conservation | Medium | High | 5 |
+| E8: Superfluous Communication Suppression | Low | High | 6 |
+| E2: Auto-save Triggers | Low | Medium | 7 |
+| E3: Structured AI Instructions | Low | Medium | 8 |
+| E4: File Validation Protocols | Medium | Medium | 9 |
+| E5: Context Compression | High | Medium | 10 |
 
 ---
 
@@ -1244,6 +1371,7 @@ The purpose of CxMS is context preservation. Never sacrifice useful context for 
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-20 | Added Enhancement 10: CxMS Health Check (Staleness Audit) | AI + Human |
 | 2026-01-20 | Added Enhancement 9: Performance Monitoring & Validation | AI + Human |
 | 2026-01-20 | Added Enhancement 8: Superfluous Communication Suppression | AI + Human |
 | 2026-01-20 | Added Enhancement 7: Context Usage & Conservation | AI + Human |
