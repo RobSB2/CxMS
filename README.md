@@ -69,35 +69,29 @@ CxMS is **AI-agnostic**. It works with any coding assistant that can read files:
 
 ---
 
-## Quick Start (10 Minutes)
+## Quick Start (5 Minutes)
 
-### 1. Copy the 5 core templates to your project:
+### 1. Choose your deployment level:
 
+| Level | Files | Best For |
+|-------|-------|----------|
+| **Lite** | 3 | Quick experiments, solo projects |
+| **Standard** | 9 | Team projects, ongoing development |
+| **Max** | 17+ | Enterprise, complex multi-phase projects |
+
+**See:** [templates/DEPLOYMENT.md](templates/DEPLOYMENT.md) for full details
+
+### 2. Copy templates to your project:
+
+**Lite (minimum viable):**
 ```
 your-project/
-├── CLAUDE.md              # Project overview (from CLAUDE.md.template)
-├── MyApp_Context.md       # Documentation index
-├── MyApp_Session.md       # Current state (update every session)
-├── MyApp_Tasks.md         # Task tracker
-└── MyApp_Prompt_History.md # Audit trail (optional)
+├── CLAUDE.md              # From templates/core/CLAUDE.md.template
+├── MyApp_Session.md       # From templates/core/PROJECT_Session.md.template
+└── MyApp_Tasks.md         # From templates/core/PROJECT_Tasks.md.template
 ```
 
-### 2. Fill in CLAUDE.md with your project basics:
-
-```markdown
-# CLAUDE.md
-
-## Overview
-[2-3 sentences about your project]
-
-## Tech Stack
-- Backend: [your tech]
-- Frontend: [your tech]
-- Database: [your tech]
-
-## Session Context Preservation
-Before ending any session, update MyApp_Session.md with current state.
-```
+**Adding to existing project?** See [CLAUDE.md.existing-project.template](templates/core/CLAUDE.md.existing-project.template)
 
 ### 3. Start every AI session with:
 
@@ -110,6 +104,8 @@ Read CLAUDE.md and MyApp_Session.md, summarize current status, then await instru
 ```
 Update MyApp_Session.md with this session's work before we end.
 ```
+
+**See:** [SESSION_END_CHECKLIST.md](templates/core/SESSION_END_CHECKLIST.md) for complete wrap-up workflow
 
 **That's it.** You now have AI session continuity.
 
