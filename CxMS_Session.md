@@ -27,7 +27,7 @@
 | Metric | Session 6 |
 |--------|-----------|
 | Context Restore Time | ~5 sec |
-| Compaction Events | 0 (pre-compact save in progress) |
+| Compaction Events | 2 (pre-compact saves successful) |
 | Re-explain Requests | 0 |
 | User Corrections | 0 |
 | Tasks Completed | 21 (E15, E14, Master Yoda, meeting doc) |
@@ -90,7 +90,7 @@
    - Code Name: Master Yoda added to CLAUDE.md
 
 ### Committed
-Session 6 commits:
+Session 6 commits (11 total):
 - **ff02ea9**: v1.3 major restructure
 - **f1a5bb4**: Session state update
 - **202e4a6**: MIGRATION.md with AI-assisted updates
@@ -98,6 +98,10 @@ Session 6 commits:
 - **36bb2f6**: Code Name: Master Yoda
 - **8d752aa**: E14 Phase 1 (SESSION_END_CHECKLIST, existing-project)
 - **49403b9**: Session state update (E14+E15 complete)
+- **18f5b58**: Session wrap-up, open-cxms.org planning
+- **8f3ee74**: README Quick Start update
+- **2ed0fb3**: README current state update
+- **9c81445**: Quick wins (CLAUDE.md, perf log, prompt library)
 
 ### Work In Progress
 - LPR AI Meeting prep (Wed Jan 28, 11 AM ET) - All Hands Teams Meeting
