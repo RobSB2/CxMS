@@ -15,6 +15,8 @@ This guide helps you deploy CxMS to your project based on your needs.
 4. Customize `CLAUDE.md` with your project details
 5. Start your first session
 
+**Already using CxMS?** See [MIGRATION.md](MIGRATION.md) for upgrade instructions.
+
 ---
 
 ## Deployment Levels

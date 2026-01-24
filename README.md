@@ -131,12 +131,14 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 |----------|---------|
 | [CxMS_Introduction_and_Guide.md](CxMS_Introduction_and_Guide.md) | **START HERE** - Full training guide, history, examples |
 | [CxMS_Practical_Implementation_Guide.md](CxMS_Practical_Implementation_Guide.md) | Implementation details, templates, patterns |
+| [templates/DEPLOYMENT.md](templates/DEPLOYMENT.md) | Deployment levels (Lite/Standard/Max) |
+| [templates/MIGRATION.md](templates/MIGRATION.md) | **Upgrade guide** - Fresh install or update existing |
 
 ---
 
 ## Templates (23 Total)
 
-**See:** [templates/DEPLOYMENT.md](templates/DEPLOYMENT.md) for deployment levels (Lite/Standard/Max)
+**See:** [templates/DEPLOYMENT.md](templates/DEPLOYMENT.md) for deployment levels | [templates/MIGRATION.md](templates/MIGRATION.md) for upgrades
 
 ### Core Templates (`templates/core/` - 6 files)
 | Template | Purpose |
