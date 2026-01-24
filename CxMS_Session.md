@@ -30,7 +30,7 @@
 | Compaction Events | 0 |
 | Re-explain Requests | 0 |
 | User Corrections | 0 |
-| Tasks Completed | 2 (E14 Portability Kit, E15 Update Management) |
+| Tasks Completed | 3 (E14, E15, ideas capture/assessment update) |
 | Session End Compliance | Yes |
 
 ---
@@ -68,6 +68,11 @@
    - Deployment Location & Version Control → E14
    - Update & Migration Strategy → E15
    - Competency Tracking (parked - out of CxMS scope)
+
+### Session 5 Commits
+- `e742a87` - E14 Portability Kit
+- `0bfcf26` - E15 Update Management
+- `0061fc9` - Ideas capture details
 
 ### Previous Session (Session 4) Summary
 - E13 Community Telemetry added, GitHub issue template, labels created
