@@ -16,18 +16,32 @@ Every time you start a new session with an AI coding assistant:
 
 You spend 15-30 minutes re-explaining your project, decisions, and progress. **Every. Single. Time.**
 
+```
+WITHOUT CxMS                              WITH CxMS
+
+Session 1  Session 2  Session 3          Session 1  Session 2  Session 3
+    │          │          │                  │          │          │
+    ▼          ▼          ▼                  ▼          ▼          ▼
+┌───────┐  ┌───────┐  ┌───────┐          ┌───────┐  ┌───────┐  ┌───────┐
+│ FULL  │  │ FULL  │  │ FULL  │          │ FULL  │  │ FULL  │  │ FULL  │
+│CONTEXT│  │CONTEXT│  │CONTEXT│          │CONTEXT│  │CONTEXT│  │CONTEXT│
+│       │  │       │  │       │          │   ↑   │  │   ↑   │  │   ↑   │
+│  ▲    │  │  ▲    │  │  ▲    │          │   │   │  │   │   │  │   │   │
+│  │    │  │  │    │  │  │    │          │ 5 sec │  │ 5 sec │  │ 5 sec │
+│15-30  │  │15-30  │  │15-30  │          │ read  │  │ read  │  │ read  │
+│ min   │  │ min   │  │ min   │          └───┬───┘  └───┬───┘  └───┬───┘
+│rebuild│  │rebuild│  │rebuild│              │          │          │
+└───────┘  └───────┘  └───────┘              ▼          ▼          ▼
+                                         ┌─────────────────────────────┐
+    ════════════════════                 │    Session.md persists      │
+    ~60-90 min WASTED                    │    context between sessions │
+    per week                             └─────────────────────────────┘
+                                             ~0 min wasted
+```
+
 ## The Solution
 
 **CxMS gives AI assistants structured, persistent, user-controlled memory through markdown files.**
-
-```
-┌─────────────────────────────────────────────────┐
-│                                                 │
-│   Your Project + CxMS Files = AI That           │
-│   Remembers Everything                          │
-│                                                 │
-└─────────────────────────────────────────────────┘
-```
 
 | Without CxMS | With CxMS |
 |--------------|-----------|
@@ -129,6 +143,40 @@ Update MyApp_Session.md with this session's work before we end.
 > Everything the AI needs to know must exist in files it can read.
 
 This simple principle drives the entire system. Instead of relying on AI memory (which resets), we store context in markdown files that persist between sessions.
+
+---
+
+## How It Works
+
+```
+                          ┌─────────────────┐
+                          │                 │
+                          │    CLAUDE.md    │◄──── AI reads FIRST
+                          │   (The Brain)   │      Project overview
+                          │                 │      Mandatory requirements
+                          └────────┬────────┘
+                                   │
+                    ┌──────────────┼──────────────┐
+                    │              │              │
+                    ▼              ▼              ▼
+            ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+            │              │ │              │ │              │
+            │ Session.md   │ │  Tasks.md    │ │ Context.md   │
+            │ (The Memory) │ │ (The Todo)   │ │ (The Index)  │
+            │              │ │              │ │              │
+            │ Current state│ │ What to do   │ │ Where to look│
+            │ Last session │ │ Priorities   │ │ Doc map      │
+            └──────────────┘ └──────────────┘ └──────────────┘
+                    │              │              │
+                    └──────────────┼──────────────┘
+                                   ▼
+            ┌─────────────────────────────────────────────────┐
+            │                 OPTIONAL LOGS                    │
+            ├─────────────┬─────────────┬─────────────────────┤
+            │Activity_Log │Decision_Log │ Issue_Log           │
+            │ What done   │ Why decided │ What broke          │
+            └─────────────┴─────────────┴─────────────────────┘
+```
 
 ---
 

@@ -21,6 +21,42 @@ This guide helps you deploy CxMS to your project based on your needs.
 
 ---
 
+## The Level-Up Journey
+
+```
+    START                                                          GROWTH
+      │                                                               │
+      ▼                                                               ▼
+┌───────────┐         SIGNALS              ┌───────────┐         SIGNALS
+│           │    ─────────────────►        │           │    ─────────────────►
+│   LITE    │    • 5+ sessions             │ STANDARD  │    • Multi-phase work
+│  3 files  │    • "Why did we..."         │  9 files  │    • 20+ sessions
+│           │    • Team growing            │           │    • Multiple envs
+└───────────┘    • Context loss            └───────────┘    • Complex codebase
+                                                │
+      │                                         │
+      │    ┌────────────────────────────────────┘
+      │    │
+      │    ▼
+      │  ┌───────────┐
+      │  │           │
+      │  │    MAX    │◄─── Enterprise-ready
+      │  │ 17 files  │     Full audit trail
+      │  │           │     Multi-environment
+      │  └───────────┘
+      │
+      │
+      └──► START HERE ───► AI tells you when to level up!
+           "Based on 12 sessions, consider adding Decision_Log..."
+```
+
+**Summary:**
+- **LITE:** CLAUDE.md + Session.md + Tasks.md
+- **STANDARD:** + Context + Prompt_History + Activity + Decision + Issue + Prompts + Checklist
+- **MAX:** + Session_Summary + Deployment + Compaction + Performance + Plan + Inventory + Strategy + Exceptions + Prompt_Library
+
+---
+
 ## Deployment Levels
 
 ### Lite (3 files)
