@@ -17,6 +17,8 @@ This guide helps you deploy CxMS to your project based on your needs.
 
 **Already using CxMS?** See [MIGRATION.md](MIGRATION.md) for upgrade instructions.
 
+**Adding CxMS to existing project?** See `CLAUDE.md.existing-project.template` for merge guidance.
+
 ---
 
 ## Deployment Levels
@@ -55,6 +57,7 @@ templates/core/PROJECT_Tasks.md.template
 | `[PROJECT]_Decision_Log.md` | Why decisions were made |
 | `[PROJECT]_Issue_Log.md` | Problems and resolutions |
 | `SESSION_START_PROMPTS.md` | Ready-to-use session prompts |
+| `SESSION_END_CHECKLIST.md` | Session wrap-up workflow |
 
 **Copy from:**
 ```
@@ -65,6 +68,7 @@ templates/core/PROJECT_Session.md.template
 templates/core/PROJECT_Tasks.md.template
 templates/core/PROJECT_Prompt_History.md.template
 templates/core/SESSION_START_PROMPTS.md
+templates/core/SESSION_END_CHECKLIST.md
 
 # Logs (recommended)
 templates/logs/PROJECT_Activity_Log.md.template

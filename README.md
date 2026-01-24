@@ -136,19 +136,21 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 
 ---
 
-## Templates (23 Total)
+## Templates (25 Total)
 
 **See:** [templates/DEPLOYMENT.md](templates/DEPLOYMENT.md) for deployment levels | [templates/MIGRATION.md](templates/MIGRATION.md) for upgrades
 
-### Core Templates (`templates/core/` - 6 files)
+### Core Templates (`templates/core/` - 8 files)
 | Template | Purpose |
 |----------|---------|
 | `CLAUDE.md.template` | Project overview with mandatory AI requirements |
+| `CLAUDE.md.existing-project.template` | Adding CxMS to existing projects |
 | `PROJECT_Context.md.template` | Documentation index and reading order |
 | `PROJECT_Session.md.template` | Current state - **update every session** |
 | `PROJECT_Tasks.md.template` | Task tracker with status |
 | `PROJECT_Prompt_History.md.template` | Audit trail of prompts and actions |
 | `SESSION_START_PROMPTS.md` | Copy-paste prompts for session starts |
+| `SESSION_END_CHECKLIST.md` | Session wrap-up workflow |
 
 ### Log Templates (`templates/logs/` - 7 files)
 | Template | Purpose |
