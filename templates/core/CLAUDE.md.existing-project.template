@@ -1,6 +1,6 @@
 # Adding CxMS to an Existing Project
 
-**CxMS Version:** 1.3
+**CxMS Version:** 1.4
 **Purpose:** Guide for retrofitting CxMS into projects with existing AI configuration
 
 ---
@@ -46,7 +46,7 @@ Add these sections to your existing CLAUDE.md:
 Add after your existing title/version:
 
 ```markdown
-**CxMS Version:** 1.3
+**CxMS Version:** 1.4
 
 ## CxMS Integration
 
@@ -113,7 +113,7 @@ Create `[PROJECT]_Session.md` using this minimal template:
 ```markdown
 # [Project Name] - Session Context
 
-**CxMS Version:** 1.3
+**CxMS Version:** 1.4
 
 **Purpose:** Preserves context between AI sessions
 **Session Number:** 1
@@ -168,7 +168,7 @@ Create `[PROJECT]_Tasks.md`:
 ```markdown
 # [Project Name] - Tasks
 
-**CxMS Version:** 1.3
+**CxMS Version:** 1.4
 **Purpose:** Track development tasks
 
 ---
@@ -198,7 +198,7 @@ Create `[PROJECT]_Context.md`:
 ```markdown
 # [Project Name] - Context Index
 
-**CxMS Version:** 1.3
+**CxMS Version:** 1.4
 **Purpose:** Documentation index and reading order
 
 ---

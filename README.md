@@ -1,6 +1,6 @@
 # CxMS - Agent Context Management System
 
-**Version:** 1.3 | **Date:** January 2026
+**Version:** 1.4 | **Date:** January 2026
 
 Persistent memory for AI coding assistants through structured documentation.
 
@@ -58,6 +58,8 @@ CxMS is **AI-agnostic**. It works with any coding assistant that can read files:
 
 | Date | Enhancement | Description |
 |------|-------------|-------------|
+| 2026-01-24 | **Deployment Health Check** | AI assesses level fit, suggests upgrades |
+| 2026-01-24 | **Auto Version Check** | AI checks for CxMS updates on session start |
 | 2026-01-24 | **E14: Portability Kit** | SESSION_END_CHECKLIST, existing-project template |
 | 2026-01-24 | **E15: Update Management** | MIGRATION.md with AI-assisted updates |
 | 2026-01-24 | **Multi-Tool Support** | Templates for Gemini CLI, GitHub Copilot, Cursor, Aider |
@@ -98,8 +100,15 @@ your-project/
 ### 3. Start every AI session with:
 
 ```
-Read CLAUDE.md and MyApp_Session.md, summarize current status, then await instructions.
+Read CLAUDE.md and MyApp_Session.md.
+Summarize:
+1. Current project state (version, key stats)
+2. Last session accomplishments
+3. Suggested next actions
+Then await instructions.
 ```
+
+*The AI will automatically check for CxMS updates and notify you if a newer version is available.*
 
 ### 4. End every session with:
 
@@ -327,3 +336,9 @@ Developed through extensive real-world use with Claude Code (Anthropic). The met
 ---
 
 **Stop re-explaining your project. Start where you left off.**
+
+---
+
+> *"AI context temporary is. Files permanent are. Remember this, you must."*
+>
+> — Master Yoda *(CxMS Code Name since v1.3. Speak this way, required it is not. But fun, it is.)*

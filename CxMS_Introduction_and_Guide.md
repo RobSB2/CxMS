@@ -60,6 +60,45 @@ This isn't just annoying—it's expensive:
 
 For a developer working with AI daily, that's **5-10 hours per week** lost to context rebuilding.
 
+### The Catastrophic Scenario
+
+Beyond lost time, context loss creates **real risk**. Consider this scenario:
+
+**Production Database Migration (Without CxMS):**
+```
+SESSION START:
+- 2 hours spent explaining 47-table schema to AI
+- AI now understands migration order, foreign key dependencies
+- AI knows about legacy constraint on Customer.region_id
+- Rollback procedure discussed
+
+MID-SESSION: *Auto-compaction triggers*
+
+AFTER COMPACTION:
+- AI: "Could you explain your schema?"
+- AI: "What are the dependencies between tables?"
+- User: "WE ALREADY DISCUSSED THIS FOR 2 HOURS!"
+
+RISK:
+- AI suggests wrong migration order → foreign keys break
+- AI forgets legacy constraint → data corruption
+- User doesn't catch the gap → production goes down
+```
+
+**The Same Scenario WITH CxMS:**
+```
+AFTER COMPACTION:
+- AI reads [PROJECT]_Session.md
+- AI: "Continuing 47-table migration. Order: Users → Regions →
+       Customers (watch region_id constraint) → Orders → LineItems.
+       Ready to continue from step 12."
+- User: "Yes, continue."
+
+RESULT: Safe continuation, no knowledge loss
+```
+
+**This is not hypothetical.** During CxMS development (Session 7, January 2026), a compaction event occurred mid-session. The AI lost conversation nuance but recovered via CxMS files. Without them, hours of v1.4 feature development context would have been lost.
+
 ### The Failed Solutions
 
 People try various workarounds:

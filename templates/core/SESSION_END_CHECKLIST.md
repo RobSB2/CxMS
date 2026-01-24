@@ -1,6 +1,6 @@
 # Session End Checklist
 
-**CxMS Version:** 1.3
+**CxMS Version:** 1.4
 **Purpose:** Ensure proper session wrap-up and context preservation
 
 ---
@@ -200,5 +200,9 @@ After session end updates, verify:
 - `[PROJECT]_Tasks.md` - Task management
 
 ---
+
+> *"Do, or do not. There is no 'I'll remember it next session.'"*
+>
+> — Master Yoda, probably
 
 *CxMS - Preserve your context, every time.*

@@ -1,7 +1,7 @@
 # CxMS Deployment Guide
 
-**Version:** 1.0
-**CxMS Template Version:** 1.3
+**Version:** 1.1
+**CxMS Template Version:** 1.4
 
 This guide helps you deploy CxMS to your project based on your needs.
 
@@ -209,6 +209,98 @@ Moving from Lite → Standard → Max is easy:
 2. Rename with your project name
 3. Backfill historical data if desired
 4. Update `CLAUDE.md` to reference new files
+5. Update your `Deployment Level` field in CLAUDE.md
+
+---
+
+## Deployment Health Assessment
+
+### For AI Assistants
+
+During session start (after version check), assess the user's deployment health:
+
+1. **Read declared level** from CLAUDE.md `Deployment Level` field
+2. **Inventory actual files** - which CxMS files exist in the project?
+3. **Check consistency** - do actual files match declared level?
+4. **Assess level-up signals** - see indicators below
+5. **Report findings** if issues found or upgrade recommended
+
+### Level-Up Indicators
+
+**Lite → Standard signals:**
+
+| Signal | Indicator | Recommended Addition |
+|--------|-----------|---------------------|
+| Session count > 5 | Multiple sessions without history | `Prompt_History.md` |
+| "Why did we..." questions | Decisions being forgotten | `Decision_Log.md` |
+| Repeated context loss | Information not persisting | `Activity_Log.md` |
+| Team member onboarding | Others need to understand history | `Context.md` |
+| Debugging recurring issues | Same problems reappearing | `Issue_Log.md` |
+
+**Standard → Max signals:**
+
+| Signal | Indicator | Recommended Addition |
+|--------|-----------|---------------------|
+| Multi-phase work | Large features spanning weeks | `Plan.md` |
+| Complex codebase | Hard to navigate, many components | `Inventory.md` |
+| Multiple environments | TEST/PROD deployments | `Deployment.md` |
+| Context compaction issues | Losing context mid-session | `Compaction_Log.md` |
+| Session count > 20 | Long-running project | `Performance_Log.md` |
+| Technical debt accumulating | Workarounds piling up | `Exceptions.md` |
+| AI workflow complexity | Multi-agent or complex prompts | `Strategy.md` |
+
+### Assessment Report Format
+
+When reporting to user:
+
+```
+## CxMS Health Check
+
+**Declared Level:** [Lite/Standard/Max]
+**Actual Files:** [X] CxMS files found
+**Consistency:** ✅ Consistent | ⚠️ Missing files | ⚠️ Extra files
+
+### Level Assessment
+[Based on signals observed, provide recommendation]
+
+**Signals Detected:**
+- [List any level-up indicators observed]
+
+**Recommendation:**
+- [Stay at current level / Consider upgrading to X / Add specific file Y]
+
+Would you like me to help upgrade your CxMS deployment?
+```
+
+### Consistency Checks
+
+**Lite level should have:**
+- CLAUDE.md ✓
+- [PROJECT]_Session.md ✓
+- [PROJECT]_Tasks.md ✓
+
+**Standard level should have (Lite +):**
+- [PROJECT]_Context.md
+- [PROJECT]_Prompt_History.md
+- [PROJECT]_Activity_Log.md
+- [PROJECT]_Decision_Log.md
+- [PROJECT]_Issue_Log.md
+
+**Max level should have (Standard +):**
+- [PROJECT]_Session_Summary.md
+- [PROJECT]_Deployment.md
+- [PROJECT]_Compaction_Log.md
+- [PROJECT]_Performance_Log.md
+- [PROJECT]_Plan.md
+- [PROJECT]_Inventory.md
+- [PROJECT]_Strategy.md
+- [PROJECT]_Exceptions.md
+
+### When to Run Health Assessment
+
+- **Automatic:** On session start (with version check)
+- **Manual:** User requests "CxMS health check"
+- **Periodic:** Every 10 sessions or 30 days (suggest to user)
 
 ---
 
@@ -216,8 +308,8 @@ Moving from Lite → Standard → Max is easy:
 
 | Field | Value |
 |-------|-------|
-| CxMS Version | 1.3 |
-| Deployment Guide Version | 1.0 |
+| CxMS Version | 1.4 |
+| Deployment Guide Version | 1.1 |
 | Last Updated | 2026-01-24 |
 
 See [MIGRATION.md](../MIGRATION.md) for upgrade instructions between CxMS versions.

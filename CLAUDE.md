@@ -1,9 +1,46 @@
 # CLAUDE.md
 
-**Version:** 1.3
+**Version:** 1.4
 **Code Name:** Master Yoda
+**Deployment Level:** Max
+
+> *"Patience you must have. Document everything, you should. Future you, thank you will."*
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+## CxMS Version & Health Check
+
+On session start, after summarizing current state:
+
+**Version Check:**
+1. Read `CxMS Version` from this file (1.4)
+2. Fetch: `https://raw.githubusercontent.com/RobSB2/CxMS/main/templates/VERSIONS.md`
+3. Compare versions - if local < remote, notify user
+4. If user accepts, follow `templates/MIGRATION.md` update process
+
+**Health Check:**
+1. Read `Deployment Level` from this file (Max)
+2. Inventory CxMS files, check for level-up signals per `templates/DEPLOYMENT.md`
+3. Report any recommendations
+
+*Skip version check silently if fetch fails (offline). Health check runs locally.*
+
+## Context Monitoring (CRITICAL)
+
+**On Session Start:**
+- Note current context usage (if visible in UI)
+- Be aware of "Context left until auto-compact" indicator
+
+**During Session:**
+- Monitor context consumption, especially during large file reads
+- At ~75% full, alert user: "Context is getting full. Should we do a checkpoint save?"
+- At ~90% full, STOP and perform pre-compaction save immediately
+
+**Pre-Compaction Save Protocol:**
+1. Immediately update `CxMS_Session.md` with current state
+2. List any work in progress with specific file:line references
+3. Note any uncommitted decisions or pending items
+4. Confirm save before continuing
 
 ## Overview
 

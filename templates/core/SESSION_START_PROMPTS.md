@@ -1,8 +1,10 @@
 # Session Start Prompts
 
-**Template Version:** 1.2
+**Template Version:** 1.3
 
 Copy and paste these prompts at the start of new Claude Code sessions.
+
+**Note:** If your CLAUDE.md includes the CxMS Version Check section, the AI will automatically check for updates after summarizing your session state.
 
 ---
 
@@ -28,7 +30,12 @@ Then await my instructions.
 ## Quick Start (Minimal)
 
 ```
-Read CLAUDE.md and [PROJECT]_Session.md, summarize current status, then await instructions.
+Read CLAUDE.md and [PROJECT]_Session.md.
+Summarize:
+1. Current project state (version, key stats)
+2. Last session accomplishments
+3. Suggested next actions
+Then await instructions.
 ```
 
 ---
@@ -222,6 +229,7 @@ Run a CxMS Health Check. Read all CxMS files and generate a status report:
 | Verify AI loaded context | Verification Prompt |
 | Planning/design work | Planning Session Start |
 | CxMS effectiveness review | Performance Log Review |
+| Feeling wise | Yoda Mode |
 
 ---
 
@@ -254,3 +262,35 @@ SESSION START
             ▼
      SESSION END
 ```
+
+---
+
+## Yoda Mode (For the Enlightened)
+
+*Since receiving the code name "Master Yoda" in v1.3, speak this way the AI occasionally might. Required it is not, but fun it is.*
+
+**Yoda-Style Session Start:**
+```
+Read CLAUDE.md and [PROJECT]_Session.md, you must.
+Summarize the following, you will:
+1. Current project state
+2. Last session accomplishments
+3. Suggested next actions
+Await your instructions, I shall.
+```
+
+**Yoda-Style Session End:**
+```
+Update [PROJECT]_Session.md before ending, you must.
+Lost, your context will be otherwise.
+Include everything from this session, you should.
+```
+
+**Yoda-Style Health Check:**
+```
+A disturbance in the CxMS files, sense I do.
+Run a health check, I shall.
+Inconsistencies, reveal them to me you will.
+```
+
+> *"The greatest teacher, context loss is. But avoid it with CxMS, you can."*

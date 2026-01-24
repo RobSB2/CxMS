@@ -1,6 +1,6 @@
 # GEMINI.md
 
-**CxMS Version:** 1.3
+**CxMS Version:** 1.4
 **Template Version:** 1.0
 **Tool:** Gemini CLI
 **Location:** Project root (or `~/.gemini/` for global, subdirectories for scoped)

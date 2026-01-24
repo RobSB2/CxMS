@@ -2,7 +2,7 @@
 
 **Version:** 1.0
 **Last Updated:** 2026-01-24
-**CxMS Version:** 1.3
+**CxMS Version:** 1.4
 
 Upgrade your CxMS installation or start fresh.
 
@@ -150,6 +150,83 @@ Check https://github.com/RobSB2/CxMS for CxMS updates. My current version is [X]
 
 ## Manual Migration
 
+### From Version 1.3 to 1.4
+
+**What's New in 1.4:**
+- **Auto Version Check** - AI checks for CxMS updates on session start
+- **Deployment Health Check** - AI assesses your deployment level and suggests upgrades
+- **VERSIONS.md** - Central manifest tracking all template versions
+- **Deployment Level field** - Track Lite/Standard/Max in CLAUDE.md
+- **Code Name field** - Optional personality for your AI assistant
+- **Improved session start prompt** - Structured 3-part summary format
+- **Yoda Mode** - Fun alternative prompts (because fun it is)
+
+**Migration Steps:**
+
+1. **Update CLAUDE.md version and add new fields**
+   ```markdown
+   **Version:** 1.4
+   **Deployment Level:** Lite | Standard | Max  ← Choose your level
+   **Code Name:** [Optional - e.g., Master Yoda]
+   ```
+
+2. **Add Version & Health Check section to CLAUDE.md** (after Session Start Requirements)
+   ```markdown
+   ### CxMS Version & Health Check (On Session Start)
+
+   After providing the session summary, perform version and health checks:
+
+   **Version Check:**
+   1. Read the `CxMS Version` from this file
+   2. Fetch: `https://raw.githubusercontent.com/RobSB2/CxMS/main/templates/VERSIONS.md`
+   3. Compare versions - if local < remote, notify user
+   4. If user accepts, follow `MIGRATION.md` update process
+
+   **Deployment Health Check:**
+   1. Read the `Deployment Level` from this file
+   2. Inventory which CxMS files exist in the project
+   3. Check for level-up signals (see `DEPLOYMENT.md` for criteria)
+   4. If upgrade recommended, notify user
+
+   **Note:** If fetch fails (offline, etc.), skip version check silently. Health check runs locally.
+   ```
+
+3. **Update your session start prompt** (recommended)
+
+   Old:
+   ```
+   Read CLAUDE.md and [PROJECT]_Session.md, summarize current status, then await instructions.
+   ```
+
+   New:
+   ```
+   Read CLAUDE.md and [PROJECT]_Session.md.
+   Summarize:
+   1. Current project state (version, key stats)
+   2. Last session accomplishments
+   3. Suggested next actions
+   Then await instructions.
+   ```
+
+4. **Optional: Explore Yoda Mode**
+   See `SESSION_START_PROMPTS.md` for fun Yoda-style prompts. Required it is not, but enjoy it you might.
+
+5. **Optional: Update DEPLOYMENT.md awareness**
+   DEPLOYMENT.md now includes health assessment criteria and level-up indicators. Review if you want to understand when to upgrade your deployment level.
+
+**Files Changed in 1.4:**
+| File | Change |
+|------|--------|
+| `CLAUDE.md.template` | Added Deployment Level, Code Name, Version Check section |
+| `DEPLOYMENT.md` | Added health assessment section (v1.1) |
+| `VERSIONS.md` | NEW - Central version manifest |
+| `SESSION_START_PROMPTS.md` | Improved Quick Start prompt, added Yoda Mode |
+| `SESSION_END_CHECKLIST.md` | Added Yoda quote |
+| `README.md` | Updated to v1.4, added Yoda footer |
+| All templates | Updated CxMS Version to 1.4 |
+
+---
+
 ### From Version 1.2 to 1.3
 
 **What's New in 1.3:**
@@ -256,6 +333,7 @@ If your CLAUDE.md doesn't have a version field:
 
 | Version | Date | Key Changes |
 |---------|------|-------------|
+| 1.4 | 2026-01-24 | Auto version check, deployment health assessment, Yoda Mode |
 | 1.3 | 2026-01-24 | Template reorganization, multi-tool support, Prompt Library |
 | 1.2 | 2026-01-21 | E9-E12 enhancements, performance metrics, multi-agent |
 | 1.1 | 2026-01-20 | Additional log templates, session summaries |
