@@ -1,6 +1,7 @@
 # CLAUDE.md
 
 **Version:** 1.3
+**Code Name:** Master Yoda
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
