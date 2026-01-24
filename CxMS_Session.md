@@ -31,7 +31,7 @@
 | Re-explain Requests | 0 |
 | User Corrections | 2 (session prompt location, granular versioning) |
 | Tasks Completed | 12+ (v1.4 features, training materials, Yoda integration) |
-| Session End Compliance | In progress |
+| Session End Compliance | Complete |
 
 ---
 
@@ -103,8 +103,15 @@
     - Added to CxMS_Introduction_and_Guide.md (condensed version)
     - Shows "WHAT vs WHY/HOW" - summaries capture what, CxMS captures why
 
+11. **Infographics added to GitHub docs:**
+    - README: Context Cliff (before/after visual)
+    - README: File Ecosystem (how files relate)
+    - DEPLOYMENT.md: Level-Up Journey (progression path)
+
 ### Committed
-Session 7 - Pending commit (v1.4 release)
+Session 7 commits:
+- **485feb9**: CxMS v1.4 release (20 files, +586/-144 lines)
+- **dcf768e**: Add infographics to GitHub docs (README, DEPLOYMENT.md)
 
 ### Work In Progress
 - Ready to commit and push v1.4 to GitHub
