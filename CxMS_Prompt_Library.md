@@ -278,6 +278,63 @@ Prompt complexity should match task complexity. Simple, well-understood operatio
 
 ---
 
+### Entry 007: AI-Assisted System Update
+
+**Date:** 2026-01-24
+**Category:** META
+**Context:** Created MIGRATION.md - needed a prompt that lets users have their AI update CxMS automatically
+
+#### Original Prompt
+```
+Update my CxMS files to the latest version
+```
+
+#### Improved Prompt
+```
+I need to update my CxMS installation to the latest version.
+
+Current setup:
+- My CLAUDE.md is at version: [CHECK YOUR VERSION OR SAY "unknown"]
+- My project files use the prefix: [YOUR_PROJECT_NAME]
+
+Please:
+1. Fetch the latest CxMS version info from: https://github.com/RobSB2/CxMS
+2. Read the README.md to identify current version and changes
+3. Read templates/MIGRATION.md for migration instructions
+4. Compare my current setup with the latest templates
+5. Tell me what's new and what needs updating
+6. Apply updates while PRESERVING my customizations (project-specific content)
+7. Update version numbers in my files
+
+Important: Keep all my project-specific content (tech stack, conventions, session history). Only update CxMS framework elements.
+```
+
+#### Improvement Analysis
+
+| Aspect | Original | Improved | Why |
+|--------|----------|----------|-----|
+| Clarity | Low | High | Specifies exactly what to do |
+| Specificity | Low | Very High | Numbered steps, file paths |
+| Context | None | Full | Version, project name, constraints |
+| Safety | Low | High | Explicit "preserve customizations" |
+| Output Format | None | Structured | Step-by-step process |
+
+#### Key Improvements
+1. **Source specified:** Points to GitHub repo for latest version
+2. **Safety constraint:** Explicit instruction to preserve customizations
+3. **Step-by-step:** Ensures complete update process
+4. **Version context:** Provides current version for comparison
+
+#### Outcome
+- Creates a reusable prompt for any CxMS user
+- Enables "self-updating" CxMS installations
+- Documented in templates/MIGRATION.md for all users
+
+#### Tags
+`#meta` `#migration` `#self-updating` `#reusable`
+
+---
+
 ## Prompt Patterns Observed in CxMS Development
 
 ### Pattern: Ideas → Staging → Formalization
@@ -326,8 +383,8 @@ Prompt complexity should match task complexity. Simple, well-understood operatio
 
 | Metric | Value |
 |--------|-------|
-| Total Entries | 6 |
-| Most Common Category | RESEARCH (2), TASK (2) |
+| Total Entries | 7 |
+| Most Common Category | RESEARCH (2), TASK (2), META (1) |
 | Top Improvement Area | Specificity |
 | Last Updated | 2026-01-24 |
 

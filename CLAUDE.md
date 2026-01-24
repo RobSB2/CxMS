@@ -21,16 +21,19 @@ Context_Managment_System/
 ├── CxMS_Introduction_and_Guide.md               # START HERE - Overview, training, history
 ├── CxMS_Practical_Implementation_Guide.md       # THE SYSTEM - templates and patterns
 │
-├── templates/                                   # Reusable project templates (23 total)
+├── templates/                                   # Reusable project templates (25 total)
 │   ├── DEPLOYMENT.md                            # Deployment guide (Lite/Standard/Max)
+│   ├── MIGRATION.md                             # Fresh install & upgrade guide
 │   │
-│   ├── core/                                    # Required templates (6)
+│   ├── core/                                    # Required templates (8)
 │   │   ├── CLAUDE.md.template
+│   │   ├── CLAUDE.md.existing-project.template  # For adding CxMS to existing projects
 │   │   ├── PROJECT_Context.md.template
 │   │   ├── PROJECT_Session.md.template
 │   │   ├── PROJECT_Tasks.md.template
 │   │   ├── PROJECT_Prompt_History.md.template
-│   │   └── SESSION_START_PROMPTS.md
+│   │   ├── SESSION_START_PROMPTS.md
+│   │   └── SESSION_END_CHECKLIST.md             # Session wrap-up workflow
 │   │
 │   ├── logs/                                    # Optional logging (7)
 │   │   ├── PROJECT_Activity_Log.md.template
@@ -60,9 +63,10 @@ Context_Managment_System/
 │
 ├── CxMS_Product_Roadmap.md                      # 15 enhancements documented
 │
-├── # CxMS Self-Tracking (dogfooding - 7 files)
+├── # CxMS Self-Tracking (dogfooding - 8 files)
 ├── CxMS_Session.md                              # Current development state
 ├── CxMS_Tasks.md                                # Development task tracker
+├── CxMS_Prompt_Library.md                       # Curated prompts with analysis
 ├── CxMS_Performance_Log.md                      # Metrics tracking
 ├── CxMS_Activity_Log.md                         # Activity history
 ├── CxMS_Decision_Log.md                         # Design decisions
@@ -77,8 +81,10 @@ Context_Managment_System/
 | Document | Purpose |
 |----------|---------|
 | `CxMS_Introduction_and_Guide.md` | **Start here** - Overview, training, history, and why to use CxMS |
-| `CxMS_Practical_Implementation_Guide.md` | The formalized 5-file system with templates |
-| `templates/` | Ready-to-use templates for new projects (17 templates) |
+| `CxMS_Practical_Implementation_Guide.md` | Implementation details and patterns |
+| `templates/DEPLOYMENT.md` | Deployment levels (Lite/Standard/Max) |
+| `templates/MIGRATION.md` | Fresh install or upgrade existing |
+| `templates/` | Ready-to-use templates (25 total) |
 
 ## The CxMS File System
 
@@ -106,7 +112,7 @@ For tracking activities, decisions, and issues:
 | `[PROJECT]_Compaction_Log.md` | Context loss events | Debug context issues |
 | `[PROJECT]_Performance_Log.md` | CxMS effectiveness metrics | Periodic review (30-60 days) |
 
-### Project Documentation (Optional - 4 files)
+### Project Documentation (Optional - 5 files)
 For complex projects:
 
 | File | Purpose | When to Use |
@@ -115,8 +121,9 @@ For complex projects:
 | `[PROJECT]_Inventory.md` | Component/endpoint listing | Complex codebases |
 | `[PROJECT]_Strategy.md` | AI workflow documentation | Long-running AI work |
 | `[PROJECT]_Exceptions.md` | Technical workarounds | Edge cases accumulate |
+| `[PROJECT]_Prompt_Library.md` | Curated prompts with analysis | Prompt engineering training |
 
-**Total: 5 required + 7 logs + 4 project docs = 16 files maximum**
+**Total: 5 required + 7 logs + 5 project docs = 17 files maximum**
 
 ## Using This Repository
 
@@ -181,3 +188,6 @@ When working in this repo:
 | AI workflow docs | `PROJECT_Strategy.md.template` |
 | Technical workarounds | `PROJECT_Exceptions.md.template` |
 | CxMS effectiveness metrics | `PROJECT_Performance_Log.md.template` |
+| Prompt engineering training | `PROJECT_Prompt_Library.md.template` |
+| Adding CxMS to existing project | `CLAUDE.md.existing-project.template` |
+| Session wrap-up workflow | `SESSION_END_CHECKLIST.md` |
