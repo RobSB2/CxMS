@@ -16,7 +16,7 @@
 | Templates | 23 (reorganized into core/logs/docs/multi-tool) |
 | Enhancements | 15 |
 | CxMS Files | 8 self-tracking files (added Prompt_Library) |
-| Next | Commit pending changes, continue E14/E15 implementation |
+| Next | Continue E14/E15 implementation, Live Stream prep |
 
 ---
 
@@ -30,8 +30,8 @@
 | Compaction Events | 0 (pre-compact save in progress) |
 | Re-explain Requests | 0 |
 | User Corrections | 0 |
-| Tasks Completed | 9 (see list below) |
-| Session End Compliance | In progress |
+| Tasks Completed | 10 (all completed) |
+| Session End Compliance | Complete |
 
 ---
 
@@ -77,8 +77,8 @@
    - CLAUDE.md: 1.2 → 1.3
    - README.md: 1.2 → 1.3
 
-### Pending (Not Yet Committed)
-All changes above are staged but NOT committed yet. User requested to continue work before committing.
+### Committed
+All Session 6 changes committed: **ff02ea9**
 
 ### Work In Progress
 - Live Stream session prep (Wed Jan 28, 11 AM ET)
@@ -107,10 +107,6 @@ All changes above are staged but NOT committed yet. User requested to continue w
 ---
 
 ## Context for Next Session (or after compaction)
-
-**Immediate:**
-- Commit and push all pending changes (significant restructure)
-- Update CxMS_Session.md with commit hashes
 
 **Upcoming:**
 - E15 Phase 1: Add version fields to templates, create MIGRATION.md
