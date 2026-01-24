@@ -1,0 +1,175 @@
+# Cursor Rules
+
+CxMS Template Version: 1.0
+Tool: Cursor AI
+Location: `.cursorrules` (project root) or `.cursor/rules/*.mdc`
+
+---
+
+## Project Overview
+
+[Brief description of your project - 2-3 sentences]
+
+Tech Stack:
+- Backend: [technology]
+- Frontend: [technology]
+- Database: [technology]
+
+---
+
+## CxMS Integration
+
+This project uses CxMS (Agent Context Management System) for persistent AI memory.
+
+Key Files:
+- [PROJECT]_Session.md - Current project state (read at session start)
+- [PROJECT]_Tasks.md - Active work items
+
+Session Start:
+Read [PROJECT]_Session.md to understand current context before starting work.
+
+Session End:
+Remind user to update [PROJECT]_Session.md with session accomplishments.
+
+---
+
+## Code Style
+
+General:
+- [Indentation preference]
+- [Line length limit]
+- [Bracket style]
+
+Naming:
+- Variables: [convention, e.g., camelCase]
+- Functions: [convention]
+- Classes: [convention]
+- Files: [convention]
+- Constants: [convention]
+
+---
+
+## Preferred Patterns
+
+Use These:
+- [Pattern 1]: [When/why]
+- [Pattern 2]: [When/why]
+- [Pattern 3]: [When/why]
+
+Avoid These:
+- [Anti-pattern 1]: [Why]
+- [Anti-pattern 2]: [Why]
+
+---
+
+## Framework/Library Guidelines
+
+[Primary Framework]:
+- [Guideline 1]
+- [Guideline 2]
+- [Guideline 3]
+
+[Secondary Framework]:
+- [Guideline 1]
+- [Guideline 2]
+
+---
+
+## File Structure
+
+Follow this organization:
+```
+project/
+├── .cursorrules           # This file
+├── [PROJECT]_Session.md   # CxMS session state
+├── [PROJECT]_Tasks.md     # CxMS tasks
+├── src/
+│   ├── components/
+│   ├── services/
+│   ├── utils/
+│   └── types/
+└── tests/
+```
+
+---
+
+## Generation Rules
+
+When generating code:
+1. Match existing codebase style
+2. Use existing utilities before creating new ones
+3. Follow established patterns in similar files
+4. Include appropriate TypeScript types (if applicable)
+5. Add JSDoc comments for public functions
+
+When modifying code:
+1. Make minimal, focused changes
+2. Preserve existing formatting
+3. Update related tests
+4. Update documentation if behavior changes
+
+---
+
+## Error Handling
+
+- Use [error handling pattern]
+- Always [specific requirement]
+- Never [thing to avoid]
+
+---
+
+## Comments
+
+- Add comments for complex logic only
+- Use [comment style] for documentation
+- Keep comments current with code changes
+
+---
+
+## Testing
+
+- Framework: [testing framework]
+- File naming: [convention]
+- Location: [where tests go]
+- Coverage: [expectations]
+
+---
+
+## Dependencies
+
+Before adding new dependencies:
+1. Check if existing deps solve the problem
+2. Prefer well-maintained packages
+3. Consider bundle size impact
+4. Verify license compatibility
+
+---
+
+## Security
+
+- Never hardcode secrets
+- Validate all user input
+- [Project-specific security rules]
+
+---
+
+## Performance
+
+- [Performance guideline 1]
+- [Performance guideline 2]
+- [Performance guideline 3]
+
+---
+
+## Additional Context
+
+Key Decisions:
+- [Decision]: [Rationale]
+- [Decision]: [Rationale]
+
+Known Limitations:
+- [Limitation]: [Workaround if any]
+
+---
+
+Powered by CxMS - https://github.com/RobSB2/CxMS

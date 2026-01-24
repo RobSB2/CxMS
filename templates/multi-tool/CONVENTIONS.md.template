@@ -1,0 +1,242 @@
+# Project Conventions
+
+**CxMS Template Version:** 1.0
+**Tool:** Aider
+**Location:** Project root (load via `--read CONVENTIONS.md` or `.aider.conf.yml`)
+
+---
+
+## Project Overview
+
+[Brief description of your project - 2-3 sentences]
+
+**Tech Stack:**
+- Backend: [technology]
+- Frontend: [technology]
+- Database: [technology]
+
+---
+
+## CxMS Integration
+
+This project uses **CxMS (Agent Context Management System)** for persistent AI memory.
+
+### Key Files
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Session.md` | Current project state - read at session start |
+| `[PROJECT]_Tasks.md` | Active work items |
+
+### Aider Configuration
+Add to `.aider.conf.yml`:
+```yaml
+read:
+  - CONVENTIONS.md
+  - [PROJECT]_Session.md
+```
+
+### Session Management
+- Start: Aider auto-loads files listed in config
+- End: Request update to `[PROJECT]_Session.md` before finishing
+
+---
+
+## Coding Conventions
+
+### Style
+- Indentation: [spaces/tabs, count]
+- Line length: [max characters]
+- Quotes: [single/double]
+- Semicolons: [yes/no for JS/TS]
+
+### Naming Conventions
+| Element | Convention | Example |
+|---------|------------|---------|
+| Variables | [convention] | `userName` |
+| Functions | [convention] | `getUserById` |
+| Classes | [convention] | `UserService` |
+| Constants | [convention] | `MAX_RETRIES` |
+| Files | [convention] | `user-service.ts` |
+
+---
+
+## Code Organization
+
+### Directory Structure
+```
+project/
+├── CONVENTIONS.md         # This file
+├── .aider.conf.yml        # Aider configuration
+├── [PROJECT]_Session.md   # CxMS session state
+├── [PROJECT]_Tasks.md     # CxMS tasks
+├── src/
+│   ├── [organization]
+│   └── ...
+└── tests/
+```
+
+### File Organization
+- [Guideline for file structure]
+- [Import ordering]
+- [Export patterns]
+
+---
+
+## Patterns
+
+### Use These Patterns
+1. **[Pattern Name]**
+   - When: [situation]
+   - Example: [brief example or reference]
+
+2. **[Pattern Name]**
+   - When: [situation]
+   - Example: [brief example or reference]
+
+### Avoid These Patterns
+1. **[Anti-pattern Name]**
+   - Why: [reason]
+   - Instead: [alternative]
+
+2. **[Anti-pattern Name]**
+   - Why: [reason]
+   - Instead: [alternative]
+
+---
+
+## Error Handling
+
+### General Approach
+- [Error handling philosophy]
+- [Logging approach]
+
+### Specific Rules
+- [Rule 1]
+- [Rule 2]
+- [Rule 3]
+
+---
+
+## Testing
+
+### Framework
+- Test framework: [name]
+- Assertion library: [name]
+- Mocking: [approach]
+
+### Conventions
+- Test file naming: `[pattern]`
+- Test organization: [describe/it, etc.]
+- Coverage expectations: [percentage or guideline]
+
+### Test Patterns
+- [Pattern 1]
+- [Pattern 2]
+
+---
+
+## Documentation
+
+### Code Documentation
+- [When to add comments]
+- [Documentation format - JSDoc, docstrings, etc.]
+- [What to document]
+
+### File Headers
+```
+[Template for file headers if used]
+```
+
+---
+
+## Git Conventions
+
+### Commit Messages
+- Format: [conventional commits, etc.]
+- Examples:
+  - `feat: add user authentication`
+  - `fix: resolve null pointer in user service`
+  - `docs: update API documentation`
+
+### Branch Naming
+- Feature: `feature/[description]`
+- Bugfix: `fix/[description]`
+- Release: `release/[version]`
+
+---
+
+## Dependencies
+
+### Adding Dependencies
+1. Check existing deps first
+2. Prefer well-maintained packages
+3. Consider bundle size
+4. Verify license
+
+### Updating Dependencies
+- [Update policy]
+- [Security update handling]
+
+---
+
+## Security
+
+### General Rules
+- Never commit secrets
+- Use environment variables for configuration
+- Validate all external input
+
+### Project-Specific
+- [Security requirement 1]
+- [Security requirement 2]
+
+---
+
+## Performance
+
+### Guidelines
+- [Performance guideline 1]
+- [Performance guideline 2]
+
+### Monitoring
+- [What to monitor]
+- [Performance budgets if any]
+
+---
+
+## Key Decisions
+
+| Decision | Rationale | Date |
+|----------|-----------|------|
+| [Decision 1] | [Why] | [When] |
+| [Decision 2] | [Why] | [When] |
+
+---
+
+## Known Issues & Workarounds
+
+| Issue | Workaround | Status |
+|-------|------------|--------|
+| [Issue 1] | [Workaround] | [Open/Resolved] |
+| [Issue 2] | [Workaround] | [Open/Resolved] |
+
+---
+
+## Quick Reference
+
+### Common Commands
+```bash
+# Start Aider with conventions
+aider --read CONVENTIONS.md --read [PROJECT]_Session.md
+
+# Or configure in .aider.conf.yml and just run:
+aider
+```
+
+### Key Files to Know
+- `[file]`: [purpose]
+- `[file]`: [purpose]
+
+---
+
+*Powered by CxMS - https://github.com/RobSB2/CxMS*

@@ -1,6 +1,6 @@
 # CxMS - Agent Context Management System
 
-**Version:** 1.2 | **Date:** January 2026
+**Version:** 1.3 | **Date:** January 2026
 
 Persistent memory for AI coding assistants through structured documentation.
 
@@ -49,6 +49,23 @@ CxMS is **AI-agnostic**. It works with any coding assistant that can read files:
 | Any file-aware AI | ✅ | Same methodology applies |
 
 > **Why "CLAUDE.md"?** Claude Code auto-reads files named `CLAUDE.md`. You can rename it to `COPILOT.md`, `AI_CONTEXT.md`, or anything else - the methodology works the same.
+
+---
+
+## Recent Highlights
+
+| Date | Enhancement | Description |
+|------|-------------|-------------|
+| 2026-01-24 | **Multi-Tool Support** | Templates for Gemini CLI, GitHub Copilot, Cursor, Aider |
+| 2026-01-24 | **Prompt Library** | Curated prompts with improvement analysis for training |
+| 2026-01-24 | **Deployment Packages** | Lite/Standard/Max levels with organized template folders |
+| 2026-01-21 | **E15: Update Management** | Version tracking, MIGRATION.md, rollout patterns |
+| 2026-01-21 | **E14: Portability Kit** | Deployment packages, existing project support |
+| 2026-01-21 | **E13: Community Telemetry** | Case study pipeline, GitHub issue templates |
+| 2026-01-21 | **E12: Multi-Agent Orchestration** | Agent registry, coordination patterns |
+| 2026-01-20 | **E9-E11: Metrics & Maintenance** | Performance monitoring, health checks, log aging |
+
+**See:** [Product Roadmap](CxMS_Product_Roadmap.md) for all 15 enhancements
 
 ---
 
@@ -117,19 +134,21 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 
 ---
 
-## Templates (17 Total)
+## Templates (23 Total)
 
-### Core Templates (Required)
+**See:** [templates/DEPLOYMENT.md](templates/DEPLOYMENT.md) for deployment levels (Lite/Standard/Max)
+
+### Core Templates (`templates/core/` - 6 files)
 | Template | Purpose |
 |----------|---------|
 | `CLAUDE.md.template` | Project overview with mandatory AI requirements |
 | `PROJECT_Context.md.template` | Documentation index and reading order |
-| `PROJECT_Session.md.template` | Current state - **update every session** (v1.1 with metrics) |
+| `PROJECT_Session.md.template` | Current state - **update every session** |
 | `PROJECT_Tasks.md.template` | Task tracker with status |
 | `PROJECT_Prompt_History.md.template` | Audit trail of prompts and actions |
 | `SESSION_START_PROMPTS.md` | Copy-paste prompts for session starts |
 
-### Log Templates (Optional)
+### Log Templates (`templates/logs/` - 7 files)
 | Template | Purpose |
 |----------|---------|
 | `PROJECT_Activity_Log.md.template` | Record of significant changes |
@@ -140,13 +159,23 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 | `PROJECT_Compaction_Log.md.template` | Context loss tracking |
 | `PROJECT_Performance_Log.md.template` | CxMS effectiveness metrics |
 
-### Project Documentation Templates (Optional)
+### Documentation Templates (`templates/docs/` - 5 files)
 | Template | Purpose |
 |----------|---------|
 | `PROJECT_Plan.md.template` | Multi-phase project planning |
 | `PROJECT_Inventory.md.template` | Component and endpoint inventory |
 | `PROJECT_Strategy.md.template` | AI workflow strategy |
 | `PROJECT_Exceptions.md.template` | Technical workarounds documentation |
+| `PROJECT_Prompt_Library.md.template` | Curated prompts with improvement analysis |
+
+### Multi-Tool Templates (`templates/multi-tool/` - 5 files)
+| Template | Tool | Purpose |
+|----------|------|---------|
+| `GEMINI.md.template` | Gemini CLI | CxMS config for Gemini |
+| `copilot-instructions.md.template` | GitHub Copilot | CxMS config for Copilot |
+| `cursorrules.template` | Cursor | CxMS config for Cursor |
+| `CONVENTIONS.md.template` | Aider | CxMS config for Aider |
+| `MULTI-TOOL-DEPLOYMENT.md` | All | Multi-tool deployment guide |
 
 ---
 
@@ -229,34 +258,37 @@ Context_Management_System/
 ├── CLAUDE.md                              # Repository guidance
 ├── CxMS_Introduction_and_Guide.md         # START HERE
 ├── CxMS_Practical_Implementation_Guide.md # Implementation details
+├── CxMS_Product_Roadmap.md                # 15 enhancements (RFC)
 │
-├── templates/                             # All 17 templates
-│   ├── CLAUDE.md.template
-│   ├── PROJECT_Context.md.template
-│   ├── PROJECT_Session.md.template
-│   ├── PROJECT_Tasks.md.template
-│   ├── PROJECT_Prompt_History.md.template
-│   ├── SESSION_START_PROMPTS.md
-│   ├── PROJECT_Activity_Log.md.template
-│   ├── PROJECT_Decision_Log.md.template
-│   ├── PROJECT_Issue_Log.md.template
-│   ├── PROJECT_Session_Summary.md.template
-│   ├── PROJECT_Deployment.md.template
-│   ├── PROJECT_Compaction_Log.md.template
-│   ├── PROJECT_Performance_Log.md.template
-│   ├── PROJECT_Plan.md.template
-│   ├── PROJECT_Inventory.md.template
-│   ├── PROJECT_Strategy.md.template
-│   └── PROJECT_Exceptions.md.template
+├── templates/                             # 23 templates organized by category
+│   ├── DEPLOYMENT.md                      # Deployment guide (Lite/Standard/Max)
+│   ├── core/                              # Required templates (6)
+│   │   ├── CLAUDE.md.template
+│   │   ├── PROJECT_Session.md.template
+│   │   ├── PROJECT_Tasks.md.template
+│   │   └── ...
+│   ├── logs/                              # Optional logging (7)
+│   │   ├── PROJECT_Activity_Log.md.template
+│   │   ├── PROJECT_Decision_Log.md.template
+│   │   └── ...
+│   ├── docs/                              # Optional documentation (5)
+│   │   ├── PROJECT_Plan.md.template
+│   │   ├── PROJECT_Prompt_Library.md.template
+│   │   └── ...
+│   └── multi-tool/                        # Tool-specific configs (5)
+│       ├── GEMINI.md.template
+│       ├── copilot-instructions.md.template
+│       ├── cursorrules.template
+│       ├── CONVENTIONS.md.template
+│       └── MULTI-TOOL-DEPLOYMENT.md
 │
 ├── case-studies/                          # Real-world implementations
-│   └── LPR_LandTools_Case_Study.md        # Enterprise land management platform
-│
-├── CxMS_Enhancement_Exploration.md        # 15 enhancements documented (RFC)
+│   └── LPR_LandTools_Case_Study.md
 │
 ├── # CxMS Self-Tracking (dogfooding)
 ├── CxMS_Session.md                        # CxMS development state
 ├── CxMS_Tasks.md                          # CxMS task tracker
+├── CxMS_Prompt_Library.md                 # Curated prompts with analysis
 ├── CxMS_Performance_Log.md                # CxMS metrics
 ├── CxMS_Activity_Log.md                   # CxMS activities
 ├── CxMS_Decision_Log.md                   # CxMS design decisions

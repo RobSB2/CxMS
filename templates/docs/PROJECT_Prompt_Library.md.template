@@ -1,0 +1,219 @@
+# [PROJECT] - Prompt Library
+
+**Template Version:** 1.0
+**Purpose:** Curated prompt engineering reference and training resource
+**Last Updated:** [DATE]
+
+---
+
+## Overview
+
+This library captures **significant prompts** with analysis and improvement suggestions. Unlike Prompt History (which logs all prompts), this library focuses on learning and optimization.
+
+**Use this library to:**
+- Learn effective prompting patterns
+- Reference successful prompts for similar tasks
+- Train team members on prompt engineering
+- Track your prompt engineering growth over time
+
+---
+
+## Prompt Categories
+
+| Category | Description |
+|----------|-------------|
+| INIT | Session initialization, context loading |
+| TASK | Specific work requests |
+| DEBUG | Troubleshooting, error resolution |
+| RESEARCH | Information gathering, exploration |
+| REFACTOR | Code/doc improvement requests |
+| DEPLOY | Deployment, release tasks |
+| REVIEW | Code review, feedback requests |
+
+---
+
+## Library Entries
+
+### Entry 001: [Brief Title]
+
+**Date:** [DATE]
+**Category:** [CATEGORY]
+**Context:** [Brief description of the situation/goal]
+
+#### Original Prompt
+```
+[Exact prompt as entered by user]
+```
+
+#### Improved Prompt
+```
+[AI-suggested improved version]
+```
+
+#### Improvement Analysis
+
+| Aspect | Original | Improved | Why |
+|--------|----------|----------|-----|
+| Clarity | | | |
+| Specificity | | | |
+| Context | | | |
+| Constraints | | | |
+| Output Format | | | |
+
+#### Key Improvements
+1. **[Improvement 1]:** [Explanation]
+2. **[Improvement 2]:** [Explanation]
+3. **[Improvement 3]:** [Explanation]
+
+#### Outcome
+- **Original result:** [What happened with original prompt]
+- **Would improved version help:** [Yes/No and why]
+
+#### Tags
+`#tag1` `#tag2` `#tag3`
+
+---
+
+### Entry 002: [Brief Title]
+
+**Date:** [DATE]
+**Category:** [CATEGORY]
+**Context:** [Brief description]
+
+#### Original Prompt
+```
+[Exact prompt as entered]
+```
+
+#### Improved Prompt
+```
+[AI-suggested improved version]
+```
+
+#### Improvement Analysis
+
+| Aspect | Original | Improved | Why |
+|--------|----------|----------|-----|
+| Clarity | | | |
+| Specificity | | | |
+| Context | | | |
+| Constraints | | | |
+| Output Format | | | |
+
+#### Key Improvements
+1. **[Improvement 1]:** [Explanation]
+
+#### Outcome
+- **Original result:**
+- **Would improved version help:**
+
+#### Tags
+`#tag1` `#tag2`
+
+---
+
+## Prompt Patterns Reference
+
+### Pattern: Context-First
+```
+Read [files] to understand [context], then [action].
+```
+**When to use:** Starting sessions, complex tasks requiring background
+
+### Pattern: Constraint-Bounded
+```
+[Action] with these constraints:
+- Constraint 1
+- Constraint 2
+Output format: [specify]
+```
+**When to use:** When specific requirements must be met
+
+### Pattern: Iterative Refinement
+```
+First, show me [draft/outline/approach].
+Wait for my feedback before [implementing/continuing].
+```
+**When to use:** Complex or risky changes, learning new domains
+
+### Pattern: Research-Then-Act
+```
+Search for [topic], summarize findings, then recommend [action].
+```
+**When to use:** When you need information before deciding
+
+### Pattern: Multi-Step Explicit
+```
+Complete these steps in order:
+1. [Step 1]
+2. [Step 2]
+3. [Step 3]
+Confirm each step before proceeding to the next.
+```
+**When to use:** Complex workflows, critical operations
+
+---
+
+## Common Improvements
+
+| Weak Pattern | Strong Pattern | Example |
+|--------------|----------------|---------|
+| "Fix the bug" | "Fix the bug in [file] where [symptom]. The expected behavior is [X]." | Adds location, symptom, expected outcome |
+| "Make it better" | "Improve [specific aspect] by [specific action]. Success criteria: [X]." | Adds measurable goal |
+| "Help me with X" | "I need to [goal]. Current state: [X]. Constraints: [Y]. Suggest approach." | Adds context and constraints |
+| "Do the thing we discussed" | "Implement [specific feature] as outlined in [file/previous discussion point]." | Adds explicit reference |
+| "Update the docs" | "Update [specific doc] to reflect [specific change]. Match existing style." | Adds scope and style guidance |
+
+---
+
+## Metrics
+
+| Metric | Value |
+|--------|-------|
+| Total Entries | |
+| Most Common Category | |
+| Top Improvement Area | |
+| Last Updated | |
+
+---
+
+## Learning Notes
+
+### What I've Learned
+- [Insight 1]
+- [Insight 2]
+
+### Patterns That Work Well for This Project
+- [Pattern 1]
+- [Pattern 2]
+
+### Common Mistakes I Make
+- [Mistake 1] → [How to avoid]
+- [Mistake 2] → [How to avoid]
+
+---
+
+## Quick Reference Card
+
+**Session Start:**
+```
+Read CLAUDE.md and [PROJECT]_Session.md, summarize current state, await instructions.
+```
+
+**Before Complex Task:**
+```
+Before starting, outline your approach for [task]. Wait for approval.
+```
+
+**End of Session:**
+```
+Update [PROJECT]_Session.md with current state, mark completed tasks, note blockers.
+```
+
+**When Stuck:**
+```
+I'm trying to [goal] but encountering [problem].
+I've tried: [approaches].
+Constraints: [limitations].
+Suggest alternatives.
+```

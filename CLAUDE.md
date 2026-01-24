@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Version:** 1.2
+**Version:** 1.3
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
@@ -20,35 +20,44 @@ Context_Managment_System/
 ├── CxMS_Introduction_and_Guide.md               # START HERE - Overview, training, history
 ├── CxMS_Practical_Implementation_Guide.md       # THE SYSTEM - templates and patterns
 │
-├── templates/                                   # Reusable project templates (17 total)
+├── templates/                                   # Reusable project templates (23 total)
+│   ├── DEPLOYMENT.md                            # Deployment guide (Lite/Standard/Max)
 │   │
-│   │── # Core Templates (Required)
-│   ├── CLAUDE.md.template                       # Project overview with mandatory requirements
-│   ├── PROJECT_Context.md.template              # Documentation index
-│   ├── PROJECT_Session.md.template              # Current state (dynamic)
-│   ├── PROJECT_Tasks.md.template                # Task tracker
-│   ├── PROJECT_Prompt_History.md.template       # Audit trail
-│   ├── SESSION_START_PROMPTS.md                 # Copy-paste session prompts
+│   ├── core/                                    # Required templates (6)
+│   │   ├── CLAUDE.md.template
+│   │   ├── PROJECT_Context.md.template
+│   │   ├── PROJECT_Session.md.template
+│   │   ├── PROJECT_Tasks.md.template
+│   │   ├── PROJECT_Prompt_History.md.template
+│   │   └── SESSION_START_PROMPTS.md
 │   │
-│   │── # Log Templates (Optional)
-│   ├── PROJECT_Activity_Log.md.template         # What was done (DEP, DB, CFG)
-│   ├── PROJECT_Decision_Log.md.template         # Why decisions were made
-│   ├── PROJECT_Issue_Log.md.template            # Problems and resolutions
-│   ├── PROJECT_Session_Summary.md.template      # Quick session reference
-│   ├── PROJECT_Deployment.md.template           # TEST/PROD tracking
-│   ├── PROJECT_Compaction_Log.md.template       # Context loss events
-│   ├── PROJECT_Performance_Log.md.template      # CxMS effectiveness metrics (E9)
+│   ├── logs/                                    # Optional logging (7)
+│   │   ├── PROJECT_Activity_Log.md.template
+│   │   ├── PROJECT_Decision_Log.md.template
+│   │   ├── PROJECT_Issue_Log.md.template
+│   │   ├── PROJECT_Session_Summary.md.template
+│   │   ├── PROJECT_Deployment.md.template
+│   │   ├── PROJECT_Compaction_Log.md.template
+│   │   └── PROJECT_Performance_Log.md.template
 │   │
-│   │── # Project Documentation Templates (Optional)
-│   ├── PROJECT_Plan.md.template                 # Multi-phase project planning
-│   ├── PROJECT_Inventory.md.template            # Component/endpoint inventory
-│   ├── PROJECT_Strategy.md.template             # AI workflow strategy
-│   └── PROJECT_Exceptions.md.template           # Technical workarounds
+│   ├── docs/                                    # Optional documentation (5)
+│   │   ├── PROJECT_Plan.md.template
+│   │   ├── PROJECT_Inventory.md.template
+│   │   ├── PROJECT_Strategy.md.template
+│   │   ├── PROJECT_Exceptions.md.template
+│   │   └── PROJECT_Prompt_Library.md.template
+│   │
+│   └── multi-tool/                              # Tool-specific configs (5)
+│       ├── GEMINI.md.template
+│       ├── copilot-instructions.md.template
+│       ├── cursorrules.template
+│       ├── CONVENTIONS.md.template
+│       └── MULTI-TOOL-DEPLOYMENT.md
 │
 ├── case-studies/                                # Real-world implementations
 │   └── LPR_LandTools_Case_Study.md              # Enterprise land management example
 │
-├── CxMS_Enhancement_Exploration.md              # 15 enhancements documented (RFC)
+├── CxMS_Product_Roadmap.md                      # 15 enhancements documented
 │
 ├── # CxMS Self-Tracking (dogfooding - 7 files)
 ├── CxMS_Session.md                              # Current development state

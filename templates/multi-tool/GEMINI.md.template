@@ -1,0 +1,126 @@
+# GEMINI.md
+
+**CxMS Template Version:** 1.0
+**Tool:** Gemini CLI
+**Location:** Project root (or `~/.gemini/` for global, subdirectories for scoped)
+
+---
+
+## Overview
+
+[Brief description of your project - 2-3 sentences]
+
+**Tech Stack:**
+- Backend: [technology]
+- Frontend: [technology]
+- Database: [technology]
+- Other: [technology]
+
+---
+
+## CxMS Integration
+
+This project uses **CxMS (Agent Context Management System)** for persistent AI memory.
+
+### Key Files
+| File | Purpose | Update Frequency |
+|------|---------|------------------|
+| `[PROJECT]_Session.md` | Current state | Every session |
+| `[PROJECT]_Tasks.md` | Active work items | As tasks change |
+
+### Session Start
+```
+Read GEMINI.md and [PROJECT]_Session.md, summarize current state, await instructions.
+```
+
+### Session End
+Before ending any session, update `[PROJECT]_Session.md` with:
+- What was accomplished
+- Current state
+- Context needed for next session
+
+---
+
+## Project Structure
+
+```
+[your-project]/
+├── GEMINI.md                    # This file
+├── [PROJECT]_Session.md         # Session state
+├── [PROJECT]_Tasks.md           # Task tracking
+└── src/                         # Your code
+```
+
+---
+
+## Coding Standards
+
+### Style Guidelines
+- [Your coding style preferences]
+- [Naming conventions]
+- [File organization patterns]
+
+### Patterns to Follow
+- [Pattern 1]
+- [Pattern 2]
+
+### Patterns to Avoid
+- [Anti-pattern 1]
+- [Anti-pattern 2]
+
+---
+
+## Important Context
+
+### Key Decisions
+- [Decision 1]: [Rationale]
+- [Decision 2]: [Rationale]
+
+### Known Issues
+- [Issue 1]: [Workaround if any]
+
+### Dependencies
+- [Key dependency]: [Version, purpose]
+
+---
+
+## Mandatory Requirements
+
+### Always Do
+1. Read `[PROJECT]_Session.md` at session start
+2. Update `[PROJECT]_Session.md` at session end
+3. Follow coding standards defined above
+4. Ask before making architectural changes
+
+### Never Do
+1. Commit without user approval
+2. Delete files without confirmation
+3. Modify production configurations without explicit request
+4. Skip updating session state at end of work
+
+---
+
+## Tool-Specific Notes
+
+### Gemini CLI Configuration
+- This file is auto-loaded when Gemini CLI starts in this directory
+- For global settings, place in `~/.gemini/GEMINI.md`
+- Subdirectory GEMINI.md files override parent settings
+
+### Model Preferences
+- Preferred model: [model name if any]
+- Context window considerations: [notes]
+
+---
+
+## Quick Reference
+
+| Task | Command/Prompt |
+|------|----------------|
+| Start session | "Read GEMINI.md and [PROJECT]_Session.md..." |
+| Check tasks | "Show current tasks from [PROJECT]_Tasks.md" |
+| End session | "Update [PROJECT]_Session.md with today's work" |
+
+---
+
+*Powered by CxMS - https://github.com/RobSB2/CxMS*

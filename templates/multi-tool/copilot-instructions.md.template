@@ -1,0 +1,141 @@
+# GitHub Copilot Instructions
+
+**CxMS Template Version:** 1.0
+**Tool:** GitHub Copilot
+**Location:** `.github/copilot-instructions.md`
+
+---
+
+## Project Overview
+
+[Brief description of your project - 2-3 sentences]
+
+**Tech Stack:**
+- Backend: [technology]
+- Frontend: [technology]
+- Database: [technology]
+
+---
+
+## CxMS Integration
+
+This project uses **CxMS (Agent Context Management System)** for persistent AI memory.
+
+### Key Files to Reference
+When starting work on this project, read these files for context:
+- `[PROJECT]_Session.md` - Current project state
+- `[PROJECT]_Tasks.md` - Active work items
+
+### Session Management
+At the end of each work session, remind the user to update `[PROJECT]_Session.md`.
+
+---
+
+## Coding Standards
+
+### General Guidelines
+- [Your coding style preferences]
+- [Naming conventions]
+- [Comment style]
+
+### Language-Specific
+
+#### [Primary Language]
+- [Convention 1]
+- [Convention 2]
+
+#### [Secondary Language]
+- [Convention 1]
+- [Convention 2]
+
+---
+
+## Project Patterns
+
+### Preferred Patterns
+- [Pattern name]: [Brief description]
+- [Pattern name]: [Brief description]
+
+### Avoid These Patterns
+- [Anti-pattern]: [Why to avoid]
+- [Anti-pattern]: [Why to avoid]
+
+---
+
+## File Organization
+
+```
+project/
+├── .github/
+│   ├── copilot-instructions.md    # This file
+│   └── instructions/              # Path-specific instructions (optional)
+│       └── src.instructions.md    # Instructions for src/ directory
+├── [PROJECT]_Session.md           # CxMS session state
+├── [PROJECT]_Tasks.md             # CxMS task tracking
+└── src/
+```
+
+---
+
+## Context Awareness
+
+### When Generating Code
+1. Check existing patterns in the codebase
+2. Follow established naming conventions
+3. Match existing code style
+4. Consider dependencies already in use
+
+### When Suggesting Changes
+1. Prefer minimal, focused changes
+2. Maintain backward compatibility unless asked otherwise
+3. Include appropriate error handling
+4. Add comments for complex logic
+
+---
+
+## Domain Knowledge
+
+### Business Context
+- [Key business concept]: [Explanation]
+- [Key business concept]: [Explanation]
+
+### Technical Context
+- [Key technical decision]: [Rationale]
+- [Key technical decision]: [Rationale]
+
+---
+
+## Testing Expectations
+
+- [Testing framework used]
+- [Test file naming convention]
+- [Coverage expectations]
+
+---
+
+## Documentation Standards
+
+- [Documentation style]
+- [Where to add docs]
+- [Required doc elements]
+
+---
+
+## Security Considerations
+
+- Never include secrets in code
+- [Project-specific security notes]
+- [Compliance requirements if any]
+
+---
+
+## Related Files
+
+For path-specific instructions, create files in `.github/instructions/`:
+- `api.instructions.md` - API-specific guidelines
+- `frontend.instructions.md` - Frontend-specific guidelines
+- `tests.instructions.md` - Testing-specific guidelines
+
+---
+
+*Powered by CxMS - https://github.com/RobSB2/CxMS*
