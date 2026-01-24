@@ -16,7 +16,7 @@
 | Templates | 25 (reorganized into core/logs/docs/multi-tool) |
 | Enhancements | 15 |
 | CxMS Files | 8 self-tracking files (added Prompt_Library) |
-| Next | Continue E14/E15 implementation, Live Stream prep |
+| Next | LPR Meeting Wed Jan 28: open-cxms.org, rebrand, multi-agent |
 
 ---
 
@@ -97,10 +97,13 @@ Session 6 commits:
 - **0aea270**: Session state update (E15 complete)
 - **36bb2f6**: Code Name: Master Yoda
 - **8d752aa**: E14 Phase 1 (SESSION_END_CHECKLIST, existing-project)
+- **49403b9**: Session state update (E14+E15 complete)
 
 ### Work In Progress
 - LPR AI Meeting prep (Wed Jan 28, 11 AM ET) - All Hands Teams Meeting
 - Code Name: Master Yoda assigned
+- **Rebrand:** Open Context Management System (CxMS)
+- **Website:** open-cxms.org planning (static site, OSS docs, blog content)
 - LandTools WebDev bugs (Luke Skywalker) and Obit-Wan Kenobe feature noted for other agents
 - SuperNinja agent: Death Star server build specs
 
@@ -132,9 +135,13 @@ Session 6 commits:
 - E14 Phase 1: ✅ SESSION_END_CHECKLIST.md, existing-project template
 - Code Name: ✅ Master Yoda added to CLAUDE.md
 
-**Upcoming:**
-- LPR Meeting (Jan 28): Master Yoda demo, blog content, open-cxms.org
-- Multi-agent coordination exploration (Agent Registry, hierarchy, sub-agent tasking)
+**Upcoming (Wed Jan 28 LPR Meeting):**
+- open-cxms.org website content (web-ready for static site generator)
+- Rebrand to "Open Context Management System"
+- OSS documentation (CONTRIBUTING.md, CODE_OF_CONDUCT.md, SECURITY.md)
+- Blog/content capture during session
+- Multi-agent coordination exploration
+- Persona/Plugin concept exploration
 
 **File Structure Now:**
 ```
@@ -158,7 +165,7 @@ templates/
 
 **LPR Meeting Planning Doc:**
 - `Session 1 - LPR AI Meeting.local.md`
-- Tasks: Multi-agent coordination, LandTools bugs/features, Persona plugins
+- Tasks: open-cxms.org, rebrand, OSS docs, multi-agent, LandTools, personas
 
 ---
 
