@@ -43,9 +43,11 @@ CxMS is **AI-agnostic**. It works with any coding assistant that can read files:
 | AI Assistant | Compatible | Notes |
 |--------------|------------|-------|
 | Claude Code | ✅ | Auto-reads CLAUDE.md |
-| GitHub Copilot | ✅ | Start session with "Read CLAUDE.md..." |
+| Gemini CLI | ✅ | Auto-reads GEMINI.md |
+| GitHub Copilot | ✅ | Reads .github/copilot-instructions.md |
+| Cursor | ✅ | Reads .cursorrules |
+| Aider | ✅ | Reads CONVENTIONS.md via config |
 | ChatGPT | ✅ | Upload or paste file contents |
-| Cursor | ✅ | Reads project files |
 | Any file-aware AI | ✅ | Same methodology applies |
 
 > **Why "CLAUDE.md"?** Claude Code auto-reads files named `CLAUDE.md`. You can rename it to `COPILOT.md`, `AI_CONTEXT.md`, or anything else - the methodology works the same.
@@ -56,11 +58,11 @@ CxMS is **AI-agnostic**. It works with any coding assistant that can read files:
 
 | Date | Enhancement | Description |
 |------|-------------|-------------|
+| 2026-01-24 | **E14: Portability Kit** | SESSION_END_CHECKLIST, existing-project template |
+| 2026-01-24 | **E15: Update Management** | MIGRATION.md with AI-assisted updates |
 | 2026-01-24 | **Multi-Tool Support** | Templates for Gemini CLI, GitHub Copilot, Cursor, Aider |
 | 2026-01-24 | **Prompt Library** | Curated prompts with improvement analysis for training |
 | 2026-01-24 | **Deployment Packages** | Lite/Standard/Max levels with organized template folders |
-| 2026-01-21 | **E15: Update Management** | Version tracking, MIGRATION.md, rollout patterns |
-| 2026-01-21 | **E14: Portability Kit** | Deployment packages, existing project support |
 | 2026-01-21 | **E13: Community Telemetry** | Case study pipeline, GitHub issue templates |
 | 2026-01-21 | **E12: Multi-Agent Orchestration** | Agent registry, coordination patterns |
 | 2026-01-20 | **E9-E11: Metrics & Maintenance** | Performance monitoring, health checks, log aging |
@@ -242,7 +244,7 @@ CxMS was developed and validated through real production use:
 - **Session productivity:** Significantly improved
 
 **Ongoing Development:**
-- 15 enhancements in RFC stage (portability kit, update management, multi-agent orchestration, community telemetry)
+- 15 enhancements documented, E9-E15 implemented
 - CxMS uses itself for development tracking (dogfooding)
 - Active metrics collection for validation
 
@@ -260,12 +262,14 @@ Context_Management_System/
 ├── CxMS_Practical_Implementation_Guide.md # Implementation details
 ├── CxMS_Product_Roadmap.md                # 15 enhancements (RFC)
 │
-├── templates/                             # 23 templates organized by category
+├── templates/                             # 25 templates organized by category
 │   ├── DEPLOYMENT.md                      # Deployment guide (Lite/Standard/Max)
-│   ├── core/                              # Required templates (6)
+│   ├── MIGRATION.md                       # Fresh install & upgrade guide
+│   ├── core/                              # Required templates (8)
 │   │   ├── CLAUDE.md.template
+│   │   ├── CLAUDE.md.existing-project.template
 │   │   ├── PROJECT_Session.md.template
-│   │   ├── PROJECT_Tasks.md.template
+│   │   ├── SESSION_END_CHECKLIST.md
 │   │   └── ...
 │   ├── logs/                              # Optional logging (7)
 │   │   ├── PROJECT_Activity_Log.md.template
