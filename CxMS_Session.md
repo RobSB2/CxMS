@@ -25,14 +25,25 @@
 **Issues Addressed:**
 1. ASB's Claude instance couldn't see CxMS conventions (Prompt Library, etc.)
 2. User repeatedly prompted for already-approved operations
+3. No single startup prompt to initialize full context
+4. No context self-monitoring capability
+5. Claude Code permission prompts not respecting "don't ask again"
 
 **Solutions Implemented:**
 - E16 (Parent-Child Convention Inheritance) - child projects reference parent CxMS
-- E17 (Pre-Approved Operations) - `PROJECT_Approvals.md` template reduces permission prompts
-- ASB fixed with parent reference, Prompt Library, and Approvals file
-- CxMS bumped to v1.5 (26 templates now)
+- E17 (Pre-Approved Operations) - `PROJECT_Approvals.md` template
+- `PROJECT_Startup.md` template - one prompt to rule them all
+- `statusline-command.sh` - writes context % to `.claude/context-status.json`
+- Session permission capture - new permissions auto-added to Approvals file
+- Fixed `.claude/settings.local.json` with broad wildcards (`Bash(git:*)` etc.)
+- Updated README with startup prompts for all deployment levels
+- CxMS bumped to v1.5 (27 templates, 4 tools)
 
-**Also:** Consolidated GitHub issue #20847 into #18027 (context visibility).
+**GitHub:**
+- Consolidated issue #20847 into #18027 (context visibility)
+- Thanked @Memphizzz for statusline workaround, added to CxMS tools
+
+**Commits this session:** ~15 across CxMS and ASB repos
 
 ---
 
