@@ -1,6 +1,6 @@
 # CxMS - Agent Context Management System
 
-**Version:** 1.4 | **Date:** January 2026
+**Version:** 1.5 | **Date:** January 2026
 
 Persistent memory for AI coding assistants through structured documentation.
 
@@ -72,18 +72,17 @@ CxMS is **AI-agnostic**. It works with any coding assistant that can read files:
 
 | Date | Enhancement | Description |
 |------|-------------|-------------|
+| 2026-01-25 | **E17: Pre-Approved Operations** | Skip permission prompts with Approvals file |
+| 2026-01-25 | **E16: Parent-Child Inheritance** | Child projects reference parent CxMS conventions |
+| 2026-01-25 | **Startup Template** | Single prompt initializes full context |
+| 2026-01-25 | **Context Monitoring** | Self-monitor context % via statusline script |
 | 2026-01-24 | **Deployment Health Check** | AI assesses level fit, suggests upgrades |
 | 2026-01-24 | **Auto Version Check** | AI checks for CxMS updates on session start |
 | 2026-01-24 | **E14: Portability Kit** | SESSION_END_CHECKLIST, existing-project template |
 | 2026-01-24 | **E15: Update Management** | MIGRATION.md with AI-assisted updates |
 | 2026-01-24 | **Multi-Tool Support** | Templates for Gemini CLI, GitHub Copilot, Cursor, Aider |
-| 2026-01-24 | **Prompt Library** | Curated prompts with improvement analysis for training |
-| 2026-01-24 | **Deployment Packages** | Lite/Standard/Max levels with organized template folders |
-| 2026-01-21 | **E13: Community Telemetry** | Case study pipeline, GitHub issue templates |
-| 2026-01-21 | **E12: Multi-Agent Orchestration** | Agent registry, coordination patterns |
-| 2026-01-20 | **E9-E11: Metrics & Maintenance** | Performance monitoring, health checks, log aging |
 
-**See:** [Product Roadmap](CxMS_Product_Roadmap.md) for all 15 enhancements
+**See:** [Product Roadmap](CxMS_Product_Roadmap.md) for all 17 enhancements
 
 ---
 
@@ -113,16 +112,22 @@ your-project/
 
 ### 3. Start every AI session with:
 
+**One Prompt to Rule Them All (Max deployment):**
 ```
-Read CLAUDE.md and MyApp_Session.md.
-Summarize:
-1. Current project state (version, key stats)
-2. Last session accomplishments
-3. Suggested next actions
-Then await instructions.
+Read MyApp_Startup.md and follow its instructions.
 ```
 
-*The AI will automatically check for CxMS updates and notify you if a newer version is available.*
+This single prompt reads all context files, applies approvals, checks context %, and provides a full session summary.
+
+**Or use level-appropriate prompts:**
+
+| Level | Startup Prompt |
+|-------|----------------|
+| **Lite** | `Read CLAUDE.md and MyApp_Session.md. Summarize current state and await instructions.` |
+| **Standard** | `Read CLAUDE.md, MyApp_Session.md, and MyApp_Tasks.md. Summarize state, active tasks, and suggest next action.` |
+| **Max** | `Read MyApp_Startup.md and follow its instructions.` |
+
+*The AI will automatically check for CxMS updates and apply pre-approved permissions.*
 
 ### 4. End every session with:
 
@@ -191,15 +196,17 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 
 ---
 
-## Templates (25 Total)
+## Templates (27 Total)
 
 **See:** [templates/DEPLOYMENT.md](templates/DEPLOYMENT.md) for deployment levels | [templates/MIGRATION.md](templates/MIGRATION.md) for upgrades
 
-### Core Templates (`templates/core/` - 8 files)
+### Core Templates (`templates/core/` - 10 files)
 | Template | Purpose |
 |----------|---------|
 | `CLAUDE.md.template` | Project overview with mandatory AI requirements |
 | `CLAUDE.md.existing-project.template` | Adding CxMS to existing projects |
+| `PROJECT_Startup.md.template` | **One prompt** to initialize full session context |
+| `PROJECT_Approvals.md.template` | Pre-approved operations (skip permission prompts) |
 | `PROJECT_Context.md.template` | Documentation index and reading order |
 | `PROJECT_Session.md.template` | Current state - **update every session** |
 | `PROJECT_Tasks.md.template` | Task tracker with status |
@@ -301,7 +308,7 @@ CxMS was developed and validated through real production use:
 - **Session productivity:** Significantly improved
 
 **Ongoing Development:**
-- 15 enhancements documented, E9-E15 implemented
+- 17 enhancements documented, 5 implemented (E9, E10, E13, E16, E17)
 - CxMS uses itself for development tracking (dogfooding)
 - Active metrics collection for validation
 
@@ -317,12 +324,13 @@ Context_Management_System/
 ├── CLAUDE.md                              # Repository guidance
 ├── CxMS_Introduction_and_Guide.md         # START HERE
 ├── CxMS_Practical_Implementation_Guide.md # Implementation details
-├── CxMS_Product_Roadmap.md                # 15 enhancements (RFC)
+├── CxMS_Product_Roadmap.md                # 17 enhancements (5 implemented)
 │
-├── templates/                             # 25 templates organized by category
+├── templates/                             # 27 templates organized by category
 │   ├── DEPLOYMENT.md                      # Deployment guide (Lite/Standard/Max)
 │   ├── MIGRATION.md                       # Fresh install & upgrade guide
-│   ├── core/                              # Required templates (8)
+│   ├── VERSIONS.md                        # Template version manifest
+│   ├── core/                              # Required templates (10)
 │   │   ├── CLAUDE.md.template
 │   │   ├── CLAUDE.md.existing-project.template
 │   │   ├── PROJECT_Session.md.template
@@ -342,6 +350,10 @@ Context_Management_System/
 │       ├── cursorrules.template
 │       ├── CONVENTIONS.md.template
 │       └── MULTI-TOOL-DEPLOYMENT.md
+│
+├── tools/                                 # CxMS utilities
+│   ├── cxms-report.mjs                    # Telemetry reporter (anonymous metrics)
+│   └── statusline-command.sh              # Context monitoring (writes context %)
 │
 ├── case-studies/                          # Real-world implementations
 │   └── LPR_LandTools_Case_Study.md
