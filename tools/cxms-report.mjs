@@ -25,8 +25,8 @@ import os from 'os';
 // ============================================
 
 const CLIENT_VERSION = '1.0.0';
-const SUPABASE_URL = 'https://YOUR_PROJECT.supabase.co';  // TODO: Replace after setup
-const SUPABASE_ANON_KEY = 'YOUR_ANON_KEY';  // TODO: Replace after setup
+const SUPABASE_URL = 'https://pubuchklneufckmvatmy.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1YnVjaGtsbmV1ZmNrbXZhdG15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzMDE1NDUsImV4cCI6MjA4NDg3NzU0NX0.K3xZJ5zi8xoJvEWTnGvLIlxkSu5ecpsslKICcXpTM2A';
 
 // CxMS file patterns
 const CXMS_FILES = {
@@ -643,6 +643,7 @@ async function main() {
   const dryRun = args.includes('--dry-run');
   const fullMode = args.includes('--full');
   const skipPrompts = args.includes('--skip-prompts');
+  const autoYes = args.includes('--yes') || args.includes('-y');
   const helpMode = args.includes('--help') || args.includes('-h');
 
   if (helpMode) {
@@ -686,8 +687,8 @@ Learn more: https://github.com/RobSB2/CxMS
   log('\n📊 Extracting metrics...');
   let data = extractAllMetrics(cwd, files);
 
-  // Collect user feedback (skip if --skip-prompts)
-  if (!skipPrompts) {
+  // Collect user feedback (skip if --skip-prompts or --yes)
+  if (!skipPrompts && !autoYes) {
     data = await collectUserFeedback(data, fullMode);
   }
 
@@ -710,14 +711,19 @@ Learn more: https://github.com/RobSB2/CxMS
     process.exit(0);
   }
 
-  // Consent (skip if --skip-prompts, but then we don't send)
-  if (skipPrompts) {
-    log('\n⚠️  --skip-prompts used without --dry-run. Use --dry-run to see output.\n');
+  // Consent (skip if --skip-prompts without --yes)
+  if (skipPrompts && !autoYes) {
+    log('\n⚠️  --skip-prompts used without --dry-run or --yes. Use --dry-run to preview or --yes to auto-consent.\n');
     process.exit(0);
   }
 
-  log('\n════════════════════════════════════════════════════════════');
-  const consent = await ask('Send this data anonymously to help improve CxMS? [y/N]: ');
+  let consent = 'y';
+  if (!autoYes) {
+    log('\n════════════════════════════════════════════════════════════');
+    consent = await ask('Send this data anonymously to help improve CxMS? [y/N]: ');
+  } else {
+    log('\n✅ Auto-consenting (--yes flag)');
+  }
 
   if (consent.toLowerCase() !== 'y') {
     log('\n👍 No data sent. Thanks anyway!\n');
