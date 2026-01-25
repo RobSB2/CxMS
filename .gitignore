@@ -17,3 +17,7 @@ Thumbs.db
 
 # Local-only files (not for public repo)
 *.local.md
+
+# CxMS telemetry (local tracking files)
+.cxms/.telemetry_id
+.cxms/.submission_count
