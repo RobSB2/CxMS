@@ -91,3 +91,12 @@ This file captures operations the user has pre-approved. AI assistants should re
 - AI should reference this before prompting for permission
 - User can override any approval in-session by saying "ask me first"
 - When in doubt, ask - this list covers common cases, not edge cases
+
+## Session Permission Capture
+
+**When user grants a new permission during a session:**
+1. Complete the approved action
+2. Add the permission to the appropriate table above
+3. Note the date in the Notes column
+
+This ensures permissions accumulate and don't need to be re-granted.

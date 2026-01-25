@@ -82,3 +82,12 @@
 - Read this file at session start
 - Do not prompt for listed operations
 - When in doubt, check this file before prompting
+
+## Session Permission Capture
+
+**When user grants a new permission during a session:**
+1. Complete the approved action
+2. Add the permission to the appropriate table above
+3. Note the date in the Notes column
+
+This ensures permissions accumulate and don't need to be re-granted.
