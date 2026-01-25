@@ -12,7 +12,7 @@
 
 This document tracks the CxMS product roadmap, including planned enhancements, implementation status, and priorities. Enhancements are discovered through real-world usage and community feedback.
 
-**Current Status:** 16 enhancements documented, 3 implemented, 13 in RFC stage
+**Current Status:** 17 enhancements documented, 5 implemented (E9, E10, E13, E16, E17), 12 in RFC stage
 
 ---
 
@@ -2798,6 +2798,63 @@ For users managing multiple child projects:
 
 ---
 
+## Enhancement 17: Pre-Approved Operations
+
+### Problem Statement
+
+AI assistants repeatedly prompt for permission on operations the user has already approved in previous sessions:
+- Git commits, pushes to main
+- File creation in project directories
+- Running npm/build commands
+- Using specific tools
+
+This creates friction, wastes time, and frustrates users who must re-approve the same operations every session.
+
+### Proposed Solution: PROJECT_Approvals.md
+
+A structured file capturing standing approvals that AI reads at session start.
+
+**Template: `PROJECT_Approvals.md.template`** (IMPLEMENTED)
+
+Captures:
+- Git operations (commit, push, branch)
+- File operations by directory scope
+- Bash command patterns (npm, git read-only, etc.)
+- Tool usage permissions
+- Destructive operations (always ask)
+- Project-specific approvals
+
+### Implementation
+
+**Status: IMPLEMENTED (Session 10)**
+
+- Created `templates/core/PROJECT_Approvals.md.template`
+- Updated `CLAUDE.md.template` to include Approvals in session start
+- Created `ASB_Approvals.md` as first implementation
+- Updated ASB's CLAUDE.md to reference it
+
+### Integration with Session Start
+
+Added to mandatory requirements:
+```
+Before ANY work, you MUST:
+1. Read this file completely
+2. Read `[PROJECT]_Approvals.md` for pre-approved operations
+3. Read `[PROJECT]_Session.md` completely
+...
+```
+
+### Value Proposition
+
+| Benefit | Impact |
+|---------|--------|
+| Reduced friction | No repeated permission prompts |
+| Faster sessions | Skip approval dialogues |
+| User control | Clear documentation of what's approved |
+| Safety preserved | Destructive ops still require confirmation |
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
@@ -2808,16 +2865,17 @@ For users managing multiple child projects:
 | E13: Community Telemetry & Case Study Pipeline | Low | High | 4 (Phase 1 complete) |
 | E14: CxMS Portability Kit | Medium | Very High | 5 (Initial deployment) |
 | E15: CxMS Update & Release Management | Low | Very High | 6 (Ongoing maintenance) |
-| E16: Parent-Child CxMS Convention Inheritance | Low | High | 7 (Multi-project) |
-| E1: Cross-Agent Coordination | Medium | High | 8 |
-| E12: Multi-Agent CxMS Orchestration | High | Very High | 9 (Enterprise) |
-| E6: Token Usage & Conservation | Medium | High | 10 |
-| E7: Context Usage & Conservation | Medium | High | 11 |
-| E8: Superfluous Communication Suppression | Low | High | 12 |
-| E2: Auto-save Triggers | Low | Medium | 13 |
-| E3: Structured AI Instructions | Low | Medium | 14 |
-| E4: File Validation Protocols | Medium | Medium | 15 |
-| E5: Context Compression | High | Medium | 16 |
+| E16: Parent-Child CxMS Convention Inheritance | Low | High | 7 (IMPLEMENTED) |
+| E17: Pre-Approved Operations | Low | High | 8 (IMPLEMENTED) |
+| E1: Cross-Agent Coordination | Medium | High | 9 |
+| E12: Multi-Agent CxMS Orchestration | High | Very High | 10 (Enterprise) |
+| E6: Token Usage & Conservation | Medium | High | 11 |
+| E7: Context Usage & Conservation | Medium | High | 12 |
+| E8: Superfluous Communication Suppression | Low | High | 13 |
+| E2: Auto-save Triggers | Low | Medium | 14 |
+| E3: Structured AI Instructions | Low | Medium | 15 |
+| E4: File Validation Protocols | Medium | Medium | 16 |
+| E5: Context Compression | High | Medium | 17 |
 
 ---
 
@@ -2844,7 +2902,8 @@ For users managing multiple child projects:
 
 | Date | Change | Author |
 |------|--------|--------|
-| 2026-01-25 | Added Enhancement 16: Parent-Child CxMS Convention Inheritance | AI + Human |
+| 2026-01-25 | Added E17: Pre-Approved Operations (implemented) | AI + Human |
+| 2026-01-25 | Added E16: Parent-Child CxMS Convention Inheritance (implemented) | AI + Human |
 | 2026-01-21 | Added Enhancement 15: CxMS Update & Release Management | AI + Human |
 | 2026-01-21 | Added Enhancement 14: CxMS Portability Kit | AI + Human |
 | 2026-01-21 | Added Enhancement 13: Community Telemetry & Case Study Pipeline | AI + Human |

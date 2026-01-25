@@ -8,21 +8,22 @@
 
 ## Active Tasks
 
-### TASK-006: E16 Parent-Child Convention Inheritance Implementation
-**Status:** In Progress
+### TASK-006: E16 + E17 Implementation
+**Status:** Complete
 **Priority:** High
-**Description:** Implement E16 to fix child project convention visibility issue
+**Description:** Implement E16 (convention inheritance) and E17 (approvals) to fix session friction
 
 **Checklist:**
 - [x] Document E16 in CxMS_Product_Roadmap.md
-- [ ] Add "Parent Reference" section to CLAUDE.md.template
-- [ ] Add inheritance directive to mandatory requirements
-- [ ] Update DEPLOYMENT.md with child project setup guidance
-- [ ] Update CLAUDE.md.existing-project.template with parent reference option
-- [x] Fix ASB's CLAUDE.md with parent reference (Phase 2)
+- [x] Fix ASB's CLAUDE.md with parent reference
 - [x] Create ASB_Prompt_Library.md
+- [x] Create PROJECT_Approvals.md.template (E17)
+- [x] Update CLAUDE.md.template with Approvals in session start
+- [x] Create ASB_Approvals.md
+- [x] Update VERSIONS.md (v1.5)
+- [x] Document E17 in roadmap
 
-**Next Action:** Update core templates with parent reference pattern
+**Completed:** Session 10, 2026-01-25
 
 ---
 

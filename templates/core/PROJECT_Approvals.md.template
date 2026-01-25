@@ -1,0 +1,93 @@
+# [PROJECT] - Pre-Approved Operations
+
+**CxMS Version:** 1.4
+**Template Version:** 1.0
+**Purpose:** Reduce permission prompts by documenting standing approvals
+**Last Updated:** [DATE]
+
+---
+
+## Overview
+
+This file captures operations the user has pre-approved. AI assistants should read this at session start and **not prompt for confirmation** on listed operations.
+
+**Update this file when:**
+- User approves a new operation type
+- User revokes a previous approval
+- Project requirements change
+
+---
+
+## Standing Approvals
+
+### Git Operations
+| Operation | Approved | Notes |
+|-----------|----------|-------|
+| Commit with co-author tag | Yes | Standard commits |
+| Push to origin/main | Yes | After user reviews |
+| Create feature branches | Yes | |
+| Git status/diff/log | Yes | Read-only, always OK |
+
+### File Operations
+| Operation | Approved | Scope |
+|-----------|----------|-------|
+| Read any project file | Yes | Entire project |
+| Create new files | Yes | src/, docs/, assets/, tests/ |
+| Edit existing files | Yes | Within project directory |
+| Delete files | ASK | Always confirm deletions |
+
+### Bash Commands
+| Command Pattern | Approved | Notes |
+|-----------------|----------|-------|
+| npm install | Yes | |
+| npm run * | Yes | dev, build, test, etc. |
+| npx * | Yes | Standard tooling |
+| git (read-only) | Yes | status, diff, log, branch |
+| Directory listing | Yes | ls, dir, find |
+| File search | Yes | grep, rg, find |
+
+### Destructive Operations (Always Ask)
+| Operation | Policy |
+|-----------|--------|
+| git push --force | ALWAYS ASK |
+| git reset --hard | ALWAYS ASK |
+| rm -rf / delete directories | ALWAYS ASK |
+| Database modifications | ALWAYS ASK |
+| Production deployments | ALWAYS ASK |
+
+### Tool Usage
+| Tool | Approved | Scope |
+|------|----------|-------|
+| Read | Yes | Any project file |
+| Edit | Yes | Project files |
+| Write | Yes | New files in approved directories |
+| Glob/Grep | Yes | Code search |
+| WebFetch | Yes | Documentation URLs |
+| WebSearch | Yes | Technical queries |
+| Bash | Conditional | See command patterns above |
+
+---
+
+## Project-Specific Approvals
+
+### [Add project-specific approvals here]
+| Operation | Approved | Notes |
+|-----------|----------|-------|
+| | | |
+
+---
+
+## Revoked Approvals
+
+| Operation | Revoked Date | Reason |
+|-----------|--------------|--------|
+| | | |
+
+---
+
+## Notes
+
+- This file is read at session start
+- AI should reference this before prompting for permission
+- User can override any approval in-session by saying "ask me first"
+- When in doubt, ask - this list covers common cases, not edge cases

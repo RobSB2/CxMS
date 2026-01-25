@@ -1,7 +1,7 @@
 # CxMS Template Versions
 
-**CxMS Framework Version:** 1.4
-**Last Updated:** 2026-01-24
+**CxMS Framework Version:** 1.5
+**Last Updated:** 2026-01-25
 
 This file is the single source of truth for template versions. AI assistants should fetch this file to check for updates.
 
@@ -11,8 +11,9 @@ This file is the single source of truth for template versions. AI assistants sho
 
 | Template | Version | Description |
 |----------|---------|-------------|
-| `CLAUDE.md.template` | 1.5 | Project overview with AI requirements + Context Monitoring |
+| `CLAUDE.md.template` | 1.6 | Project overview with AI requirements + Context Monitoring + Approvals |
 | `CLAUDE.md.existing-project.template` | 1.0 | Adding CxMS to existing projects |
+| `PROJECT_Approvals.md.template` | 1.0 | Pre-approved operations to reduce permission prompts |
 | `PROJECT_Context.md.template` | 1.0 | Documentation index |
 | `PROJECT_Session.md.template` | 1.1 | Session state tracking |
 | `PROJECT_Tasks.md.template` | 1.0 | Task tracker |
@@ -66,6 +67,7 @@ This file is the single source of truth for template versions. AI assistants sho
 
 | Date | CxMS Version | Changes |
 |------|--------------|---------|
+| 2026-01-25 | 1.5 | E16 Parent-Child Inheritance, E17 Approvals template |
 | 2026-01-24 | 1.4 | Added VERSIONS.md, version check, health check, Context Monitoring |
 | 2026-01-24 | 1.3 | E14 Portability Kit, E15 Update Management, Multi-tool support |
 | 2026-01-21 | 1.2 | E11-E13, full dogfooding |
