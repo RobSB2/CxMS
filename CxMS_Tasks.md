@@ -2,11 +2,29 @@
 
 **Template Version:** 1.0
 **Purpose:** Track development tasks for CxMS itself
-**Last Updated:** 2026-01-25
+**Last Updated:** 2026-01-25 (Session 10)
 
 ---
 
 ## Active Tasks
+
+### TASK-006: E16 Parent-Child Convention Inheritance Implementation
+**Status:** In Progress
+**Priority:** High
+**Description:** Implement E16 to fix child project convention visibility issue
+
+**Checklist:**
+- [x] Document E16 in CxMS_Product_Roadmap.md
+- [ ] Add "Parent Reference" section to CLAUDE.md.template
+- [ ] Add inheritance directive to mandatory requirements
+- [ ] Update DEPLOYMENT.md with child project setup guidance
+- [ ] Update CLAUDE.md.existing-project.template with parent reference option
+- [x] Fix ASB's CLAUDE.md with parent reference (Phase 2)
+- [x] Create ASB_Prompt_Library.md
+
+**Next Action:** Update core templates with parent reference pattern
+
+---
 
 ### TASK-003: Metrics Monitoring Period
 **Status:** In Progress

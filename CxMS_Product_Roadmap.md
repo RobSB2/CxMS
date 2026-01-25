@@ -2,7 +2,7 @@
 
 **Version:** 1.1
 **Created:** 2026-01-20
-**Last Updated:** 2026-01-24
+**Last Updated:** 2026-01-25
 **Purpose:** Document planned enhancements and product direction for CxMS
 **Status:** Active Development
 
@@ -12,7 +12,7 @@
 
 This document tracks the CxMS product roadmap, including planned enhancements, implementation status, and priorities. Enhancements are discovered through real-world usage and community feedback.
 
-**Current Status:** 15 enhancements documented, 3 implemented, 12 in RFC stage
+**Current Status:** 16 enhancements documented, 3 implemented, 13 in RFC stage
 
 ---
 
@@ -2609,6 +2609,195 @@ Source: [GitOps Patterns](https://www.gitops.tech/)
 
 ---
 
+## Enhancement 16: Parent-Child CxMS Convention Inheritance
+
+### Problem Statement
+
+When a CxMS-managed project (child) exists alongside or references another CxMS system (parent), the child project's AI instance has no visibility into parent conventions:
+
+**Real-World Scenario (Just Experienced):**
+- ASB (Apprentice Strikes Back) uses CxMS for context management
+- CxMS repo contains templates including `PROJECT_Prompt_Library.md.template`
+- ASB's Claude instance doesn't know about Prompt Library conventions
+- User asks "Are you following CxMS directives?" - AI searches locally, finds nothing
+- Result: Child project misses parent system conventions
+
+**Root Cause:**
+- Child project's CLAUDE.md only references local files
+- No mechanism to inherit or reference parent CxMS conventions
+- AI in child project operates in isolation from parent templates
+
+**Affected Scenarios:**
+1. **Sibling Projects:** Multiple projects using CxMS templates from a central repo
+2. **Nested Projects:** Project within a larger CxMS-managed workspace
+3. **Template Updates:** Parent CxMS evolves but child projects don't know
+
+### Proposed Solution: CxMS Convention Reference System
+
+#### 16.1 Parent Reference in CLAUDE.md
+
+Add optional parent reference section to CLAUDE.md template:
+
+```markdown
+## CxMS Parent Reference (Optional)
+
+This project inherits conventions from a parent CxMS system.
+
+**Parent Location:** `../Context_Management_System/` (or absolute path)
+**Parent Version:** 1.4
+
+**Inherited Conventions:**
+| Convention | Parent Template | Local Override? |
+|------------|-----------------|-----------------|
+| Prompt Library | `templates/docs/PROJECT_Prompt_Library.md.template` | No |
+| Session Format | `templates/core/PROJECT_Session.md.template` | No |
+| Decision Logging | `templates/logs/PROJECT_Decision_Log.md.template` | No |
+
+**On Session Start:**
+1. Check parent for convention updates (optional)
+2. Apply inherited conventions unless locally overridden
+3. Reference parent templates when format questions arise
+
+**Parent Template Quick Links:**
+- Prompt Library: See `[parent]/templates/docs/PROJECT_Prompt_Library.md.template`
+- All Templates: See `[parent]/templates/`
+```
+
+#### 16.2 Convention Inheritance Directive
+
+Add to CLAUDE.md.template mandatory requirements:
+
+```markdown
+### CxMS Convention Inheritance
+
+If this project has a parent CxMS reference:
+
+1. **Check Parent First:** When unsure about format or conventions, check parent templates
+2. **Honor Parent Patterns:** Use parent's established patterns unless locally overridden
+3. **Report Missing Files:** If parent template exists but local implementation doesn't, suggest creating it
+4. **Prompt Library Tracking:** If parent has Prompt Library template, prompt patterns should be tracked
+
+**Convention Check Triggers:**
+- User asks about "CxMS directives" or "conventions"
+- Starting work that matches a parent template pattern (e.g., logging decisions)
+- Creating new files that might have a parent template
+```
+
+#### 16.3 Child Project Setup Guidance
+
+Add to DEPLOYMENT.md or create new section:
+
+```markdown
+## Deploying CxMS with Parent Reference
+
+### Scenario: Project alongside CxMS repo
+
+If your project exists near a CxMS repository:
+
+```
+AI/
+├── Context_Management_System/    # Parent CxMS (templates live here)
+│   └── templates/
+└── MyProject/                    # Child project
+    ├── CLAUDE.md                 # Add parent reference
+    └── MyProject_Session.md
+```
+
+**Setup Steps:**
+1. Add "CxMS Parent Reference" section to child CLAUDE.md
+2. Set relative path to parent: `../Context_Management_System/`
+3. List which conventions to inherit
+4. Optionally create local files from parent templates
+
+### Scenario: Standalone project referencing CxMS
+
+If using CxMS templates from GitHub:
+
+```markdown
+## CxMS Parent Reference
+
+**Parent:** https://github.com/RobSB2/CxMS
+**Reference Mode:** Remote (check before session if connectivity)
+
+When convention questions arise, reference:
+- Templates: https://github.com/RobSB2/CxMS/tree/main/templates
+- Guide: https://github.com/RobSB2/CxMS/blob/main/CxMS_Practical_Implementation_Guide.md
+```
+```
+
+#### 16.4 Convention Sync Protocol
+
+For projects with local parent:
+
+```markdown
+### Convention Sync Check (Optional)
+
+At session start (or when asked):
+
+1. Read parent's `templates/VERSIONS.md` (if exists)
+2. Compare inherited templates to local versions
+3. Report any updates available:
+   "Parent CxMS has updated Prompt Library template (v1.1 → v1.2).
+   Changes: [summary]. Want me to apply locally?"
+```
+
+#### 16.5 Multi-Project Convention Dashboard
+
+For users managing multiple child projects:
+
+```markdown
+# CxMS_Convention_Status.md
+
+**Parent:** Context_Management_System v1.4
+**Last Checked:** 2026-01-25
+
+## Child Project Convention Status
+
+| Project | Has Prompt Library | Has Decision Log | Parent Sync |
+|---------|-------------------|------------------|-------------|
+| ASB | ❌ Missing | ❌ Missing | ⚠️ Out of sync |
+| LPR | ✅ Present | ✅ Present | ✅ Current |
+
+## Recommended Actions
+1. ASB: Create `ASB_Prompt_Library.md` from parent template
+2. ASB: Add parent reference to CLAUDE.md
+```
+
+### Implementation Approach
+
+**Phase 1: Documentation (Implement Now)**
+- Add "Parent Reference" section to CLAUDE.md.template
+- Add inheritance directive to mandatory requirements
+- Document child project setup in DEPLOYMENT.md
+- Update CLAUDE.md.existing-project.template with parent reference option
+
+**Phase 2: ASB Fix (Immediate)**
+- Add parent reference to ASB's CLAUDE.md
+- Optionally create ASB_Prompt_Library.md
+
+**Phase 3: Tooling (Future)**
+- Convention sync check automation
+- Multi-project dashboard template
+- CLI to check convention status across projects
+
+### Value Proposition
+
+| Stakeholder | Value |
+|-------------|-------|
+| Multi-Project Users | Consistent conventions across all projects |
+| Child Project AI | Visibility into parent patterns |
+| Template Maintainers | Updates propagate to child projects |
+| New Project Setup | Clear inheritance model |
+
+### Related Enhancements
+
+- **E1 (Cross-Agent Coordination):** Convention inheritance is static; E1 handles dynamic session coordination
+- **E12 (Multi-Agent Orchestration):** E16 establishes the inheritance model that E12 can orchestrate
+- **E14 (Portability Kit):** E16 extends deployment to handle parent-child relationships
+- **E15 (Update Management):** Convention sync builds on version tracking
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
@@ -2619,15 +2808,16 @@ Source: [GitOps Patterns](https://www.gitops.tech/)
 | E13: Community Telemetry & Case Study Pipeline | Low | High | 4 (Phase 1 complete) |
 | E14: CxMS Portability Kit | Medium | Very High | 5 (Initial deployment) |
 | E15: CxMS Update & Release Management | Low | Very High | 6 (Ongoing maintenance) |
-| E1: Cross-Agent Coordination | Medium | High | 7 |
-| E12: Multi-Agent CxMS Orchestration | High | Very High | 8 (Enterprise) |
-| E6: Token Usage & Conservation | Medium | High | 9 |
-| E7: Context Usage & Conservation | Medium | High | 10 |
-| E8: Superfluous Communication Suppression | Low | High | 11 |
-| E2: Auto-save Triggers | Low | Medium | 12 |
-| E3: Structured AI Instructions | Low | Medium | 13 |
-| E4: File Validation Protocols | Medium | Medium | 14 |
-| E5: Context Compression | High | Medium | 15 |
+| E16: Parent-Child CxMS Convention Inheritance | Low | High | 7 (Multi-project) |
+| E1: Cross-Agent Coordination | Medium | High | 8 |
+| E12: Multi-Agent CxMS Orchestration | High | Very High | 9 (Enterprise) |
+| E6: Token Usage & Conservation | Medium | High | 10 |
+| E7: Context Usage & Conservation | Medium | High | 11 |
+| E8: Superfluous Communication Suppression | Low | High | 12 |
+| E2: Auto-save Triggers | Low | Medium | 13 |
+| E3: Structured AI Instructions | Low | Medium | 14 |
+| E4: File Validation Protocols | Medium | Medium | 15 |
+| E5: Context Compression | High | Medium | 16 |
 
 ---
 
@@ -2654,6 +2844,7 @@ Source: [GitOps Patterns](https://www.gitops.tech/)
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-25 | Added Enhancement 16: Parent-Child CxMS Convention Inheritance | AI + Human |
 | 2026-01-21 | Added Enhancement 15: CxMS Update & Release Management | AI + Human |
 | 2026-01-21 | Added Enhancement 14: CxMS Portability Kit | AI + Human |
 | 2026-01-21 | Added Enhancement 13: Community Telemetry & Case Study Pipeline | AI + Human |
