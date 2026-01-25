@@ -13,7 +13,7 @@
 |-------|-------|
 | Status | Session 10: E16 + E17 (Approvals) implemented, v1.5 released |
 | Repo | https://github.com/RobSB2/CxMS |
-| Templates | 26 + VERSIONS.md manifest |
+| Templates | 27 + VERSIONS.md manifest |
 | Enhancements | 17 documented (E13, E16, E17 implemented) |
 | CxMS Files | 8 self-tracking + 3 tools |
 | Next | Telemetry dashboard, update remaining templates |

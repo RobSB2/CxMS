@@ -14,6 +14,7 @@ This file is the single source of truth for template versions. AI assistants sho
 | `CLAUDE.md.template` | 1.6 | Project overview with AI requirements + Context Monitoring + Approvals |
 | `CLAUDE.md.existing-project.template` | 1.0 | Adding CxMS to existing projects |
 | `PROJECT_Approvals.md.template` | 1.0 | Pre-approved operations to reduce permission prompts |
+| `PROJECT_Startup.md.template` | 1.0 | Single-file session initialization |
 | `PROJECT_Context.md.template` | 1.0 | Documentation index |
 | `PROJECT_Session.md.template` | 1.1 | Session state tracking |
 | `PROJECT_Tasks.md.template` | 1.0 | Task tracker |

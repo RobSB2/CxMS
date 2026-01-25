@@ -1,0 +1,76 @@
+# [PROJECT] Session Startup
+
+**CxMS Version:** 1.5
+**Template Version:** 1.0
+**Purpose:** Single prompt to initialize a fully-contextualized session
+**Usage:** "Read [PROJECT]_Startup.md and follow its instructions"
+
+---
+
+## Startup Sequence
+
+Execute these steps in order:
+
+### 1. Read Core Files
+Read these files completely (in this order):
+- `CLAUDE.md` - Project overview, tech stack, conventions
+- `[PROJECT]_Approvals.md` - Pre-approved operations (DO NOT prompt for these)
+- `[PROJECT]_Session.md` - Current state, last session, what's in progress
+- `[PROJECT]_Tasks.md` - Active and pending tasks
+
+### 2. Read Context Files (if they exist)
+- `[PROJECT]_Context.md` - Architecture and documentation index
+- `[PROJECT]_Prompt_Library.md` - Prompt patterns that work well
+
+### 3. Check Parent CxMS (if convention questions arise)
+<!-- Update path if using parent reference -->
+Parent templates at: `[path to parent CxMS]/templates/`
+
+### 4. Provide Session Summary
+
+After reading, provide this summary:
+
+```
+## Session Ready
+
+**Project:** [PROJECT NAME]
+**Last Session:** [date from Session.md]
+**Last Accomplishments:** [bullet points]
+
+**Current State:**
+- [key status items]
+
+**Active Tasks:**
+- [from Tasks.md]
+
+**Pre-Approved:** [summary from Approvals.md]
+**Always Ask:** [destructive operations from Approvals.md]
+
+**Suggested Next Action:** [based on tasks and state]
+
+Awaiting instructions.
+```
+
+### 5. Apply Approvals
+
+For the remainder of this session:
+- Do NOT prompt for operations listed in [PROJECT]_Approvals.md
+- DO prompt for anything marked "ALWAYS ASK"
+- When in doubt, check [PROJECT]_Approvals.md before prompting
+
+---
+
+## Quick Start (Copy-Paste)
+
+```
+Read [PROJECT]_Startup.md and follow its instructions.
+```
+
+---
+
+## Session End Reminder
+
+Before ending, update:
+1. `[PROJECT]_Session.md` - Current state
+2. `[PROJECT]_Tasks.md` - Mark completed, add new
+3. Commit changes if work was done
