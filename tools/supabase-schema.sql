@@ -33,6 +33,7 @@ create table if not exists cxms_telemetry (
   feedback jsonb default '{}',
   feature_interest jsonb default '{}',
   timing jsonb default '{}',              -- script_start_time, script_duration_seconds
+  session_end jsonb default '{}',         -- ended_due_to_compaction, context_percent_at_end
 
   -- Metadata
   submitted_at timestamp with time zone default now(),
@@ -81,6 +82,8 @@ select
   round(avg((performance->>'self_rated_effectiveness')::numeric), 2) as avg_effectiveness,
   round(avg((performance->>'avg_context_restore_minutes')::numeric), 2) as avg_restore_minutes,
   round(avg((performance->>'avg_compaction_events')::numeric), 2) as avg_compactions,
+  count(*) filter (where (session_end->>'ended_due_to_compaction')::boolean = true) as sessions_ended_by_compaction,
+  round(avg((session_end->>'context_percent_at_end')::numeric) filter (where (session_end->>'ended_due_to_compaction')::boolean = true), 1) as avg_compaction_context_pct,
   min(submitted_at) as first_submission,
   max(submitted_at) as latest_submission
 from cxms_telemetry;

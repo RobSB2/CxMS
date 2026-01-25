@@ -368,6 +368,12 @@ function extractAllMetrics(cwd, files) {
       script_start_time: null,
       script_duration_seconds: null,
     },
+
+    // Session end context
+    session_end: {
+      ended_due_to_compaction: null,  // User-provided: true/false
+      context_percent_at_end: null,   // User-provided: estimated %
+    },
     feedback: {},
     feature_interest: {},
 
@@ -470,6 +476,21 @@ function extractAllMetrics(cwd, files) {
 
 async function collectUserFeedback(data, fullMode = false) {
   logSection('Quick Feedback (press Enter to skip any)');
+
+  // Session end context (important for tracking compaction)
+  const compactionAnswer = await ask('\nDid this session end due to compaction/context limit? [y/n]: ');
+  if (compactionAnswer.toLowerCase() === 'y') {
+    data.session_end.ended_due_to_compaction = true;
+    const percentAnswer = await ask('Estimated context % when it happened? (e.g., 95): ');
+    if (percentAnswer) {
+      const pct = parseInt(percentAnswer);
+      if (pct >= 0 && pct <= 100) {
+        data.session_end.context_percent_at_end = pct;
+      }
+    }
+  } else if (compactionAnswer.toLowerCase() === 'n') {
+    data.session_end.ended_due_to_compaction = false;
+  }
 
   // Always ask these
   data.user_context.project_type = await askChoice(
