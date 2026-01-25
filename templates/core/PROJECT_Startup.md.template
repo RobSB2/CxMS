@@ -26,7 +26,14 @@ Read these files completely (in this order):
 <!-- Update path if using parent reference -->
 Parent templates at: `[path to parent CxMS]/templates/`
 
-### 4. Provide Session Summary
+### 4. Check Context Status
+If `.claude/context-status.json` exists, read it to get your current context usage:
+```bash
+cat .claude/context-status.json
+```
+Monitor `ctx_pct` throughout the session. Alert user if it exceeds 75%.
+
+### 5. Provide Session Summary
 
 After reading, provide this summary:
 
@@ -34,6 +41,7 @@ After reading, provide this summary:
 ## Session Ready
 
 **Project:** [PROJECT NAME]
+**Context:** [X]% used (from context-status.json, or "unknown" if not available)
 **Last Session:** [date from Session.md]
 **Last Accomplishments:** [bullet points]
 
@@ -51,7 +59,7 @@ After reading, provide this summary:
 Awaiting instructions.
 ```
 
-### 5. Apply Approvals
+### 6. Apply Approvals
 
 For the remainder of this session:
 - Do NOT prompt for operations listed in [PROJECT]_Approvals.md
