@@ -667,6 +667,11 @@ async function main() {
   const autoYes = args.includes('--yes') || args.includes('-y');
   const helpMode = args.includes('--help') || args.includes('-h');
 
+  // Compaction flags for CLI submission
+  const compactionFlag = args.includes('--compaction');
+  const contextPctArg = args.find(a => a.startsWith('--context-pct='));
+  const contextPct = contextPctArg ? parseInt(contextPctArg.split('=')[1]) : null;
+
   if (helpMode) {
     log(`
 CxMS Telemetry Reporter v${CLIENT_VERSION}
@@ -711,6 +716,14 @@ Learn more: https://github.com/RobSB2/CxMS
   // Collect user feedback (skip if --skip-prompts or --yes)
   if (!skipPrompts && !autoYes) {
     data = await collectUserFeedback(data, fullMode);
+  }
+
+  // Apply CLI compaction flags (for --yes mode)
+  if (compactionFlag) {
+    data.session_end.ended_due_to_compaction = true;
+    if (contextPct !== null && contextPct >= 0 && contextPct <= 100) {
+      data.session_end.context_percent_at_end = contextPct;
+    }
   }
 
   // Display summary
