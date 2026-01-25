@@ -2,8 +2,8 @@
 
 **Template Version:** 1.1
 **Purpose:** Track current development state for CxMS itself
-**Last Updated:** 2026-01-24
-**Session Number:** 7
+**Last Updated:** 2026-01-25
+**Session Number:** 8
 
 ---
 
@@ -11,12 +11,12 @@
 
 | Field | Value |
 |-------|-------|
-| Status | v1.4 released - Auto version check, deployment health, Yoda Mode |
+| Status | Telemetry system LIVE - First submission recorded |
 | Repo | https://github.com/RobSB2/CxMS |
 | Templates | 25 + VERSIONS.md manifest |
-| Enhancements | 15 (E15 Phase 2 complete) |
-| CxMS Files | 8 self-tracking files |
-| Next | Commit v1.4 to GitHub, open-cxms.org content ready |
+| Enhancements | 15 + Telemetry (E13 implemented) |
+| CxMS Files | 8 self-tracking + 3 new tools |
+| Next | Apprentice Strikes Back live stream, telemetry dashboard |
 
 ---
 
@@ -24,105 +24,89 @@
 
 **See:** `CxMS_Performance_Log.md` for full metrics
 
-| Metric | Session 7 |
+| Metric | Session 8 |
 |--------|-----------|
-| Context Restore Time | ~5 sec |
-| Compaction Events | 1 (mid-session, successful recovery) |
+| Context Restore Time | ~3 sec (reading plan from previous session) |
+| Compaction Events | 0 |
 | Re-explain Requests | 0 |
-| User Corrections | 2 (session prompt location, granular versioning) |
-| Tasks Completed | 12+ (v1.4 features, training materials, Yoda integration) |
-| Session End Compliance | Complete |
+| User Corrections | 1 (do setup on stream, not now) |
+| Tasks Completed | Telemetry system end-to-end, Apprentice project prep |
+| Session End Compliance | In progress |
 
 ---
 
 ## Current State
 
-### Repository Contents (as of Session 7)
+### Repository Contents (as of Session 8)
 - 25 templates in `/templates` + VERSIONS.md manifest
-- 15 enhancements documented
+- 15 enhancements documented (E13 Telemetry now IMPLEMENTED)
 - 8 CxMS self-tracking files
+- 3 NEW tools in `/tools` (telemetry system)
+- 1 NEW spec in `/docs` (telemetry + UACF)
 - 1 case study
 - 2 guide documents
 - Training materials in open-cxms-org.local.md
 
-### What Changed This Session (Session 7)
+### What Changed This Session (Session 8)
 
-**CxMS v1.4 Release:**
+**1. The Apprentice Strikes Back - Project Setup:**
+- Created project at `C:\Users\RobertBriggs\Documents\Personal\AI\ApprenticeStrikesBack\`
+- Saved PROJECT_PLAN.md with full vision, tech stack, phases
+- Created STREAM_SCRIPT.md with copy-paste prompts for live demo
+- Created README.md, .gitignore, .env.local.example
+- Pushed to GitHub: https://github.com/RobSB2/ApprenticeStrikesBack
+- Ready for live stream (all coding to be done on camera)
 
-1. **Auto Version Check (E15 Phase 2):**
-   - Created `templates/VERSIONS.md` - central manifest for all template versions
-   - Added Version Check section to CLAUDE.md.template
-   - AI fetches remote VERSIONS.md on session start, notifies if update available
-   - Granular versioning: each template has own version number
+**2. CxMS Telemetry System (E13 IMPLEMENTED):**
 
-2. **Deployment Health Check:**
-   - Added to CLAUDE.md.template alongside version check
-   - AI inventories CxMS files, compares to deployment level
-   - Suggests level-up based on signals (session count, context loss, team size)
-   - Updated DEPLOYMENT.md (v1.1) with health assessment criteria
+Comprehensive spec created (`docs/CxMS_Telemetry_Spec.md`):
+- 11 data collection categories
+- Maps data to actionable insights
+- Sample dashboard mockups
+- Privacy policy
 
-3. **New CLAUDE.md Fields:**
-   - `Deployment Level:` Lite | Standard | Max
-   - `Code Name:` Optional personality field
-   - Version Check & Health Check section
+**Universal Multi-Agent Coordination Protocol (UACF):**
+- File-based coordination any AI can participate in
+- AGENT_REGISTRY.md, TASK_QUEUE.md, AGENT_MESSAGES.md, SHARED_CONTEXT.md
+- PM/Orchestrator and Worker protocols
+- Enables Claude to coordinate Gemini, ChatGPT, Cursor, etc.
 
-4. **Yoda Mode Integration:**
-   - Yoda quotes added to README.md, SESSION_END_CHECKLIST.md
-   - Yoda Mode section in SESSION_START_PROMPTS.md
-   - Code Name examples in CLAUDE.md.template comments
-   - Self-aware humor about "having to do it since getting code name"
+**Telemetry Script (`tools/cxms-report.mjs`):**
+- Extracts metrics from CxMS files automatically
+- Captures: config, lifecycle, files, tasks, decisions, performance
+- Captures: timezone, locale, UTC offset (geographic distribution)
+- Captures: script timing (duration tracking)
+- Interactive mode with user feedback questions
+- `--yes` flag for auto-consent
+- `--dry-run` for preview
+- `--full` for comprehensive survey
 
-5. **MIGRATION.md v1.3 → v1.4:**
-   - Complete migration steps
-   - Files Changed table
-   - Version History updated
+**Supabase Backend:**
+- Project: cxms-telemetry (US West)
+- Schema deployed with RLS policies
+- 6 aggregated views for dashboard
+- First submission successfully recorded!
 
-6. **Training Materials (open-cxms-org.local.md):**
-   - Landing page content with social post hooks
-   - 8 ASCII infographics (Context Cliff, Session Lifecycle, etc.)
-   - 6 example session workflows with analysis
-   - Multi-agent demo content (Master Yoda, Luke, Obi-Wan, SuperNinja)
-   - Agent Persona Plugin template structure (future E16)
-   - Live Stream Directive for demo
-
-7. **Social Media Posts:**
-   - Yoda-speak LinkedIn and X/Twitter posts about the update
-
-8. **All templates updated to CxMS Version 1.4**
-
-9. **Context Monitoring section added (post-compaction):**
-   - Added CRITICAL section to CLAUDE.md.template (v1.5)
-   - Pre-compaction save protocol
-   - 75%/90% context threshold alerts
-   - Updated VERSIONS.md manifest
-
-10. **Context Loss Case Study documented:**
-    - Real-world Session 7 compaction event as training material
-    - Catastrophic scenario (database migration) extrapolation
-    - Added to open-cxms-org.local.md (detailed version)
-    - Added to CxMS_Introduction_and_Guide.md (condensed version)
-    - Shows "WHAT vs WHY/HOW" - summaries capture what, CxMS captures why
-
-11. **Infographics added to GitHub docs:**
-    - README: Context Cliff (before/after visual)
-    - README: File Ecosystem (how files relate)
-    - DEPLOYMENT.md: Level-Up Journey (progression path)
+**3. Files Created:**
+| File | Purpose |
+|------|---------|
+| `docs/CxMS_Telemetry_Spec.md` | 77KB comprehensive spec |
+| `tools/cxms-report.mjs` | Telemetry collection script |
+| `tools/supabase-schema.sql` | Database setup SQL |
 
 ### Committed
-Session 7 commits (3 total):
-- **485feb9**: CxMS v1.4 release (20 files, +586/-144 lines)
-- **dcf768e**: Add infographics to GitHub docs (README, DEPLOYMENT.md)
-- **cd70d81**: Session 7 state update
+Session 8 commits (3 total):
+- **5bceeb0** → **b4261fe**: Add CxMS telemetry system (2,827 lines)
+- **7f2e36d**: Configure Supabase and add --yes flag
 
 ### Work In Progress
-- None - Session 7 complete
+- None - Session 8 complete
 
-### Previous Session (Session 6) Summary
-- v1.3 major restructure: 25 templates reorganized
-- Multi-tool support, Prompt Library, MIGRATION.md
-- E14 Phase 1, E15 Phase 1 complete
-- Code Name: Master Yoda assigned
-- 11 commits total
+### Previous Session (Session 7) Summary
+- v1.4 released: Auto version check, health check, Yoda Mode
+- Training materials created (8 infographics, 6 workflows)
+- Context Monitoring section added
+- 3 commits total
 
 ---
 
@@ -130,12 +114,12 @@ Session 7 commits (3 total):
 
 | Session | Date | Key Accomplishments |
 |---------|------|---------------------|
+| 8 | 2026-01-25 | Telemetry system LIVE (E13), UACF multi-agent protocol, Apprentice project prep |
 | 7 | 2026-01-24 | v1.4: Auto version check, health check, Yoda Mode, training materials |
 | 6 | 2026-01-24 | Template restructure, multi-tool, Prompt Library, E15+E14, Master Yoda |
 | 5 | 2026-01-21 | E14 Portability Kit + E15 Update Management |
-| 4 | 2026-01-21 | E13 Community Telemetry, GitHub docs updated |
+| 4 | 2026-01-21 | E13 Community Telemetry spec |
 | 3 | 2026-01-21 | E11, E12, full dogfooding (7 files), LPR sync, v1.2 docs |
-| 2 | 2026-01-20 | E9, E10 implemented, v1.1 release |
 
 **See:** `CxMS_Activity_Log.md` for detailed history
 
@@ -143,39 +127,38 @@ Session 7 commits (3 total):
 
 ## Context for Next Session (or after compaction)
 
-**Completed This Session (Session 7):**
-- ✅ E15 Phase 2: Auto version check with VERSIONS.md manifest
-- ✅ Deployment health check with level-up signals
-- ✅ CLAUDE.md.template: Deployment Level, Code Name fields
-- ✅ Yoda Mode integrated throughout GitHub docs
-- ✅ MIGRATION.md v1.3 → v1.4 section
-- ✅ All templates updated to v1.4
-- ✅ Training materials for live stream (8 infographics, 6 workflows)
-- ✅ Social media posts (Yoda-speak)
-- ✅ Context Monitoring section (CLAUDE.md.template v1.5) - added post-compaction
+**Completed This Session (Session 8):**
+- ✅ Apprentice Strikes Back project setup (ready for live stream)
+- ✅ E13 IMPLEMENTED: Telemetry system fully operational
+- ✅ Comprehensive telemetry spec (11 data categories)
+- ✅ Universal Multi-Agent Coordination Protocol (UACF) designed
+- ✅ cxms-report.mjs script with --yes, --dry-run, --full modes
+- ✅ Supabase backend deployed and tested
+- ✅ First telemetry submission recorded!
+- ✅ Geographic/timing data collection added
 
-**All Committed:**
-- v1.4 released and pushed to GitHub (3 commits)
+**All Committed and Pushed:**
+- 3 commits to CxMS repo
+- 1 commit to ApprenticeStrikesBack repo
 
-**Files Created/Modified in Session 7:**
+**Files Created/Modified in Session 8:**
 | File | Change |
 |------|--------|
-| `templates/VERSIONS.md` | NEW - Version manifest |
-| `templates/core/CLAUDE.md.template` | v1.4, health check, code name |
-| `templates/DEPLOYMENT.md` | v1.1, health assessment section |
-| `templates/MIGRATION.md` | v1.4 migration steps |
-| `README.md` | v1.4, Yoda footer |
-| `CLAUDE.md` | v1.4, health check section |
-| `SESSION_START_PROMPTS.md` | v1.3, Yoda Mode section |
-| `SESSION_END_CHECKLIST.md` | Yoda quote |
-| All templates | CxMS Version → 1.4 |
-| `open-cxms-org.local.md` | NEW - Training/website content |
+| `docs/CxMS_Telemetry_Spec.md` | NEW - 77KB spec + UACF |
+| `tools/cxms-report.mjs` | NEW - Telemetry script |
+| `tools/supabase-schema.sql` | NEW - Database schema |
+| `.gitignore` | Updated for .cxms telemetry files |
+
+**Telemetry Supabase:**
+- URL: https://pubuchklneufckmvatmy.supabase.co
+- Views: cxms_stats_overview, cxms_stats_by_level, cxms_stats_file_adoption, cxms_stats_geography, cxms_stats_features, cxms_stats_versions
 
 **Future Work:**
-- E16: Agent Persona Plugins (structure documented in training materials)
+- Apprentice Strikes Back live stream
+- Telemetry dashboard (GitHub Pages or simple stats)
+- E16: Agent Persona Plugins
 - open-cxms.org static site deployment
-- OSS docs (CONTRIBUTING.md, CODE_OF_CONDUCT.md)
-- LPR Meeting demos
+- npm publish cxms-report
 
 ---
 

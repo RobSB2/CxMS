@@ -2,7 +2,7 @@
 
 **Template Version:** 1.0
 **Purpose:** Track development tasks for CxMS itself
-**Last Updated:** 2026-01-21
+**Last Updated:** 2026-01-25
 
 ---
 
@@ -26,18 +26,49 @@
 
 ## Pending / Future
 
-### TASK-001: Enhancement Prototyping
+### TASK-004: Apprentice Strikes Back Live Stream
 **Status:** Pending
+**Priority:** High
+**Description:** Build blackjack trainer app live on stream
+
+**Checklist:**
+- [x] Create GitHub repo and project structure
+- [x] Save PROJECT_PLAN.md and STREAM_SCRIPT.md
+- [ ] Complete pre-stream prep (Supabase tables, Vercel account)
+- [ ] Run live stream demo
+- [ ] Deploy to Vercel
+
+**Next Action:** Complete Supabase pre-stream prep
+
+---
+
+### TASK-005: Telemetry Dashboard
+**Status:** Pending
+**Priority:** Medium
+**Description:** Create public dashboard for CxMS community stats
+
+**Checklist:**
+- [x] Supabase backend deployed
+- [x] First submission recorded
+- [ ] Create GitHub Pages dashboard (or README badges)
+- [ ] Publish npm package (cxms-report)
+
+**Next Action:** Gather more submissions, then build dashboard
+
+---
+
+### TASK-001: Enhancement Prototyping
+**Status:** Partially Complete
 **Priority:** Medium
 **Description:** Prototype remaining enhancements from CxMS_Enhancement_Exploration.md
 
 Candidates (by priority):
-1. Cross-Agent Coordination Protocol (E1) - foundation for E12
+1. ~~Cross-Agent Coordination Protocol (E1)~~ - **DESIGNED (UACF in telemetry spec)**
 2. Multi-Agent CxMS Orchestration (E12) - enterprise scenarios
 3. Token Usage & Conservation (E6)
 4. Context Usage & Conservation (E7)
 
-**Next Action:** Consider E1 as foundation for E12 multi-agent work
+**Next Action:** E1 protocol designed, needs real-world testing
 
 ---
 
@@ -51,6 +82,20 @@ Candidates (by priority):
 ---
 
 ## Completed
+
+### Session 8 - Telemetry System & Apprentice Prep (2026-01-25)
+- [x] Create Apprentice Strikes Back project structure
+- [x] Save PROJECT_PLAN.md with full vision/tech stack
+- [x] Create STREAM_SCRIPT.md with copy-paste prompts
+- [x] Push to GitHub (ApprenticeStrikesBack repo)
+- [x] Design comprehensive telemetry spec (11 data categories)
+- [x] Design Universal Multi-Agent Coordination Protocol (UACF)
+- [x] Build cxms-report.mjs script
+- [x] Create Supabase schema with 6 views
+- [x] Deploy Supabase backend
+- [x] First telemetry submission recorded!
+- [x] Add --yes flag for auto-consent
+- [x] Add timezone/locale/timing capture
 
 ### Session 3 - Dogfooding & E12 (2026-01-21)
 - [x] Add Enhancement 11 (Log Aging & Archival)
