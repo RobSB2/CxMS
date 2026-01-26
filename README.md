@@ -68,10 +68,19 @@ CxMS is **AI-agnostic**. It works with any coding assistant that can read files:
 
 ---
 
+## Community Dashboard
+
+**[View Live Dashboard](https://robsb2.github.io/CxMS/dashboard/)** - Anonymous community telemetry
+
+See how the CxMS community uses the system: file adoption, deployment levels, feature requests, and more.
+
+---
+
 ## Recent Highlights
 
 | Date | Enhancement | Description |
 |------|-------------|-------------|
+| 2026-01-26 | **Community Dashboard** | Live telemetry visualization |
 | 2026-01-25 | **E17: Pre-Approved Operations** | Skip permission prompts with Approvals file |
 | 2026-01-25 | **E16: Parent-Child Inheritance** | Child projects reference parent CxMS conventions |
 | 2026-01-25 | **Startup Template** | Single prompt initializes full context |
@@ -350,6 +359,9 @@ Context_Management_System/
 │       ├── cursorrules.template
 │       ├── CONVENTIONS.md.template
 │       └── MULTI-TOOL-DEPLOYMENT.md
+│
+├── docs/                                  # GitHub Pages
+│   └── dashboard/                         # Community telemetry dashboard
 │
 ├── tools/                                 # CxMS utilities
 │   ├── cxms-report.mjs                    # Telemetry reporter (anonymous metrics)

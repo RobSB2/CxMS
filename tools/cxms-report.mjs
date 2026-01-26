@@ -601,13 +601,14 @@ async function collectUserFeedback(data, fullMode = false) {
     ['claude-code', 'cursor', 'copilot', 'gemini', 'chatgpt', 'aider', 'other']
   );
 
+  // Country is asked by default (optional - user can skip)
+  data.user_context.country = await ask('\nCountry (for regional stats, Enter to skip)? ');
+  if (data.user_context.country) {
+    data.user_context.country = data.user_context.country.substring(0, 50);
+  }
+
   if (fullMode) {
     logSection('Detailed Feedback');
-
-    data.user_context.country = await ask('\nCountry (for regional stats)? ');
-    if (data.user_context.country) {
-      data.user_context.country = data.user_context.country.substring(0, 50);
-    }
 
     data.user_context.using_cxms_since = await askChoice(
       '\nHow long have you been using CxMS?',
