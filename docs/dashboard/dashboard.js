@@ -27,61 +27,53 @@ const COLORS = {
 
 // Timezone to Region mapping
 const TIMEZONE_REGIONS = {
-  // Americas
   'America/': 'Americas',
   'US/': 'Americas',
   'Canada/': 'Americas',
   'Brazil/': 'Americas',
-
-  // Europe
   'Europe/': 'Europe',
   'GMT': 'Europe',
   'UTC': 'Europe',
-
-  // Asia Pacific
   'Asia/': 'Asia-Pacific',
   'Australia/': 'Asia-Pacific',
   'Pacific/': 'Asia-Pacific',
   'Japan': 'Asia-Pacific',
-
-  // Africa
   'Africa/': 'Africa',
-
-  // Middle East
-  'Asia/Dubai': 'Middle East',
-  'Asia/Jerusalem': 'Middle East',
-  'Asia/Tehran': 'Middle East',
-  'Asia/Riyadh': 'Middle East',
 };
 
 function mapTimezoneToRegion(timezone) {
   if (!timezone) return 'Unknown';
-
-  // Check specific timezone first
   for (const [prefix, region] of Object.entries(TIMEZONE_REGIONS)) {
     if (timezone.startsWith(prefix)) {
       return region;
     }
   }
+  return 'Other';
+}
 
+function mapCountryToRegion(country) {
+  if (!country) return 'Unknown';
+  const c = country.toLowerCase();
+  if (['usa', 'us', 'united states', 'canada', 'mexico', 'brazil'].some(x => c.includes(x))) return 'Americas';
+  if (['uk', 'united kingdom', 'germany', 'france', 'spain', 'italy', 'netherlands'].some(x => c.includes(x))) return 'Europe';
+  if (['china', 'japan', 'india', 'australia', 'korea', 'singapore'].some(x => c.includes(x))) return 'Asia-Pacific';
+  if (['israel', 'uae', 'saudi', 'turkey'].some(x => c.includes(x))) return 'Middle East';
+  if (['south africa', 'nigeria', 'egypt', 'kenya'].some(x => c.includes(x))) return 'Africa';
   return 'Other';
 }
 
 // Fetch data from Supabase view
 async function fetchView(viewName) {
   const url = `${SUPABASE_URL}/rest/v1/${viewName}?select=*`;
-
   const response = await fetch(url, {
     headers: {
       'apikey': SUPABASE_ANON_KEY,
       'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
     }
   });
-
   if (!response.ok) {
     throw new Error(`Failed to fetch ${viewName}: ${response.status}`);
   }
-
   return response.json();
 }
 
@@ -103,24 +95,30 @@ function showError() {
 function renderFileAdoptionChart(data) {
   const ctx = document.getElementById('chart-file-adoption').getContext('2d');
 
-  // Sort by count descending
-  const sorted = [...data].sort((a, b) => b.count - a.count);
+  // Transform single-row data into array format
+  // View returns: {total, session_md, tasks_md, context_md, ...}
+  const row = data[0] || {};
+  const fileTypes = [
+    { name: 'Session', key: 'session_md' },
+    { name: 'Tasks', key: 'tasks_md' },
+    { name: 'Context', key: 'context_md' },
+    { name: 'Decision Log', key: 'decision_log' },
+    { name: 'Activity Log', key: 'activity_log' },
+    { name: 'Performance Log', key: 'performance_log' },
+    { name: 'Prompt History', key: 'prompt_history' },
+  ];
 
-  // Format file names
-  const labels = sorted.map(d => {
-    const name = d.file_type || d.file_name || 'Unknown';
-    return name.replace(/_/g, ' ').replace(/ md$/, '');
-  });
-
-  const values = sorted.map(d => d.count || 0);
+  const items = fileTypes
+    .map(f => ({ name: f.name, count: row[f.key] || 0 }))
+    .sort((a, b) => b.count - a.count);
 
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels,
+      labels: items.map(i => i.name),
       datasets: [{
         label: 'Installations',
-        data: values,
+        data: items.map(i => i.count),
         backgroundColor: COLORS.primary,
         borderRadius: 4,
       }]
@@ -129,17 +127,10 @@ function renderFileAdoptionChart(data) {
       indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
+      plugins: { legend: { display: false } },
       scales: {
-        x: {
-          beginAtZero: true,
-          grid: { color: '#e2e8f0' }
-        },
-        y: {
-          grid: { display: false }
-        }
+        x: { beginAtZero: true, grid: { color: '#e2e8f0' } },
+        y: { grid: { display: false } }
       }
     }
   });
@@ -150,8 +141,8 @@ function renderDeploymentChart(data) {
   const ctx = document.getElementById('chart-deployment').getContext('2d');
 
   const levels = data.map(d => d.deployment_level || 'Unknown');
-  const effectiveness = data.map(d => d.avg_effectiveness || 0);
-  const restoreTime = data.map(d => d.avg_restore_time || 0);
+  const installations = data.map(d => d.installations || 0);
+  const compactions = data.map(d => d.avg_compactions || 0);
 
   new Chart(ctx, {
     type: 'bar',
@@ -159,14 +150,14 @@ function renderDeploymentChart(data) {
       labels: levels,
       datasets: [
         {
-          label: 'Effectiveness (1-5)',
-          data: effectiveness,
-          backgroundColor: COLORS.success,
+          label: 'Installations',
+          data: installations,
+          backgroundColor: COLORS.primary,
           borderRadius: 4,
         },
         {
-          label: 'Restore Time (min)',
-          data: restoreTime,
+          label: 'Avg Compactions',
+          data: compactions,
           backgroundColor: COLORS.warning,
           borderRadius: 4,
         }
@@ -175,15 +166,10 @@ function renderDeploymentChart(data) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: { position: 'bottom' }
-      },
+      plugins: { legend: { position: 'bottom' } },
       scales: {
         x: { grid: { display: false } },
-        y: {
-          beginAtZero: true,
-          grid: { color: '#e2e8f0' }
-        }
+        y: { beginAtZero: true, grid: { color: '#e2e8f0' } }
       }
     }
   });
@@ -193,23 +179,28 @@ function renderDeploymentChart(data) {
 function renderFeaturesChart(data) {
   const ctx = document.getElementById('chart-features').getContext('2d');
 
-  // Sort by count descending
-  const sorted = [...data].sort((a, b) => b.count - a.count);
+  // Transform single-row data into array format
+  // View returns: {total_responses, health_check, log_aging, multi_tool, ...}
+  const row = data[0] || {};
+  const features = [
+    { name: 'Health Check', key: 'health_check' },
+    { name: 'Log Aging', key: 'log_aging' },
+    { name: 'Multi-Tool', key: 'multi_tool' },
+    { name: 'Cross-Project', key: 'cross_project' },
+    { name: 'Token Efficiency', key: 'token_efficiency' },
+  ];
 
-  const labels = sorted.map(d => {
-    const name = d.feature_name || d.feature || 'Unknown';
-    return name.replace(/wants_/g, '').replace(/_/g, ' ');
-  });
-
-  const values = sorted.map(d => d.count || 0);
+  const items = features
+    .map(f => ({ name: f.name, count: row[f.key] || 0 }))
+    .sort((a, b) => b.count - a.count);
 
   new Chart(ctx, {
     type: 'bar',
     data: {
-      labels,
+      labels: items.map(i => i.name),
       datasets: [{
         label: 'Requests',
-        data: values,
+        data: items.map(i => i.count),
         backgroundColor: COLORS.chart[1],
         borderRadius: 4,
       }]
@@ -218,17 +209,10 @@ function renderFeaturesChart(data) {
       indexAxis: 'y',
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
+      plugins: { legend: { display: false } },
       scales: {
-        x: {
-          beginAtZero: true,
-          grid: { color: '#e2e8f0' }
-        },
-        y: {
-          grid: { display: false }
-        }
+        x: { beginAtZero: true, grid: { color: '#e2e8f0' } },
+        y: { grid: { display: false } }
       }
     }
   });
@@ -239,7 +223,7 @@ function renderVersionsChart(data) {
   const ctx = document.getElementById('chart-versions').getContext('2d');
 
   const labels = data.map(d => `v${d.cxms_version || 'Unknown'}`);
-  const values = data.map(d => d.count || 0);
+  const values = data.map(d => d.installations || 0);
 
   new Chart(ctx, {
     type: 'doughnut',
@@ -255,10 +239,7 @@ function renderVersionsChart(data) {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          position: 'right',
-          labels: { padding: 20 }
-        }
+        legend: { position: 'right', labels: { padding: 15 } }
       }
     }
   });
@@ -268,27 +249,14 @@ function renderVersionsChart(data) {
 function renderGeographyChart(data) {
   const ctx = document.getElementById('chart-geography').getContext('2d');
 
-  // Aggregate by region using timezone mapping
+  // Aggregate by region
   const regionCounts = {};
-
   data.forEach(d => {
-    // First check if country is provided
-    let region;
-    if (d.country) {
-      // Map country to region
-      region = mapCountryToRegion(d.country);
-    } else {
-      // Fall back to timezone mapping
-      region = mapTimezoneToRegion(d.timezone);
-    }
-
-    regionCounts[region] = (regionCounts[region] || 0) + (d.count || 1);
+    let region = d.country ? mapCountryToRegion(d.country) : mapTimezoneToRegion(d.timezone);
+    regionCounts[region] = (regionCounts[region] || 0) + (d.installations || 1);
   });
 
-  // Sort by count
-  const sorted = Object.entries(regionCounts)
-    .sort((a, b) => b[1] - a[1]);
-
+  const sorted = Object.entries(regionCounts).sort((a, b) => b[1] - a[1]);
   const labels = sorted.map(([region]) => region);
   const values = sorted.map(([, count]) => count);
 
@@ -306,53 +274,18 @@ function renderGeographyChart(data) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false }
-      },
+      plugins: { legend: { display: false } },
       scales: {
         x: { grid: { display: false } },
-        y: {
-          beginAtZero: true,
-          grid: { color: '#e2e8f0' }
-        }
+        y: { beginAtZero: true, grid: { color: '#e2e8f0' } }
       }
     }
   });
 }
 
-// Map country to region
-function mapCountryToRegion(country) {
-  if (!country) return 'Unknown';
-
-  const countryLower = country.toLowerCase();
-
-  // Americas
-  const americas = ['usa', 'us', 'united states', 'canada', 'mexico', 'brazil', 'argentina', 'chile', 'colombia', 'peru'];
-  if (americas.some(c => countryLower.includes(c))) return 'Americas';
-
-  // Europe
-  const europe = ['uk', 'united kingdom', 'germany', 'france', 'spain', 'italy', 'netherlands', 'poland', 'sweden', 'norway', 'denmark', 'finland', 'ireland', 'portugal', 'belgium', 'austria', 'switzerland', 'czech', 'greece', 'romania', 'hungary'];
-  if (europe.some(c => countryLower.includes(c))) return 'Europe';
-
-  // Asia-Pacific
-  const asiaPacific = ['china', 'japan', 'india', 'australia', 'south korea', 'korea', 'singapore', 'indonesia', 'malaysia', 'philippines', 'vietnam', 'thailand', 'taiwan', 'new zealand', 'hong kong'];
-  if (asiaPacific.some(c => countryLower.includes(c))) return 'Asia-Pacific';
-
-  // Middle East
-  const middleEast = ['israel', 'uae', 'emirates', 'saudi', 'turkey', 'iran', 'iraq', 'qatar', 'kuwait', 'bahrain', 'oman'];
-  if (middleEast.some(c => countryLower.includes(c))) return 'Middle East';
-
-  // Africa
-  const africa = ['south africa', 'nigeria', 'egypt', 'kenya', 'morocco', 'ghana', 'ethiopia'];
-  if (africa.some(c => countryLower.includes(c))) return 'Africa';
-
-  return 'Other';
-}
-
 // Main initialization
 async function initDashboard() {
   try {
-    // Fetch all data in parallel
     const [overview, fileAdoption, byLevel, features, versions, geography] = await Promise.all([
       fetchView('cxms_stats_overview'),
       fetchView('cxms_stats_file_adoption'),
@@ -362,35 +295,21 @@ async function initDashboard() {
       fetchView('cxms_stats_geography'),
     ]);
 
-    // Update hero stats
+    // Update hero stats (using correct field names from view)
     if (overview && overview.length > 0) {
       const stats = overview[0];
-      updateStat('stat-installations', stats.total_installations);
-      updateStat('stat-active', stats.active_30_days);
+      updateStat('stat-installations', stats.unique_installations);
+      updateStat('stat-active', stats.active_30d);
       updateStat('stat-effectiveness', stats.avg_effectiveness?.toFixed(1), '/5');
-      updateStat('stat-restore', stats.avg_restore_time?.toFixed(1), ' min');
+      updateStat('stat-restore', stats.avg_restore_minutes?.toFixed(1), ' min');
     }
 
     // Render charts
-    if (fileAdoption && fileAdoption.length > 0) {
-      renderFileAdoptionChart(fileAdoption);
-    }
-
-    if (byLevel && byLevel.length > 0) {
-      renderDeploymentChart(byLevel);
-    }
-
-    if (features && features.length > 0) {
-      renderFeaturesChart(features);
-    }
-
-    if (versions && versions.length > 0) {
-      renderVersionsChart(versions);
-    }
-
-    if (geography && geography.length > 0) {
-      renderGeographyChart(geography);
-    }
+    if (fileAdoption && fileAdoption.length > 0) renderFileAdoptionChart(fileAdoption);
+    if (byLevel && byLevel.length > 0) renderDeploymentChart(byLevel);
+    if (features && features.length > 0) renderFeaturesChart(features);
+    if (versions && versions.length > 0) renderVersionsChart(versions);
+    if (geography && geography.length > 0) renderGeographyChart(geography);
 
   } catch (error) {
     console.error('Dashboard initialization error:', error);
@@ -398,5 +317,4 @@ async function initDashboard() {
   }
 }
 
-// Initialize on DOM ready
 document.addEventListener('DOMContentLoaded', initDashboard);
