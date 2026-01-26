@@ -33,6 +33,8 @@ During Session 11, ASB (child project) had issues with telemetry and CxMS conven
 | Required metadata must be explicit | Templates include all required fields with no assumptions |
 | Cross-project tools need robust extraction | Case-insensitive, flexible patterns |
 | Automated workflows need consent management | E18: one-time consent, auto-submit thereafter |
+| **Sessions are autonomous** | Parent session must NOT perform actions for child sessions (e.g., telemetry) |
+| Session wrap-up = THIS project only | Don't wrap up sibling/child projects - they handle themselves |
 
 **Decision:**
 1. Child projects are standalone - parent is reference material only
