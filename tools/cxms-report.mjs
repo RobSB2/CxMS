@@ -892,8 +892,14 @@ Learn more: https://github.com/RobSB2/CxMS
 
   let consent = 'y';
   if (!autoYes && !autoMode) {
-    log('\n════════════════════════════════════════════════════════════');
-    consent = await ask('Send this data anonymously to help improve CxMS? [y/N]: ');
+    log('\n╔══════════════════════════════════════════════════════════════╗');
+    log('║                    SHARE WITH COMMUNITY?                      ║');
+    log('╠══════════════════════════════════════════════════════════════╣');
+    log('║  This anonymous data helps improve CxMS for everyone.         ║');
+    log('║  See live stats: https://robsb2.github.io/CxMS/dashboard      ║');
+    log('║  No personal info, project names, or code is collected.       ║');
+    log('╚══════════════════════════════════════════════════════════════╝\n');
+    consent = await ask('Submit this anonymous report? [y/N]: ');
   } else if (autoMode) {
     log('\n✅ Auto-submitting (consent on file)');
   } else {
@@ -929,7 +935,7 @@ Learn more: https://github.com/RobSB2/CxMS
     await submitTelemetry(data);
     updateLastSubmission(cwd);
     log('\n✅ Thanks! Your anonymous feedback helps improve CxMS.');
-    log('   View community stats: https://github.com/RobSB2/CxMS\n');
+    log('   View community dashboard: https://robsb2.github.io/CxMS/dashboard\n');
   } catch (err) {
     log(`\n❌ Failed to submit: ${err.message}`);
     log('   You can report issues at: https://github.com/RobSB2/CxMS/issues\n');
