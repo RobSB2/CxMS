@@ -57,18 +57,18 @@
 ---
 
 ### TASK-007: PowerShell Statusline Script
-**Status:** Pending
+**Status:** Complete
 **Priority:** Medium
 **Description:** Create Windows-native PowerShell version of statusline-command.sh for context monitoring
 
 **Checklist:**
-- [ ] Create statusline-command.ps1 in tools/
-- [ ] Handle JSON input parsing with PowerShell
-- [ ] Write context-status.json output
-- [ ] Test on Windows
+- [x] Create statusline-command.ps1 in tools/
+- [x] Handle JSON input parsing with PowerShell
+- [x] Write context-status.json output
+- [x] Test on Windows
 - [ ] Update templates with Windows instructions
 
-**Next Action:** Port bash script logic to PowerShell
+**Completed:** Session 12, 2026-01-26
 
 ---
 

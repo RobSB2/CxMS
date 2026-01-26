@@ -1,7 +1,7 @@
 # CxMS Template Versions
 
 **CxMS Framework Version:** 1.5
-**Last Updated:** 2026-01-25
+**Last Updated:** 2026-01-26
 
 This file is the single source of truth for template versions. AI assistants should fetch this file to check for updates.
 
@@ -61,6 +61,15 @@ This file is the single source of truth for template versions. AI assistants sho
 | `DEPLOYMENT.md` | 1.1 | Deployment levels guide + health assessment |
 | `MIGRATION.md` | 1.0 | Fresh install & upgrade guide |
 | `VERSIONS.md` | 1.0 | This file |
+
+## Tools (`tools/`)
+
+| File | Version | Platform | Description |
+|------|---------|----------|-------------|
+| `cxms-report.mjs` | 1.1.0 | Node.js | Telemetry reporter with consent management |
+| `statusline-command.sh` | 1.1.0 | Bash (Mac/Linux) | Context monitoring statusline script |
+| `statusline-command.ps1` | 1.0.0 | PowerShell (Windows) | Context monitoring statusline script |
+| `supabase-schema.sql` | 1.0 | SQL | Telemetry database schema |
 
 ---
 

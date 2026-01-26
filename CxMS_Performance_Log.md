@@ -3,7 +3,7 @@
 **Template Version:** 1.1
 **Log Period:** 2026-01-20 to Present
 **Sessions Tracked:** 6
-**Last Updated:** 2026-01-24
+**Last Updated:** 2026-01-26
 
 ---
 
@@ -119,10 +119,57 @@
 
 ---
 
+## Community & Reach
+
+### GitHub Traffic (as of 2026-01-26)
+
+| Metric | 14-Day Total | Unique |
+|--------|--------------|--------|
+| Views | 457 | 189 |
+| Clones | 504 | 191 |
+| Stars | 4 | - |
+
+### Traffic Sources
+
+| Referrer | Views | Unique | Notes |
+|----------|-------|--------|-------|
+| github.com | 64 | 8 | Internal navigation |
+| Google | 13 | 9 | Organic search |
+| LinkedIn (mobile) | 11 | 2 | Launch post |
+| Microsoft Teams | 9 | 9 | Workplace virality |
+| linkedin.com | 2 | 2 | Desktop |
+| t.co (Twitter) | 2 | 1 | |
+
+### Daily Traffic (Launch Week)
+
+| Date | Views (Unique) | Clones (Unique) | Event |
+|------|----------------|-----------------|-------|
+| Jan 20 | 55 (29) | 49 (32) | LinkedIn launch post |
+| Jan 21 | 282 (131) | 140 (67) | Peak day - Teams virality |
+| Jan 22 | 35 (26) | 2 (2) | |
+| Jan 23 | 14 (10) | 2 (2) | |
+| Jan 24 | 39 (7) | 166 (70) | Second clone wave |
+| Jan 25 | 32 (9) | 145 (45) | Sustained interest |
+
+### Marketing Campaigns
+
+| Campaign | Date | Platform | Engagement | GitHub Impact |
+|----------|------|----------|------------|---------------|
+| Launch Post | 2026-01-20 | LinkedIn | 1 like, 1 comment | 282 views (peak), 191 cloners |
+| Upgrade Your AI Game | 2026-01-24 | LinkedIn | 4 likes | 311 clones (115 unique) Jan 24-25 |
+
+**Key Insight:** Low social engagement but high conversion. The post reached developers who use AI coding tools - they cloned instead of liking. Microsoft Teams shares suggest corporate/workplace adoption. Post #2 with graphic got 4x engagement.
+
+**Campaign URLs:**
+- Post #1: https://www.linkedin.com/feed/update/urn:li:activity:7419461291582414848/
+- Post #2: https://www.linkedin.com/feed/update/urn:li:activity:7420862598809600000/
+
+---
+
 ## Next Review
 
 **Scheduled:** 2026-02-20 (30 days)
-**Focus Areas:** File size trends, aging candidates, decision log usage
+**Focus Areas:** File size trends, aging candidates, decision log usage, GitHub traffic trends
 
 ---
 
@@ -130,5 +177,6 @@
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-26 | Added Community & Reach section with GitHub traffic and LinkedIn campaign metrics | AI + Human |
 | 2026-01-24 | Updated with Sessions 4-6, comprehensive metrics refresh | AI + Human |
 | 2026-01-21 | Initial log created (moved from Session.md metrics) | AI + Human |
