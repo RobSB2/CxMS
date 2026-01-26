@@ -2,24 +2,22 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "WebFetch(domain:patents.google.com)",
+      "WebFetch",
       "Bash(ls:*)",
-      "Bash(move:*)",
-      "Bash(git init:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)",
-      "Bash(git branch:*)",
-      "Bash(git remote add:*)",
-      "Bash(git push:*)",
+      "Bash(dir:*)",
+      "Bash(cat:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(mkdir:*)",
+      "Bash(chmod:*)",
+      "Bash(git:*)",
+      "Bash(gh:*)",
+      "Bash(node:*)",
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(curl:*)",
       "Bash(jq:*)",
-      "Bash(tree:*)",
-      "Bash(wget:*)",
-      "Bash(fzf:*)",
-      "Bash(bat:*)",
-      "Bash(delta:*)",
-      "Bash(docker --version:*)",
-      "Bash(git --version:*)",
-      "Bash(curl:*)"
+      "Bash(tree:*)"
     ]
   }
 }

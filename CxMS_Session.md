@@ -3,7 +3,7 @@
 **Template Version:** 1.1
 **Purpose:** Track current development state for CxMS itself
 **Last Updated:** 2026-01-26
-**Session Number:** 12
+**Session Number:** 13
 
 ---
 
@@ -11,12 +11,34 @@
 
 | Field | Value |
 |-------|-------|
-| Status | Session 12: Traffic analytics, Post #3, PowerShell statusline |
+| Status | Session 13: PowerShell statusline PS5 compatibility fix |
 | Repo | https://github.com/RobSB2/CxMS |
 | Templates | 27 + VERSIONS.md manifest |
 | Enhancements | 18 documented (E9, E10, E13, E16, E17, E18 implemented) |
 | CxMS Files | 8 self-tracking + 4 tools |
 | Next | Telemetry dashboard, Post #3 live |
+
+---
+
+## Session 13 Note
+
+**Focus:** PowerShell statusline compatibility fix, LinkedIn Post #3 live
+
+**Key Accomplishments:**
+1. Fixed PowerShell 5.x ANSI escape code compatibility in `statusline-command.ps1`
+   - Issue: `` `e `` escape syntax only works in PowerShell 7+
+   - Fix: Changed to `[char]27` which works in all PowerShell versions
+   - Symptom: Raw escape codes displayed as `e[38;5;141mCtx 15%e[0m`
+2. Updated both installed (`~/.claude/`) and template (`tools/`) versions
+3. Bumped script version to 1.0.1
+4. LinkedIn Post #3 published and documented
+
+**Files Modified:**
+- `tools/statusline-command.ps1` (v1.0.1 - PS5 compatibility)
+- `~/.claude/statusline-command.ps1` (v1.0.1 - PS5 compatibility)
+- `social-media/CxMS_Social_Posts.md` (Post #3 → Published)
+
+**Pending:** Restart Claude Code to apply statusline fix
 
 ---
 
@@ -48,7 +70,7 @@
 - Microsoft Teams referrers indicate corporate adoption
 - 4x engagement on Post #2 (with graphic) vs Post #1
 
-**Pending:** Post #3 to LinkedIn, restart Claude Code for context monitoring
+**Completed:** Post #3 to LinkedIn
 
 ---
 
@@ -129,6 +151,7 @@
 
 | Session | Date | Key Accomplishments |
 |---------|------|---------------------|
+| 13 | 2026-01-26 | PowerShell statusline PS5 fix (v1.0.1), LinkedIn Post #3 live |
 | 12 | 2026-01-26 | Traffic analytics (500+ clones), Post #3, PowerShell statusline (TASK-007) |
 | 11 | 2026-01-26 | **E18** - Automated telemetry with consent, child project independence, DEC-007 |
 | 10 | 2026-01-25 | **v1.5** - E16 + E17 (Approvals), ASB fixed, GitHub issue consolidated |

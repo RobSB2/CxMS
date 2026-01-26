@@ -19,7 +19,7 @@
 # Credit: Based on workaround shared by @Memphizzz in anthropics/claude-code#18027
 #         PowerShell port for Windows users
 #
-# Version: 1.0.0
+# Version: 1.0.1 - Fixed ANSI escape codes for PowerShell 5.x compatibility
 
 # Read JSON input from stdin
 $input = $Input | Out-String
@@ -57,11 +57,12 @@ try {
                  elseif ($data.model.id) { $data.model.id }
                  else { "Claude" }
 
-        # ANSI color codes
-        $Reset = "`e[0m"
-        $Purple = "`e[38;5;141m"
-        $Orange = "`e[38;5;208m"
-        $Red = "`e[38;5;203m"
+        # ANSI color codes (using $([char]27) for PowerShell 5.x compatibility)
+        $ESC = [char]27
+        $Reset = "$ESC[0m"
+        $Purple = "$ESC[38;5;141m"
+        $Orange = "$ESC[38;5;208m"
+        $Red = "$ESC[38;5;203m"
 
         # Determine color based on usage
         if ($ctxPct -ge 80) {

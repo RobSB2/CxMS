@@ -207,7 +207,15 @@ Style: Modern, minimal, professional. Dark background (#0D1117). Clean sans-seri
 
 ## LinkedIn Post #3 - "CxMS v1.5: One Week In"
 **Date:** 2026-01-26
-**Status:** Draft
+**Status:** Published
+**URL:** https://www.linkedin.com/feed/update/urn:li:activity:7421598954812923904/
+
+### Performance (as of 2026-01-26)
+
+| Metric | Value | Notes |
+|--------|-------|-------|
+| Likes | 0 | Just posted |
+| Comments | 0 | |
 
 ---
 
