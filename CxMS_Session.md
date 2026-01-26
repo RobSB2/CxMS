@@ -3,7 +3,7 @@
 **Template Version:** 1.1
 **Purpose:** Track current development state for CxMS itself
 **Last Updated:** 2026-01-26
-**Session Number:** 13
+**Session Number:** 14
 
 ---
 
@@ -11,12 +11,48 @@
 
 | Field | Value |
 |-------|-------|
-| Status | Session 13: PowerShell statusline PS5 compatibility fix |
+| Status | Session 14: Community Dashboard LIVE |
 | Repo | https://github.com/RobSB2/CxMS |
+| Dashboard | https://robsb2.github.io/CxMS/dashboard |
 | Templates | 27 + VERSIONS.md manifest |
 | Enhancements | 18 documented (E9, E10, E13, E16, E17, E18 implemented) |
-| CxMS Files | 8 self-tracking + 4 tools |
-| Next | Telemetry dashboard, Post #3 live |
+| CxMS Files | 8 self-tracking + 4 tools + dashboard |
+| Next | npm publish, open-cxms.org |
+
+---
+
+## Session 14 Note
+
+**Focus:** Build and deploy CxMS Community Telemetry Dashboard
+
+**Key Accomplishments:**
+1. Built static dashboard at `docs/dashboard/`
+   - Hero stats: installations, active 30d users, effectiveness, restore time
+   - Charts: file adoption, deployment levels, feature demand, versions, geography
+   - Fetches from Supabase aggregated views (anon key, RLS protected)
+   - Responsive two-column layout with compact chart sizes
+2. Fixed field name mappings to match actual Supabase view schemas
+3. Enabled GitHub Pages on `/docs` folder
+4. Dashboard LIVE at https://robsb2.github.io/CxMS/dashboard
+5. Improved telemetry consent prompt visibility
+   - Prominent box with clear heading
+   - Links to live dashboard (incentive to participate)
+   - Reassures no personal info collected
+6. Moved country question from `--full` to default mode in telemetry script
+
+**Files Created:**
+- `docs/dashboard/index.html` - Main dashboard page
+- `docs/dashboard/styles.css` - Professional responsive styling
+- `docs/dashboard/dashboard.js` - Supabase fetch + Chart.js visualizations
+
+**Files Modified:**
+- `tools/cxms-report.mjs` - Country question default, improved consent prompt
+- `README.md` - Dashboard link, docs/ in structure
+
+**Commits:**
+- `3bec0a0` - Add CxMS Community Dashboard
+- `113b167` - Fix dashboard field name mappings
+- `96ea4ea` - Improve telemetry consent prompt
 
 ---
 
@@ -136,14 +172,16 @@
 ## CxMS Current State
 
 ### Repository Contents
-- 26 templates in `/templates` + VERSIONS.md manifest
-- 17 enhancements documented (E13, E16, E17 implemented)
+- 27 templates in `/templates` + VERSIONS.md manifest
+- 18 enhancements documented (E9, E10, E13, E16, E17, E18 implemented)
 - 8 CxMS self-tracking files
-- 3 tools in `/tools` (telemetry system)
+- 4 tools in `/tools` (telemetry, statusline)
+- 1 dashboard at `/docs/dashboard`
 
-### Telemetry Supabase
-- URL: https://pubuchklneufckmvatmy.supabase.co
-- Status: LIVE, first submission recorded
+### Telemetry System
+- Supabase: https://pubuchklneufckmvatmy.supabase.co
+- Dashboard: https://robsb2.github.io/CxMS/dashboard
+- Status: LIVE with real community data
 
 ---
 
@@ -151,19 +189,18 @@
 
 | Session | Date | Key Accomplishments |
 |---------|------|---------------------|
+| 14 | 2026-01-26 | **Community Dashboard LIVE** - GitHub Pages, Chart.js visualizations |
 | 13 | 2026-01-26 | PowerShell statusline PS5 fix (v1.0.1), LinkedIn Post #3 live |
 | 12 | 2026-01-26 | Traffic analytics (500+ clones), Post #3, PowerShell statusline (TASK-007) |
 | 11 | 2026-01-26 | **E18** - Automated telemetry with consent, child project independence, DEC-007 |
 | 10 | 2026-01-25 | **v1.5** - E16 + E17 (Approvals), ASB fixed, GitHub issue consolidated |
 | 9 | 2026-01-25 | **ASB work** - 7 game specs created (see ASB session) |
-| 8 | 2026-01-25 | Telemetry system LIVE (E13), UACF, Apprentice project setup |
 
 ---
 
 ## CxMS Future Work
 
 - E16: Agent Persona Plugins
-- Telemetry dashboard (GitHub Pages)
 - open-cxms.org static site
 - npm publish cxms-report
 
