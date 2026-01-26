@@ -2,7 +2,7 @@
 
 **Template Version:** 1.0
 **Purpose:** Track development tasks for CxMS itself
-**Last Updated:** 2026-01-25 (Session 10)
+**Last Updated:** 2026-01-26 (Session 11)
 
 ---
 
@@ -44,6 +44,22 @@
 ---
 
 ## Pending / Future
+
+### TASK-007: PowerShell Statusline Script
+**Status:** Pending
+**Priority:** Medium
+**Description:** Create Windows-native PowerShell version of statusline-command.sh for context monitoring
+
+**Checklist:**
+- [ ] Create statusline-command.ps1 in tools/
+- [ ] Handle JSON input parsing with PowerShell
+- [ ] Write context-status.json output
+- [ ] Test on Windows
+- [ ] Update templates with Windows instructions
+
+**Next Action:** Port bash script logic to PowerShell
+
+---
 
 ### TASK-004: Apprentice Strikes Back Live Stream
 **Status:** Pending
@@ -101,6 +117,17 @@ Candidates (by priority):
 ---
 
 ## Completed
+
+### Session 11 - E18 Automated Telemetry (2026-01-26)
+- [x] Add consent management to cxms-report.mjs (--consent, --revoke, --status, --auto)
+- [x] Create .cxms/telemetry-consent.json storage
+- [x] Update PROJECT_Startup.md.template with consent check
+- [x] Fix version extraction regex for "CxMS Version:" pattern
+- [x] Update ASB CLAUDE.md with Deployment Level
+- [x] Make ASB fully independent (parent = optional reference)
+- [x] Document DEC-007: Child Project Independence
+- [x] Grant telemetry consent for CxMS and ASB
+- [x] Document E18 in roadmap
 
 ### Session 8 - Telemetry System & Apprentice Prep (2026-01-25)
 - [x] Create Apprentice Strikes Back project structure

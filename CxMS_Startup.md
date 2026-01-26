@@ -33,7 +33,15 @@ cat .claude/context-status.json
 ```
 Monitor `ctx_pct` throughout session. Alert user if it exceeds 75%.
 
-### 5. Provide Session Summary
+### 5. Check Telemetry Consent
+Check if `.cxms/telemetry-consent.json` exists:
+- **If missing:** Ask user once: "CxMS can send anonymous usage metrics to help improve the system. Enable telemetry? (You can revoke anytime)"
+  - If yes: Run `node tools/cxms-report.mjs --consent`
+  - If no: Run `node tools/cxms-report.mjs --revoke`
+- **If exists with `consented: true`:** Note for session end (will auto-submit)
+- **If exists with `consented: false`:** Skip telemetry entirely
+
+### 6. Provide Session Summary
 
 ```
 ## Session Ready
@@ -55,12 +63,14 @@ Monitor `ctx_pct` throughout session. Alert user if it exceeds 75%.
 **Pre-Approved:** Git ops, file ops, npm, node, gh CLI
 **Always Ask:** Deletions, force push
 
+**Telemetry:** [Enabled - will auto-submit at session end | Disabled | Not configured]
+
 **Suggested Next Action:** [based on tasks and roadmap]
 
 Awaiting instructions.
 ```
 
-### 6. Apply Approvals
+### 7. Apply Approvals
 
 For the remainder of this session:
 - Do NOT prompt for operations listed in CxMS_Approvals.md
@@ -79,7 +89,8 @@ Read CxMS_Startup.md and follow its instructions.
 
 ## Session End Reminder
 
-Before ending, update:
-1. `CxMS_Session.md` - Current state
-2. `CxMS_Tasks.md` - Mark completed, add new
-3. Commit changes
+Before ending:
+1. Update `CxMS_Session.md` - Current state
+2. Update `CxMS_Tasks.md` - Mark completed, add new
+3. **If telemetry consented:** Run `node tools/cxms-report.mjs --auto`
+4. Commit changes

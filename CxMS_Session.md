@@ -2,8 +2,8 @@
 
 **Template Version:** 1.1
 **Purpose:** Track current development state for CxMS itself
-**Last Updated:** 2026-01-25
-**Session Number:** 10
+**Last Updated:** 2026-01-26
+**Session Number:** 11
 
 ---
 
@@ -11,12 +11,44 @@
 
 | Field | Value |
 |-------|-------|
-| Status | Session 10: E16 + E17 (Approvals) implemented, v1.5 released |
+| Status | Session 11: E18 (Automated Telemetry) implemented |
 | Repo | https://github.com/RobSB2/CxMS |
 | Templates | 27 + VERSIONS.md manifest |
-| Enhancements | 17 documented (E13, E16, E17 implemented) |
+| Enhancements | 18 documented (E9, E10, E13, E16, E17, E18 implemented) |
 | CxMS Files | 8 self-tracking + 3 tools |
-| Next | Telemetry dashboard, update remaining templates |
+| Next | Telemetry dashboard, PowerShell statusline script |
+
+---
+
+## Session 11 Note
+
+**Issues Addressed:**
+1. Telemetry not submitting automatically - required manual execution
+2. ASB telemetry missing `cxms_version` and `deployment_level`
+3. Child projects (ASB) too dependent on parent CxMS
+4. Version extraction regex too strict (`**Version:**` vs `**CxMS Version:**`)
+
+**Solutions Implemented:**
+- **E18: Automated Telemetry with Consent**
+  - Added `--consent`, `--revoke`, `--status`, `--auto` flags to cxms-report.mjs
+  - Consent stored in `.cxms/telemetry-consent.json`
+  - Auto-submit at session end if consented
+- Fixed version extraction regex (case-insensitive, matches both patterns)
+- Updated ASB's CLAUDE.md with `Deployment Level: Standard`
+- Reworded parent reference as "optional for learning" not dependency
+- Updated `PROJECT_Startup.md.template` with telemetry consent check
+- Documented multi-agent coordination lessons in DEC-007
+
+**Files Modified:**
+- `tools/cxms-report.mjs` (v1.1.0)
+- `templates/core/PROJECT_Startup.md.template` (v1.1)
+- `CxMS_Startup.md`
+- `CxMS_Product_Roadmap.md` (E18 added)
+- `CxMS_Decision_Log.md` (DEC-007)
+- `templates/VERSIONS.md`
+- ASB: `CLAUDE.md`, `ASB_Startup.md`
+
+**Telemetry consent granted for:** CxMS, ASB
 
 ---
 
@@ -65,10 +97,10 @@
 
 | Session | Date | Key Accomplishments |
 |---------|------|---------------------|
+| 11 | 2026-01-26 | **E18** - Automated telemetry with consent, child project independence, DEC-007 |
 | 10 | 2026-01-25 | **v1.5** - E16 + E17 (Approvals), ASB fixed, GitHub issue consolidated |
 | 9 | 2026-01-25 | **ASB work** - 7 game specs created (see ASB session) |
 | 8 | 2026-01-25 | Telemetry system LIVE (E13), UACF, Apprentice project setup |
-| 7 | 2026-01-24 | v1.4: Auto version check, health check, Yoda Mode |
 
 ---
 

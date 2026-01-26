@@ -1,7 +1,7 @@
 # [PROJECT] Session Startup
 
 **CxMS Version:** 1.5
-**Template Version:** 1.0
+**Template Version:** 1.1
 **Purpose:** Single prompt to initialize a fully-contextualized session
 **Usage:** "Read [PROJECT]_Startup.md and follow its instructions"
 
@@ -33,9 +33,17 @@ cat .claude/context-status.json
 ```
 Monitor `ctx_pct` throughout the session. Alert user if it exceeds 75%.
 
-### 5. Provide Session Summary
+### 5. Check Telemetry Consent
+Check if `.cxms/telemetry-consent.json` exists:
+- **If missing:** Ask user once: "CxMS can send anonymous usage metrics to help improve the system. Enable telemetry? (You can revoke anytime)"
+  - If yes: Run `node [path-to-tools]/cxms-report.mjs --consent`
+  - If no: Run `node [path-to-tools]/cxms-report.mjs --revoke`
+- **If exists with `consented: true`:** Note for session end (will auto-submit)
+- **If exists with `consented: false`:** Skip telemetry entirely
 
-After reading, provide this summary:
+### 6. Provide Session Summary
+
+After reading, provide this summary (include telemetry status):
 
 ```
 ## Session Ready
@@ -54,12 +62,14 @@ After reading, provide this summary:
 **Pre-Approved:** [summary from Approvals.md]
 **Always Ask:** [destructive operations from Approvals.md]
 
+**Telemetry:** [Enabled - will auto-submit at session end | Disabled | Not configured]
+
 **Suggested Next Action:** [based on tasks and state]
 
 Awaiting instructions.
 ```
 
-### 6. Apply Approvals
+### 7. Apply Approvals
 
 For the remainder of this session:
 - Do NOT prompt for operations listed in [PROJECT]_Approvals.md
@@ -78,7 +88,8 @@ Read [PROJECT]_Startup.md and follow its instructions.
 
 ## Session End Reminder
 
-Before ending, update:
-1. `[PROJECT]_Session.md` - Current state
-2. `[PROJECT]_Tasks.md` - Mark completed, add new
-3. Commit changes if work was done
+Before ending:
+1. Update `[PROJECT]_Session.md` - Current state
+2. Update `[PROJECT]_Tasks.md` - Mark completed, add new
+3. **If telemetry consented:** Run `node [path-to-tools]/cxms-report.mjs --auto`
+4. Commit changes if work was done

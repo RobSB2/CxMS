@@ -21,3 +21,6 @@ Thumbs.db
 # CxMS telemetry (local tracking files)
 .cxms/.telemetry_id
 .cxms/.submission_count
+
+# CxMS telemetry consent
+.cxms/telemetry-consent.json

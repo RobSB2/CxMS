@@ -5,12 +5,18 @@
  * Collects anonymous usage metrics from CxMS projects to help improve the system.
  *
  * Usage:
- *   node cxms-report.mjs              # Default mode
+ *   node cxms-report.mjs              # Default mode (prompts for consent)
  *   node cxms-report.mjs --dry-run    # Preview without sending
  *   node cxms-report.mjs --full       # Comprehensive survey
  *   node cxms-report.mjs --help       # Show help
  *
- * Version: 1.0.0
+ * Consent Management:
+ *   node cxms-report.mjs --consent          # Grant consent and enable auto-submit
+ *   node cxms-report.mjs --revoke           # Revoke consent
+ *   node cxms-report.mjs --status           # Check consent status
+ *   node cxms-report.mjs --auto             # Auto-submit if consented (for session end)
+ *
+ * Version: 1.1.0
  */
 
 import fs from 'fs';
@@ -24,7 +30,7 @@ import os from 'os';
 // CONFIGURATION
 // ============================================
 
-const CLIENT_VERSION = '1.0.0';
+const CLIENT_VERSION = '1.1.0';
 const SUPABASE_URL = 'https://pubuchklneufckmvatmy.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1YnVjaGtsbmV1ZmNrbXZhdG15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkzMDE1NDUsImV4cCI6MjA4NDg3NzU0NX0.K3xZJ5zi8xoJvEWTnGvLIlxkSu5ecpsslKICcXpTM2A';
 
@@ -85,6 +91,93 @@ async function askChoice(question, options) {
     return options[idx];
   }
   return null;
+}
+
+// ============================================
+// CONSENT MANAGEMENT
+// ============================================
+
+function getConsentFilePath(cwd) {
+  return path.join(cwd, '.cxms', 'telemetry-consent.json');
+}
+
+function getConsent(cwd) {
+  const consentFile = getConsentFilePath(cwd);
+  if (fs.existsSync(consentFile)) {
+    try {
+      return JSON.parse(fs.readFileSync(consentFile, 'utf-8'));
+    } catch (e) {
+      return null;
+    }
+  }
+  return null;
+}
+
+function saveConsent(cwd, consented, autoSubmit = true) {
+  const cxmsDir = path.join(cwd, '.cxms');
+  if (!fs.existsSync(cxmsDir)) {
+    fs.mkdirSync(cxmsDir, { recursive: true });
+  }
+
+  const consentData = {
+    consented,
+    auto_submit: consented ? autoSubmit : false,
+    consent_date: new Date().toISOString().split('T')[0],
+    last_updated: new Date().toISOString(),
+    last_submission: null,
+  };
+
+  // Preserve last_submission if updating existing consent
+  const existing = getConsent(cwd);
+  if (existing && existing.last_submission) {
+    consentData.last_submission = existing.last_submission;
+  }
+
+  fs.writeFileSync(getConsentFilePath(cwd), JSON.stringify(consentData, null, 2));
+
+  // Add to .gitignore if exists
+  const gitignore = path.join(cwd, '.gitignore');
+  if (fs.existsSync(gitignore)) {
+    const content = fs.readFileSync(gitignore, 'utf-8');
+    if (!content.includes('.cxms/telemetry-consent.json')) {
+      fs.appendFileSync(gitignore, '\n# CxMS telemetry consent\n.cxms/telemetry-consent.json\n');
+    }
+  }
+
+  return consentData;
+}
+
+function updateLastSubmission(cwd) {
+  const consent = getConsent(cwd);
+  if (consent) {
+    consent.last_submission = new Date().toISOString();
+    consent.last_updated = new Date().toISOString();
+    fs.writeFileSync(getConsentFilePath(cwd), JSON.stringify(consent, null, 2));
+  }
+}
+
+function displayConsentStatus(cwd) {
+  const consent = getConsent(cwd);
+  log('\n════════════════════════════════════════════════════════════');
+  log('    CxMS Telemetry Consent Status');
+  log('════════════════════════════════════════════════════════════\n');
+
+  if (!consent) {
+    log('   Status:        No consent recorded');
+    log('   Auto-submit:   Disabled');
+    log('\n   Run with --consent to enable telemetry.\n');
+    return { consented: false };
+  }
+
+  log(`   Consented:     ${consent.consented ? 'Yes ✓' : 'No'}`);
+  log(`   Auto-submit:   ${consent.auto_submit ? 'Enabled ✓' : 'Disabled'}`);
+  log(`   Consent Date:  ${consent.consent_date}`);
+  if (consent.last_submission) {
+    log(`   Last Submit:   ${consent.last_submission}`);
+  }
+  log('');
+
+  return consent;
 }
 
 function getOrCreateInstallationId(cwd) {
@@ -161,12 +254,12 @@ function extractFromClaudeMd(filepath) {
   const content = fs.readFileSync(filepath, 'utf-8');
   const data = {};
 
-  // Extract version
-  const versionMatch = content.match(/\*\*Version:\*\*\s*(\d+\.?\d*)/);
+  // Extract version (match "**Version:**" or "**CxMS Version:**")
+  const versionMatch = content.match(/\*\*(?:CxMS\s+)?Version:\*\*\s*(\d+\.?\d*)/i);
   if (versionMatch) data.cxms_version = versionMatch[1];
 
   // Extract deployment level
-  const levelMatch = content.match(/\*\*Deployment Level:\*\*\s*(\w+)/);
+  const levelMatch = content.match(/\*\*Deployment Level:\*\*\s*(\w+)/i);
   if (levelMatch) data.deployment_level = levelMatch[1];
 
   return data;
@@ -667,10 +760,18 @@ async function main() {
   const autoYes = args.includes('--yes') || args.includes('-y');
   const helpMode = args.includes('--help') || args.includes('-h');
 
+  // Consent management flags
+  const consentMode = args.includes('--consent');
+  const revokeMode = args.includes('--revoke');
+  const statusMode = args.includes('--status');
+  const autoMode = args.includes('--auto');
+
   // Compaction flags for CLI submission
   const compactionFlag = args.includes('--compaction');
   const contextPctArg = args.find(a => a.startsWith('--context-pct='));
   const contextPct = contextPctArg ? parseInt(contextPctArg.split('=')[1]) : null;
+
+  const cwd = process.cwd();
 
   if (helpMode) {
     log(`
@@ -682,6 +783,12 @@ Usage:
   node cxms-report.mjs --dry-run    Preview without sending
   node cxms-report.mjs --help       Show this help
 
+Consent Management:
+  node cxms-report.mjs --consent    Grant consent and enable auto-submit
+  node cxms-report.mjs --revoke     Revoke consent
+  node cxms-report.mjs --status     Check current consent status
+  node cxms-report.mjs --auto       Auto-submit if consented (for session end)
+
 This tool collects anonymous usage metrics to help improve CxMS.
 All data collection is opt-in and you see exactly what's sent before confirming.
 
@@ -690,11 +797,42 @@ Learn more: https://github.com/RobSB2/CxMS
     process.exit(0);
   }
 
+  // Handle consent management commands
+  if (statusMode) {
+    displayConsentStatus(cwd);
+    process.exit(0);
+  }
+
+  if (consentMode) {
+    const consent = saveConsent(cwd, true, true);
+    log('\n✅ Telemetry consent granted. Auto-submit enabled.');
+    log('   Telemetry will be submitted automatically at session end.');
+    log('   Run --revoke to disable, --status to check status.\n');
+    process.exit(0);
+  }
+
+  if (revokeMode) {
+    saveConsent(cwd, false, false);
+    log('\n✅ Telemetry consent revoked. Auto-submit disabled.');
+    log('   Your data will not be collected.\n');
+    process.exit(0);
+  }
+
+  // Auto mode: only submit if consented
+  if (autoMode) {
+    const consent = getConsent(cwd);
+    if (!consent || !consent.consented || !consent.auto_submit) {
+      log('\n⏭️  Auto-submit skipped (no consent or auto-submit disabled).');
+      log('   Run with --consent to enable automatic telemetry.\n');
+      process.exit(0);
+    }
+    // Continue to submission with --yes behavior
+    log('\n🔄 Auto-submitting telemetry (consent on file)...');
+  }
+
   log('\n════════════════════════════════════════════════════════════');
   log(`    CxMS Telemetry Reporter v${CLIENT_VERSION}`);
   log('════════════════════════════════════════════════════════════');
-
-  const cwd = process.cwd();
 
   // Discover files
   log('\n🔍 Scanning for CxMS files...');
@@ -713,8 +851,8 @@ Learn more: https://github.com/RobSB2/CxMS
   log('\n📊 Extracting metrics...');
   let data = extractAllMetrics(cwd, files);
 
-  // Collect user feedback (skip if --skip-prompts or --yes)
-  if (!skipPrompts && !autoYes) {
+  // Collect user feedback (skip if --skip-prompts, --yes, or --auto)
+  if (!skipPrompts && !autoYes && !autoMode) {
     data = await collectUserFeedback(data, fullMode);
   }
 
@@ -752,9 +890,11 @@ Learn more: https://github.com/RobSB2/CxMS
   }
 
   let consent = 'y';
-  if (!autoYes) {
+  if (!autoYes && !autoMode) {
     log('\n════════════════════════════════════════════════════════════');
     consent = await ask('Send this data anonymously to help improve CxMS? [y/N]: ');
+  } else if (autoMode) {
+    log('\n✅ Auto-submitting (consent on file)');
   } else {
     log('\n✅ Auto-consenting (--yes flag)');
   }
@@ -786,6 +926,7 @@ Learn more: https://github.com/RobSB2/CxMS
 
   try {
     await submitTelemetry(data);
+    updateLastSubmission(cwd);
     log('\n✅ Thanks! Your anonymous feedback helps improve CxMS.');
     log('   View community stats: https://github.com/RobSB2/CxMS\n');
   } catch (err) {

@@ -12,7 +12,7 @@
 
 This document tracks the CxMS product roadmap, including planned enhancements, implementation status, and priorities. Enhancements are discovered through real-world usage and community feedback.
 
-**Current Status:** 17 enhancements documented, 5 implemented (E9, E10, E13, E16, E17), 12 in RFC stage
+**Current Status:** 18 enhancements documented, 6 implemented (E9, E10, E13, E16, E17, E18), 12 in RFC stage
 
 ---
 
@@ -2855,6 +2855,75 @@ Before ANY work, you MUST:
 
 ---
 
+## Enhancement 18: Automated Telemetry with Consent
+
+### Problem Statement
+
+Telemetry collection (E13) requires manual execution of `cxms-report.mjs` after each session:
+- Users forget to run telemetry at session end
+- No way to persist consent across sessions
+- Each execution requires re-confirming consent
+- Telemetry data gaps when users work multiple sessions
+
+### Proposed Solution: Consent-Based Auto-Submit
+
+**Consent Management:**
+- Store consent in `.cxms/telemetry-consent.json`
+- One-time consent prompt at first session start
+- Auto-submit at session end if consented
+- Easy revocation with `--revoke` flag
+
+**New CLI Flags:**
+```bash
+node cxms-report.mjs --consent   # Grant consent, enable auto-submit
+node cxms-report.mjs --revoke    # Revoke consent
+node cxms-report.mjs --status    # Check consent status
+node cxms-report.mjs --auto      # Auto-submit if consented (session end)
+```
+
+**Consent File Format:**
+```json
+{
+  "consented": true,
+  "auto_submit": true,
+  "consent_date": "2026-01-25",
+  "last_submission": "2026-01-25T22:30:00Z"
+}
+```
+
+### Implementation
+
+**Status: IMPLEMENTED (Session 11)**
+
+- Updated `cxms-report.mjs` to v1.1.0 with consent management
+- Added `--consent`, `--revoke`, `--status`, `--auto` flags
+- Updated `PROJECT_Startup.md.template` with consent check step
+- Session end auto-submits if consented
+- Fixed version extraction regex to match `**CxMS Version:**` pattern
+
+### Integration with Session Workflow
+
+**Session Start:**
+1. Check `.cxms/telemetry-consent.json`
+2. If missing, prompt user once for consent
+3. Store preference (consented or revoked)
+
+**Session End:**
+1. If consented, run `cxms-report.mjs --auto`
+2. Telemetry submits silently without prompts
+3. Updates `last_submission` timestamp
+
+### Value Proposition
+
+| Benefit | Impact |
+|---------|--------|
+| Zero-friction telemetry | Auto-submits after one-time consent |
+| Better data coverage | No more missed sessions |
+| User control | Clear consent, easy revocation |
+| Privacy preserved | Consent stored locally, not tracked |
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
@@ -2867,7 +2936,8 @@ Before ANY work, you MUST:
 | E15: CxMS Update & Release Management | Low | Very High | 6 (Ongoing maintenance) |
 | E16: Parent-Child CxMS Convention Inheritance | Low | High | 7 (IMPLEMENTED) |
 | E17: Pre-Approved Operations | Low | High | 8 (IMPLEMENTED) |
-| E1: Cross-Agent Coordination | Medium | High | 9 |
+| E18: Automated Telemetry with Consent | Low | High | 9 (IMPLEMENTED) |
+| E1: Cross-Agent Coordination | Medium | High | 10 |
 | E12: Multi-Agent CxMS Orchestration | High | Very High | 10 (Enterprise) |
 | E6: Token Usage & Conservation | Medium | High | 11 |
 | E7: Context Usage & Conservation | Medium | High | 12 |
@@ -2902,6 +2972,7 @@ Before ANY work, you MUST:
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2026-01-25 | Added E18: Automated Telemetry with Consent (implemented) | AI + Human |
 | 2026-01-25 | Added E17: Pre-Approved Operations (implemented) | AI + Human |
 | 2026-01-25 | Added E16: Parent-Child CxMS Convention Inheritance (implemented) | AI + Human |
 | 2026-01-21 | Added Enhancement 15: CxMS Update & Release Management | AI + Human |

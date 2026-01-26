@@ -9,6 +9,51 @@
 
 ## Decisions
 
+### DEC-007: Child Project Independence (Multi-Agent Lessons)
+**Date:** 2026-01-25
+**Status:** Active
+**Category:** Architecture
+
+**Context:**
+During Session 11, ASB (child project) had issues with telemetry and CxMS conventions. Parent session (CxMS) needed to fix child project files, revealing multi-agent coordination issues.
+
+**Problems Discovered:**
+1. ASB telemetry submitted but `cxms_version` and `deployment_level` were null
+2. Version regex looked for `**Version:**` but ASB had `**CxMS Version:**`
+3. ASB was missing `Deployment Level` metadata entirely
+4. ASB's CLAUDE.md said "when unsure, check parent" - created runtime dependency
+5. Telemetry was fully manual - easy to forget between sessions
+
+**Lessons Learned:**
+
+| Lesson | Implementation |
+|--------|----------------|
+| Child projects must be fully self-sufficient | Parent reference is "optional enrichment" not dependency |
+| Tools must handle variations | Regex now matches `**CxMS Version:**` and `**Version:**` |
+| Required metadata must be explicit | Templates include all required fields with no assumptions |
+| Cross-project tools need robust extraction | Case-insensitive, flexible patterns |
+| Automated workflows need consent management | E18: one-time consent, auto-submit thereafter |
+
+**Decision:**
+1. Child projects are standalone - parent is reference material only
+2. Templates include ALL required fields with explicit placeholders
+3. Tools use flexible extraction patterns (case-insensitive, multiple formats)
+4. Automation requires explicit consent but then runs silently
+
+**Implications:**
+- Updated ASB's CLAUDE.md with `Deployment Level: Standard`
+- Fixed cxms-report.mjs regex for version extraction
+- E18 implemented for consent-based auto-telemetry
+- Parent reference section reworded as "optional for learning"
+
+**Revisit If:**
+- Multi-agent orchestration (E12) is implemented
+- More child projects reveal additional edge cases
+
+**Related:** E16, E17, E18, E12
+
+---
+
 ### DEC-006: Log Aging - Skip ZIP Stage
 **Date:** 2026-01-21
 **Status:** Active
@@ -223,6 +268,7 @@ Use Markdown for all context files.
 ### Architecture Decisions
 | ID | Decision | Date | Status |
 |----|----------|------|--------|
+| DEC-007 | Child Project Independence | 2026-01-25 | Active |
 | DEC-006 | Skip ZIP in log aging | 2026-01-21 | Active |
 | DEC-003 | 5 core + optional logs | 2026-01-20 | Active |
 
