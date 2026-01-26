@@ -45,6 +45,17 @@
 
 ## Pending / Future
 
+### TASK-008: Telemetry --quiet Flag
+**Status:** Pending
+**Priority:** Low
+**Description:** Add `--quiet` flag to cxms-report.mjs for minimal output in auto mode
+
+**Rationale:** Current auto-submit prints verbose output which creates perceived slowness. A quiet mode would output only success/failure for cleaner session-end experience.
+
+**Next Action:** Implement when telemetry friction becomes noticeable
+
+---
+
 ### TASK-007: PowerShell Statusline Script
 **Status:** Pending
 **Priority:** Medium
