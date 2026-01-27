@@ -1,6 +1,6 @@
 # CxMS - Agent Context Management System
 
-**Version:** 1.5 | **Date:** January 2026
+**Version:** 1.6 | **Date:** January 2026
 
 Persistent memory for AI coding assistants through structured documentation.
 
@@ -80,18 +80,16 @@ See how the CxMS community uses the system: file adoption, deployment levels, fe
 
 | Date | Enhancement | Description |
 |------|-------------|-------------|
+| 2026-01-27 | **E20: Multi-Tool Export** | Export profiles to Cursor, Copilot, Windsurf, Aider |
+| 2026-01-27 | **E19: Role-Based Profiles** | web-developer, project-manager, data-engineer, devops, technical-writer |
+| 2026-01-27 | **E21: Context Lifecycle** | Unified context management (consolidates E5+E6+E11) |
+| 2026-01-27 | **E8: Communication Efficiency** | Concise AI output guidelines in templates |
 | 2026-01-26 | **Community Dashboard** | Live telemetry visualization |
 | 2026-01-25 | **E17: Pre-Approved Operations** | Skip permission prompts with Approvals file |
 | 2026-01-25 | **E16: Parent-Child Inheritance** | Child projects reference parent CxMS conventions |
-| 2026-01-25 | **Startup Template** | Single prompt initializes full context |
 | 2026-01-25 | **Context Monitoring** | Self-monitor context % via statusline script |
-| 2026-01-24 | **Deployment Health Check** | AI assesses level fit, suggests upgrades |
-| 2026-01-24 | **Auto Version Check** | AI checks for CxMS updates on session start |
-| 2026-01-24 | **E14: Portability Kit** | SESSION_END_CHECKLIST, existing-project template |
-| 2026-01-24 | **E15: Update Management** | MIGRATION.md with AI-assisted updates |
-| 2026-01-24 | **Multi-Tool Support** | Templates for Gemini CLI, GitHub Copilot, Cursor, Aider |
 
-**See:** [Product Roadmap](CxMS_Product_Roadmap.md) for all 17 enhancements
+**See:** [Product Roadmap](CxMS_Product_Roadmap.md) for all 21 enhancements (9 implemented)
 
 ---
 
@@ -205,7 +203,7 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 
 ---
 
-## Templates (27 Total)
+## Templates (27+) & Profiles (5)
 
 **See:** [templates/DEPLOYMENT.md](templates/DEPLOYMENT.md) for deployment levels | [templates/MIGRATION.md](templates/MIGRATION.md) for upgrades
 
@@ -251,6 +249,22 @@ This simple principle drives the entire system. Instead of relying on AI memory 
 | `cursorrules.template` | Cursor | CxMS config for Cursor |
 | `CONVENTIONS.md.template` | Aider | CxMS config for Aider |
 | `MULTI-TOOL-DEPLOYMENT.md` | All | Multi-tool deployment guide |
+
+### Role-Based Profiles (`templates/profiles/` - 5 profiles)
+| Profile | Tools Installed | Use Case |
+|---------|-----------------|----------|
+| `web-developer` | Playwright, Prettier, ESLint | Frontend/backend web development |
+| `project-manager` | GitHub CLI, documentation tools | Multi-agent coordination, planning |
+| `data-engineer` | DuckDB, SQL tools | Data pipelines, ETL, analytics |
+| `devops` | Docker, Terraform, kubectl | Infrastructure, CI/CD, deployment |
+| `technical-writer` | Vale, markdownlint | Documentation, content creation |
+
+**Profile CLI:**
+```bash
+node tools/cxms-profile.mjs list                    # List available profiles
+node tools/cxms-profile.mjs install web-developer   # Install profile globally
+node tools/cxms-profile.mjs export web-developer --format all  # Export to other AI tools
+```
 
 ---
 
@@ -317,7 +331,8 @@ CxMS was developed and validated through real production use:
 - **Session productivity:** Significantly improved
 
 **Ongoing Development:**
-- 17 enhancements documented, 5 implemented (E9, E10, E13, E16, E17)
+- 21 enhancements documented, 9 implemented (E8, E9, E10, E13, E16, E17, E18, E19, E20)
+- 5 role-based deployment profiles with CLI tool
 - CxMS uses itself for development tracking (dogfooding)
 - Active metrics collection for validation
 
@@ -333,9 +348,9 @@ Context_Management_System/
 ├── CLAUDE.md                              # Repository guidance
 ├── CxMS_Introduction_and_Guide.md         # START HERE
 ├── CxMS_Practical_Implementation_Guide.md # Implementation details
-├── CxMS_Product_Roadmap.md                # 17 enhancements (5 implemented)
+├── CxMS_Product_Roadmap.md                # 21 enhancements (9 implemented)
 │
-├── templates/                             # 27 templates organized by category
+├── templates/                             # 27+ templates organized by category
 │   ├── DEPLOYMENT.md                      # Deployment guide (Lite/Standard/Max)
 │   ├── MIGRATION.md                       # Fresh install & upgrade guide
 │   ├── VERSIONS.md                        # Template version manifest
@@ -353,19 +368,28 @@ Context_Management_System/
 │   │   ├── PROJECT_Plan.md.template
 │   │   ├── PROJECT_Prompt_Library.md.template
 │   │   └── ...
-│   └── multi-tool/                        # Tool-specific configs (5)
-│       ├── GEMINI.md.template
-│       ├── copilot-instructions.md.template
-│       ├── cursorrules.template
-│       ├── CONVENTIONS.md.template
-│       └── MULTI-TOOL-DEPLOYMENT.md
+│   ├── multi-tool/                        # Tool-specific configs (5)
+│   │   ├── GEMINI.md.template
+│   │   ├── copilot-instructions.md.template
+│   │   ├── cursorrules.template
+│   │   ├── CONVENTIONS.md.template
+│   │   └── MULTI-TOOL-DEPLOYMENT.md
+│   └── profiles/                          # Role-based profiles (5)
+│       ├── MANIFEST.json                  # Profile registry
+│       ├── web-developer/                 # Playwright, Prettier, ESLint
+│       ├── project-manager/               # GitHub CLI, docs tools
+│       ├── data-engineer/                 # DuckDB, SQL tools
+│       ├── devops/                        # Docker, Terraform, kubectl
+│       └── technical-writer/              # Vale, markdownlint
 │
 ├── docs/                                  # GitHub Pages
 │   └── dashboard/                         # Community telemetry dashboard
 │
 ├── tools/                                 # CxMS utilities
 │   ├── cxms-report.mjs                    # Telemetry reporter (anonymous metrics)
-│   └── statusline-command.sh              # Context monitoring (writes context %)
+│   ├── cxms-profile.mjs                   # Profile manager CLI (install, export)
+│   ├── statusline-command.sh              # Context monitoring (Mac/Linux)
+│   └── statusline-command.ps1             # Context monitoring (Windows)
 │
 ├── case-studies/                          # Real-world implementations
 │   └── LPR_LandTools_Case_Study.md
