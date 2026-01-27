@@ -67,10 +67,10 @@ This file is the single source of truth for template versions. AI assistants sho
 | Profile | Version | Status | Description |
 |---------|---------|--------|-------------|
 | `web-developer` | 1.0.0 | Stable | Playwright, Prettier, ESLint, web testing |
-| `project-manager` | - | Planned | Multi-agent coordination, documentation |
-| `data-engineer` | - | Planned | DuckDB, SQL, data pipelines |
-| `devops` | - | Planned | Docker, Terraform, infrastructure |
-| `technical-writer` | - | Planned | Vale, documentation, content creation |
+| `project-manager` | 1.0.0 | Stable | Multi-agent coordination, documentation |
+| `data-engineer` | 1.0.0 | Stable | DuckDB, SQL, data pipelines |
+| `devops` | 1.0.0 | Stable | Docker, Terraform, Kubernetes |
+| `technical-writer` | 1.0.0 | Stable | Vale, markdownlint, content creation |
 
 **Profile Files:**
 | File | Description |

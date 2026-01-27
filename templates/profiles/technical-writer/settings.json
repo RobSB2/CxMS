@@ -1,0 +1,48 @@
+{
+  "$schema": "https://claude.ai/schemas/claude-code-settings.json",
+  "profile": {
+    "id": "technical-writer",
+    "version": "1.0.0",
+    "description": "Claude Code settings for documentation and technical writing"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(vale:*)",
+      "Bash(npx markdownlint:*)",
+      "Bash(git:*)",
+      "mcp__fetch__*"
+    ],
+    "deny": []
+  },
+  "env": {},
+  "mcp_servers": {
+    "fetch": {
+      "package": "@anthropic/fetch",
+      "description": "Web research for documentation"
+    }
+  },
+  "tools": {
+    "global": {
+      "vale": {
+        "version": "latest",
+        "description": "Prose linting for style consistency"
+      },
+      "markdownlint": {
+        "version": "latest",
+        "package": "markdownlint-cli",
+        "description": "Markdown formatting rules"
+      }
+    }
+  },
+  "context_hints": [
+    "Check for existing documentation in docs/ or documentation/",
+    "Look for style guide in .vale.ini or STYLE_GUIDE.md",
+    "Review existing README.md for project context",
+    "Check for API specs in openapi.yaml or swagger.json",
+    "Look for .markdownlint.json for formatting rules"
+  ],
+  "file_associations": {
+    "documentation": ["*.md", "*.mdx", "*.rst", "*.adoc"],
+    "api_specs": ["openapi.yaml", "openapi.json", "swagger.yaml", "asyncapi.yaml"]
+  }
+}

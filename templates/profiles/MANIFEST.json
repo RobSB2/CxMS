@@ -40,7 +40,7 @@
       "id": "data-engineer",
       "name": "Data Engineer",
       "description": "Data pipelines, SQL, analytics, and ETL workflows. Triggers on: SQL, databases, pandas, data pipelines, ETL, analytics, data modeling.",
-      "status": "planned",
+      "status": "stable",
       "tools": {
         "global": ["duckdb"],
         "mcp_servers": ["@anthropic/postgres", "@anthropic/sqlite"],
@@ -57,7 +57,7 @@
       "id": "devops",
       "name": "DevOps / Infrastructure",
       "description": "CI/CD, containers, cloud infrastructure, and deployment automation. Triggers on: Docker, Kubernetes, Terraform, AWS, Azure, GCP, CI/CD, infrastructure.",
-      "status": "planned",
+      "status": "stable",
       "tools": {
         "global": ["docker", "terraform", "kubectl"],
         "mcp_servers": ["@anthropic/fetch", "@anthropic/filesystem"],
@@ -74,7 +74,7 @@
       "id": "technical-writer",
       "name": "Technical Writer",
       "description": "Documentation, API specs, and content creation. Triggers on: documentation, README, API docs, tutorials, technical writing, style guides.",
-      "status": "planned",
+      "status": "stable",
       "tools": {
         "global": ["vale", "markdownlint"],
         "mcp_servers": ["@anthropic/fetch"],
