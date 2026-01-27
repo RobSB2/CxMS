@@ -32,6 +32,24 @@
 
 ---
 
+### TASK-010: E20 Multi-Tool Profile Export
+**Status:** Pending
+**Priority:** Medium
+**Description:** Export CxMS profiles to other AI tool formats (.cursorrules, copilot-instructions.md, etc.)
+
+**Checklist:**
+- [ ] Add `export` command to cxms-profile.mjs
+- [ ] Implement .cursorrules export (Cursor)
+- [ ] Implement copilot-instructions.md export (GitHub Copilot)
+- [ ] Implement .windsurfrules export (Windsurf)
+- [ ] Implement CONVENTIONS.md export (Aider)
+- [ ] Add `--format all` option
+- [ ] Test exports with each tool
+
+**Next Action:** Design export transformation logic
+
+---
+
 ### TASK-006: E16 + E17 Implementation
 **Status:** Complete
 **Priority:** High
