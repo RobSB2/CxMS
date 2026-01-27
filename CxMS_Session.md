@@ -47,6 +47,7 @@
 
 **Files Created:**
 - `drafts/E21_Context_Lifecycle_Management.md` - Full E21 specification
+- `drafts/github-issue-output-verbosity.md` - GitHub issue #21246
 
 **Files Modified:**
 - `tools/cxms-profile.mjs` (v1.1.0 - added export command)
@@ -54,6 +55,7 @@
 - `templates/core/CLAUDE.md.template` (v1.7 - added Communication Efficiency section)
 - `CxMS_Product_Roadmap.md` (E20, E21, E8 implemented; E5/E6/E7/E11 superseded)
 - `CxMS_Tasks.md` (TASK-010 complete)
+- `README.md` (v1.6 - profiles, recent highlights)
 - `CxMS_Session.md`
 
 **Usage:**
@@ -70,6 +72,23 @@ node tools/cxms-profile.mjs export web-developer --format all --output ./my-proj
 
 5. Merged E7 into E10 (Health Check now includes freshness protocol)
 6. Implemented E8 (Communication Efficiency) - added to CLAUDE.md.template
+
+7. Submitted GitHub issue #21246: Output Verbosity Controls
+   - Feature request for CLI options to control diff/read output verbosity
+   - Drafted in `drafts/github-issue-output-verbosity.md`
+8. Updated README.md to v1.6 (was outdated at v1.5)
+9. Checked Post #3 traffic: 100 views, 128 clones on Jan 26 (~3x normal)
+
+**Commits:**
+- `fe3afb3` - E20: Multi-Tool Profile Export
+- `ae6cfbc` - E21: Context Lifecycle Management consolidation
+- `bbfe7db` - E7→E10, E8 implemented
+- `922d283` - GitHub issue #21246 draft
+- `77a34aa` - README update for v1.6
+
+**Traffic (14-day rolling):**
+- 557 views (224 unique)
+- 632 clones (233 unique)
 
 **Roadmap Status After Session 16:**
 - 21 enhancements documented
