@@ -1,8 +1,8 @@
 # CxMS Product Roadmap
 
-**Version:** 1.1
+**Version:** 1.2
 **Created:** 2026-01-20
-**Last Updated:** 2026-01-25
+**Last Updated:** 2026-01-27
 **Purpose:** Document planned enhancements and product direction for CxMS
 **Status:** Active Development
 
@@ -12,7 +12,7 @@
 
 This document tracks the CxMS product roadmap, including planned enhancements, implementation status, and priorities. Enhancements are discovered through real-world usage and community feedback.
 
-**Current Status:** 20 enhancements documented, 8 implemented (E9, E10, E13, E16, E17, E18, E19, E20), 12 in RFC stage
+**Current Status:** 21 enhancements documented, 8 implemented (E9, E10, E13, E16, E17, E18, E19, E20), 3 superseded (E5, E6, E11 → E21), 10 in RFC stage
 
 ---
 
@@ -308,278 +308,17 @@ User managing multiple projects with CxMS needs overview of all project states.
 
 ## Enhancement 5: Context Compression Strategies
 
-### Problem Statement
+**Status: SUPERSEDED by E21 (Context Lifecycle Management)**
 
-As projects grow, context files become large. Need strategies to keep them useful but compact.
-
-### Proposed Solutions
-
-1. **Session Summary Rollup**
-   - After N sessions, compress detailed entries into summary
-   - Keep detail in archive, summary in active file
-
-2. **Tiered Documentation**
-   - Hot: Current session, active tasks (always loaded)
-   - Warm: Recent history, related decisions (loaded on demand)
-   - Cold: Archive (referenced but not loaded)
-
-3. **Smart Excerpts**
-   - AI extracts relevant portions based on current task
-   - Full files available but not always loaded
+*Original concepts (tiered documentation, session rollups) absorbed into E21 Pillar 1: Structure.*
 
 ---
 
 ## Enhancement 6: Token Usage & Conservation
 
-### Problem Statement
+**Status: SUPERSEDED by E21 (Context Lifecycle Management)**
 
-CxMS relies on AI reading context files, but this consumes tokens:
-- Each file read costs tokens (input)
-- Larger files = more tokens = higher cost and latency
-- Loading full context every session may be wasteful
-- Long sessions may hit context limits faster
-- Compaction triggered more frequently with heavy context loading
-
-**Estimated Token Costs (approximate):**
-| File | Typical Size | Est. Tokens |
-|------|--------------|-------------|
-| CLAUDE.md | 200 lines | ~1,500 |
-| Session.md | 150 lines | ~1,200 |
-| Tasks.md | 100 lines | ~800 |
-| Context.md | 150 lines | ~1,200 |
-| Prompt_History.md | 200+ lines | ~1,500+ |
-| **Minimum load** | ~600 lines | **~4,700** |
-| **Full load (all files)** | ~1,500+ lines | **~12,000+** |
-
-Loading 12K tokens of context before any work begins is significant.
-
-### Proposed Solutions
-
-#### 6.1 Tiered File Loading Strategy
-
-Define loading tiers based on necessity:
-
-```markdown
-## Context Loading Tiers
-
-### Tier 1: Always Load (Mandatory)
-- `CLAUDE.md` - Core project info, preferences, mandatory requirements
-- `[PROJECT]_Session.md` - Current state (essential)
-
-### Tier 2: Load at Session Start (Recommended)
-- `[PROJECT]_Tasks.md` - If working on tasks
-
-### Tier 3: Load on Demand (As Needed)
-- `[PROJECT]_Context.md` - Only if navigating documentation
-- `[PROJECT]_Decision_Log.md` - Only if making architectural decisions
-- `[PROJECT]_Exceptions.md` - Only if debugging or styling issues
-- `[PROJECT]_Deployment.md` - Only if deploying
-- `[PROJECT]_Prompt_History.md` - Only if reviewing history
-
-### Tier 4: Reference Only (Rarely Load)
-- Architecture documents
-- Inventory/sitemap files
-- Archived content
-```
-
-**Agent Directive:**
-```markdown
-## Token-Conscious Loading
-
-Load files based on the task at hand:
-
-| Task Type | Load These Files |
-|-----------|------------------|
-| Any session start | CLAUDE.md, Session.md |
-| Task work | + Tasks.md |
-| Deployment | + Deployment.md |
-| Debugging | + Exceptions.md |
-| Architecture decisions | + Decision_Log.md |
-| Full context needed | All Tier 1-3 files |
-
-Do NOT load Prompt_History.md unless explicitly reviewing history.
-Do NOT load archived files unless explicitly requested.
-```
-
-#### 6.2 File Structure Optimization
-
-Design files for token efficiency:
-
-**A. TL;DR Sections at Top**
-```markdown
-# LPR_Session.md
-
-## TL;DR (Read This First)
-- **Active Task:** TASK-001 Page Tracking (monitoring)
-- **Last Session:** 2026-01-20, deployed tracking to TEST
-- **Next Action:** Wait for 30-day data, then analyze
-- **Blockers:** None
-
----
-
-## Full Details (Read If Needed)
-[Detailed content below...]
-```
-
-AI reads TL;DR first (~50 tokens), only reads full details if needed.
-
-**B. Tables Over Prose**
-```markdown
-# Instead of:
-The current active task is TASK-001 which involves implementing
-a page access tracking system. This was started on January 19th
-and is currently in progress. The tracking has been deployed to
-the TEST server and verified working...
-
-# Use:
-| Field | Value |
-|-------|-------|
-| Active Task | TASK-001: Page Access Tracking |
-| Status | In Progress - Deployed to TEST |
-| Started | 2026-01-19 |
-| Next | Monitor 30 days |
-```
-
-Tables: ~40 tokens. Prose: ~80 tokens. 50% savings.
-
-**C. Abbreviated Formats**
-```markdown
-# Instead of detailed entries:
-### Session 15 - January 20, 2026
-Today we worked on implementing the page tracking system...
-[200 words of detail]
-
-# Use summary format:
-| # | Date | Focus | Result |
-|---|------|-------|--------|
-| 15 | 2026-01-20 | Page tracking | Deployed TEST ✅ |
-```
-
-#### 6.3 Context Checkpoints
-
-Periodically save compressed context state:
-
-```markdown
-# CONTEXT_CHECKPOINT_2026-01-20.md
-
-## Checkpoint Summary
-**Created:** 2026-01-20 14:00
-**Project State:** Stable
-**Token Count:** ~500 (vs ~4,700 for full load)
-
-## Essential State
-- **Project:** LPR LandTools
-- **Phase:** UI Modernization complete, tracking in progress
-- **Active:** TASK-001 (monitoring), TASK-002 (pending PROD deploy)
-- **Key Files:** 22 deployed to TEST, 0 to PROD
-- **Decisions:** PostgreSQL for new dev, pennmarc-database2 for new features
-- **Blockers:** None
-
-## Quick Resume Prompt
-"Read CONTEXT_CHECKPOINT_2026-01-20.md and CLAUDE.md, then continue."
-```
-
-Checkpoints: ~500 tokens vs full context: ~4,700 tokens. **90% reduction.**
-
-#### 6.4 Lazy Loading Protocol
-
-Agent checks what's needed before loading:
-
-```markdown
-## Lazy Loading Protocol
-
-At session start:
-1. Read CLAUDE.md (mandatory)
-2. Read Session.md TL;DR section only
-3. Ask user: "What would you like to work on?"
-4. Based on response, load relevant Tier 2-3 files
-
-Example:
-- User says "continue TASK-001" → Load Tasks.md
-- User says "deploy to production" → Load Tasks.md + Deployment.md
-- User says "review what we did" → Load Prompt_History.md
-```
-
-#### 6.5 Periodic Pruning Directive
-
-Keep files lean:
-
-```markdown
-## File Maintenance Requirements
-
-### Session.md
-- Keep only current + last session details
-- Move older sessions to Session_Summary.md (one line each)
-- Archive detailed history monthly
-
-### Tasks.md
-- Move completed tasks to "Completed" section (brief)
-- After 5+ completed, summarize and archive details
-- Keep focus on active/pending
-
-### Prompt_History.md
-- After each phase, summarize in 2-3 lines
-- Keep detailed entries for current phase only
-- Reference archive for older phases
-
-### Decision_Log.md
-- Keep all decisions (they're reference material)
-- But use concise format, not essays
-```
-
-#### 6.6 Token Budget Awareness
-
-Add token awareness to agent directives:
-
-```markdown
-## Token Budget Awareness
-
-Be conscious of token usage:
-
-1. **Before reading a file, consider:**
-   - Do I actually need this file for the current task?
-   - Can I use a checkpoint or summary instead?
-   - Have I already read this in the current session?
-
-2. **When writing/updating files:**
-   - Prefer tables over prose
-   - Use abbreviations where clear
-   - Keep TL;DR sections current
-   - Don't duplicate information across files
-
-3. **When context is getting full:**
-   - Proactively summarize and update Session.md
-   - Offer to create a checkpoint
-   - Identify files that can be unloaded
-```
-
-### Token Conservation Metrics
-
-Track effectiveness:
-
-| Metric | Before | Target | Measure |
-|--------|--------|--------|---------|
-| Session start load | ~12K tokens | ~3K tokens | Per session |
-| Avg file size | 150 lines | 80 lines | Monthly review |
-| Compaction frequency | High | Low | Per project |
-| Time to context restore | 30 sec | 10 sec | Per session |
-
-### Implementation Approach
-
-**Phase 1: File Structure**
-- Add TL;DR sections to all templates
-- Convert prose to tables where possible
-- Add loading tier metadata to files
-
-**Phase 2: Agent Directives**
-- Update CLAUDE.md with tiered loading instructions
-- Add lazy loading protocol
-- Add token awareness section
-
-**Phase 3: Tooling**
-- Create checkpoint generation template
-- Create pruning checklist
-- Add token estimates to documentation
+*Original concepts (tiered loading, TL;DR sections, checkpoints, lazy loading, token budgets) absorbed into E21 Pillar 2: Loading.*
 
 ---
 
@@ -1336,153 +1075,9 @@ Run a CxMS Health Check. Read all CxMS files and generate a status report:
 
 ## Enhancement 11: Log Aging & Archival Strategy
 
-### Problem Statement
+**Status: SUPERSEDED by E21 (Context Lifecycle Management)**
 
-As CxMS files accumulate entries over time, they become:
-- Token-heavy (more context loaded each session)
-- Slower to parse for relevant information
-- Cluttered with historical data not needed for current work
-
-**Affected Templates (append-only, grow unbounded):**
-| Template | Growth Pattern |
-|----------|----------------|
-| PROJECT_Session.md | Every session adds history |
-| PROJECT_Tasks.md | Completed tasks accumulate |
-| PROJECT_Prompt_History.md | Every prompt logged (fastest growth) |
-| PROJECT_Activity_Log.md | Append-only action log |
-| PROJECT_Decision_Log.md | Append-only decisions |
-| PROJECT_Issue_Log.md | Append-only problems |
-| PROJECT_Compaction_Log.md | Append-only events |
-| PROJECT_Deployment.md | Deployment history grows |
-| PROJECT_Performance_Log.md | Metrics accumulate |
-
-**Templates that don't need aging (static/bounded):**
-- CLAUDE.md, Context.md, Plan.md, Inventory.md, Strategy.md, Exceptions.md, Session_Summary.md
-
-### Proposed Solution: Two-Stage Aging
-
-#### 11.1 File Lifecycle
-
-```
-Current → Aging → Archive
-   │         │        │
-   │         │        └── ZIP file (long-term, AI needs extraction)
-   │         └── Markdown (recent history, AI-readable)
-   └── Active file (current work)
-```
-
-**Stage 1: Aging Files (Markdown)**
-- Move older entries from active files to `[PROJECT]_Aging_[Type].md`
-- Keep as plain markdown (AI can still read without extraction)
-- Example: `CxMS_Aging_Session.md`, `CxMS_Aging_Tasks.md`
-
-**Stage 2: Archive (ZIP) - Optional**
-- After 6+ months, compress aging files to ZIP
-- Naming: `[PROJECT]_Archive_[Type]_[DateRange].zip`
-- Example: `CxMS_Archive_Session_2026-H1.zip`
-- Requires extraction for AI access (friction by design)
-
-#### 11.2 Aging Triggers
-
-| Trigger | Action |
-|---------|--------|
-| File exceeds 200 lines | Review for aging candidates |
-| Entry older than 30 days | Move to aging file |
-| Task completed 5+ sessions ago | Move to aging |
-| Session older than 10 sessions | Move to aging |
-| Quarterly review | Archive aging files >6 months old |
-
-#### 11.3 Aging File Structure
-
-```markdown
-# [PROJECT]_Aging_Session.md
-
-**Purpose:** Historical session entries moved from active Session.md
-**Covers:** [Date range]
-**Entries:** [Count]
-
----
-
-## Archived Sessions
-
-### Session 5 - 2026-01-15
-[Full session details preserved here]
-
-### Session 4 - 2026-01-10
-[Full session details preserved here]
-
-...
-```
-
-#### 11.4 What to Keep in Active vs Age
-
-| File | Keep in Active | Move to Aging |
-|------|----------------|---------------|
-| Session.md | Current + last 2-3 sessions | Older sessions |
-| Tasks.md | Active + pending + recently completed | Completed 5+ sessions ago |
-| Prompt_History.md | Current session prompts | Previous sessions |
-| Activity_Log.md | Last 30 days | Older entries |
-| Decision_Log.md | All (reference value) | Consider never aging |
-| Issue_Log.md | Open + last 5 resolved | Older resolved |
-
-#### 11.5 Simplified Alternative: Skip ZIP
-
-Based on analysis, the ZIP stage may be over-engineered:
-
-**Recommended Approach:**
-1. **Use aging markdown files** - Yes, implement this
-2. **Skip ZIP compression** - Keep as markdown for AI readability
-3. **Use git for deep history** - Git already preserves everything
-4. **Delete aging files after 1 year** - Git has the history if needed
-
-**Benefits:**
-- 90% of value with minimal complexity
-- AI can always read context without extraction
-- Git provides infinite archive for free
-
-#### 11.6 Agent Instructions
-
-Add to CLAUDE.md.template:
-
-```markdown
-### Log File Aging
-
-When log files grow large (>200 lines), proactively offer to age old entries:
-
-1. **Check file sizes** at session start
-2. **Identify aging candidates:**
-   - Session entries >10 sessions old
-   - Tasks completed >5 sessions ago
-   - Activity/Issue entries >30 days old
-3. **Offer to create/update aging files:**
-   - `[PROJECT]_Aging_Session.md`
-   - `[PROJECT]_Aging_Tasks.md`
-   - etc.
-4. **Move entries, don't delete** - Preserve full history
-5. **Update active file** with reference to aging file
-
-**Do NOT age:**
-- Decision_Log entries (high reference value)
-- Any entry user marks as "keep active"
-- Current session or recent context
-```
-
-### Implementation Approach
-
-**Phase 1: Templates**
-- Create `PROJECT_Aging_[Type].md.template` for each aging-eligible file
-- Add aging instructions to CLAUDE.md.template
-- Document triggers and thresholds
-
-**Phase 2: Pilot**
-- Apply to CxMS own files first (dogfooding)
-- Test with LPR LandTools
-- Refine thresholds based on real usage
-
-**Phase 3: Tooling (Optional)**
-- Script to check file sizes and suggest aging
-- Script to move entries automatically
-- Integration with health check (E10)
+*Original concepts (file lifecycle, aging triggers, aging files, what to keep vs age) absorbed into E21 Pillar 3: Aging.*
 
 ---
 
@@ -3229,29 +2824,84 @@ Phase 1 complete:
 
 ---
 
+## Enhancement 21: Context Lifecycle Management
+
+**Status: RFC (Consolidates E5, E6, E11)**
+**Created:** 2026-01-27
+**Full Spec:** `drafts/E21_Context_Lifecycle_Management.md`
+
+### Problem Statement
+
+CxMS files grow over time, creating compounding problems:
+- Token bloat (higher cost, slower sessions)
+- Context limits (more compactions)
+- Signal-to-noise (harder to find relevant info)
+- Stale data (wasted context)
+
+### Solution: Three Pillars
+
+| Pillar | Focus | Key Features |
+|--------|-------|--------------|
+| **Structure** | File design | TL;DR sections, tables over prose, temperature zones |
+| **Loading** | What to read | Tiered loading (1-4), lazy loading, checkpoints |
+| **Aging** | What to keep | Current → Aging → Archive, trigger-based moves |
+
+### Key Mechanisms
+
+**Tiered Loading:**
+| Tier | When | Files |
+|------|------|-------|
+| 1: Mandatory | Every session | CLAUDE.md, Session.md (TL;DR) |
+| 2: Task-based | When working | Tasks.md, Approvals.md |
+| 3: On-demand | When relevant | Decision_Log.md, Deployment.md |
+| 4: Rarely | Explicit request | Prompt_History.md, Archives |
+
+**Aging Lifecycle:**
+```
+Current → [30 days / 200 lines] → Aging → [6 months] → Archive
+```
+
+### Success Targets
+
+| Metric | Before | After |
+|--------|--------|-------|
+| Session start tokens | ~12K | ~3K |
+| Active file size | 150 lines | 80 lines |
+| Time to productive | 30s | 10s |
+
+### Supersedes
+
+- E5: Context Compression Strategies → Pillar 1 (Structure)
+- E6: Token Usage & Conservation → Pillar 2 (Loading)
+- E11: Log Aging & Archival → Pillar 3 (Aging)
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
 |-------------|------------|--------|----------|
-| E9: Performance Monitoring & Validation | Low | High | 1 (IMPLEMENTED) |
-| E10: CxMS Health Check | Low | High | 2 (Implemented in templates) |
-| E11: Log Aging & Archival | Low | High | 3 |
-| E13: Community Telemetry & Case Study Pipeline | Low | High | 4 (Phase 1 complete) |
-| E14: CxMS Portability Kit | Medium | Very High | 5 (Initial deployment) |
-| E15: CxMS Update & Release Management | Low | Very High | 6 (Ongoing maintenance) |
-| E16: Parent-Child CxMS Convention Inheritance | Low | High | 7 (IMPLEMENTED) |
-| E17: Pre-Approved Operations | Low | High | 8 (IMPLEMENTED) |
-| E18: Automated Telemetry with Consent | Low | High | 9 (IMPLEMENTED) |
-| E19: Role-Based Deployment Profiles | Medium | Very High | 10 (IMPLEMENTED) |
-| E20: Multi-Tool Profile Export | Medium | High | 11 |
-| E1: Cross-Agent Coordination | Medium | High | 11 |
-| E12: Multi-Agent CxMS Orchestration | High | Very High | 10 (Enterprise) |
-| E6: Token Usage & Conservation | Medium | High | 11 |
-| E7: Context Usage & Conservation | Medium | High | 12 |
-| E8: Superfluous Communication Suppression | Low | High | 13 |
-| E2: Auto-save Triggers | Low | Medium | 14 |
-| E3: Structured AI Instructions | Low | Medium | 15 |
-| E4: File Validation Protocols | Medium | Medium | 16 |
+| E9: Performance Monitoring & Validation | Low | High | IMPLEMENTED |
+| E10: CxMS Health Check | Low | High | IMPLEMENTED |
+| E13: Community Telemetry & Case Study Pipeline | Low | High | IMPLEMENTED |
+| E16: Parent-Child CxMS Convention Inheritance | Low | High | IMPLEMENTED |
+| E17: Pre-Approved Operations | Low | High | IMPLEMENTED |
+| E18: Automated Telemetry with Consent | Low | High | IMPLEMENTED |
+| E19: Role-Based Deployment Profiles | Medium | Very High | IMPLEMENTED |
+| E20: Multi-Tool Profile Export | Medium | High | IMPLEMENTED |
+| E5: Context Compression Strategies | - | - | SUPERSEDED by E21 |
+| E6: Token Usage & Conservation | - | - | SUPERSEDED by E21 |
+| E11: Log Aging & Archival | - | - | SUPERSEDED by E21 |
+| **E21: Context Lifecycle Management** | Medium | Very High | 1 (Next) |
+| E7: Context Usage & Conservation | Low | High | 2 |
+| E8: Superfluous Communication Suppression | Low | High | 3 |
+| E14: CxMS Portability Kit | Medium | Very High | 4 |
+| E15: CxMS Update & Release Management | Low | Very High | 5 |
+| E1: Cross-Agent Coordination | Medium | High | 6 |
+| E12: Multi-Agent CxMS Orchestration | High | Very High | 7 (Enterprise) |
+| E2: Periodic Context Verification | Low | Medium | 8 |
+| E3: Automated Session Handoff | Low | Medium | 9 |
+| E4: Multi-Project Dashboard | Medium | Medium | 10 |
 | E5: Context Compression | High | Medium | 17 |
 
 ---
