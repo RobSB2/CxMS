@@ -12,7 +12,7 @@
 
 This document tracks the CxMS product roadmap, including planned enhancements, implementation status, and priorities. Enhancements are discovered through real-world usage and community feedback.
 
-**Current Status:** 21 enhancements documented, 8 implemented (E9, E10, E13, E16, E17, E18, E19, E20), 3 superseded (E5, E6, E11 → E21), 10 in RFC stage
+**Current Status:** 21 enhancements documented, 9 implemented (E8, E9, E10, E13, E16, E17, E18, E19, E20), 4 superseded (E5, E6, E7, E11), 8 in RFC stage
 
 ---
 
@@ -324,221 +324,9 @@ User managing multiple projects with CxMS needs overview of all project states.
 
 ## Enhancement 7: Context Usage & Conservation
 
-### Problem Statement
+**Status: SUPERSEDED by E10 (Health Check)**
 
-While Enhancement 6 addresses **token efficiency** (reducing the number of tokens), this enhancement addresses **context effectiveness** - ensuring that whatever context IS loaded is:
-- Relevant to the current task
-- Fresh and accurate (not stale)
-- Effectively utilized throughout the session
-- Properly managed as sessions extend
-
-**Key Distinction:**
-- **Token Conservation:** How much context is loaded (quantity)
-- **Context Conservation:** How useful the loaded context is (quality)
-
-**Context Degradation Scenarios:**
-1. **Stale Context:** Files changed externally but AI working with old mental model
-2. **Irrelevant Context:** Loading full history when only current state matters
-3. **Context Drift:** Long sessions where AI gradually "forgets" early instructions
-4. **Context Pollution:** Mixing concerns from multiple unrelated tasks
-5. **Context Fragmentation:** Important information scattered, harder to maintain coherence
-
-### Proposed Solutions
-
-#### 7.1 Context Freshness Protocol
-
-Ensure loaded context remains accurate:
-
-```markdown
-## Context Freshness Requirements
-
-### File Freshness Checks
-
-Before relying on previously-read file content:
-
-1. **Check modification time** (if significant time has passed)
-   - If file may have changed externally, re-read it
-   - Especially important for multi-session/multi-user projects
-
-2. **Verify assumptions still hold**
-   - "Last session we decided X" - verify X is still in Decision Log
-   - "The current task is Y" - verify Y is still active in Tasks.md
-
-3. **Cross-reference with Session.md**
-   - Is Session.md current? (check last updated timestamp)
-   - Does it match your understanding of project state?
-
-### Staleness Indicators
-
-Re-read context files when:
-- User mentions something contradicting your understanding
-- Referencing decisions/state from "a while ago"
-- Starting work in a different area of codebase
-- More than N hours since session start
-```
-
-#### 7.2 Context Relevance Filtering
-
-Load context appropriate to the task:
-
-```markdown
-## Task-Based Context Loading
-
-### Context Profiles
-
-Define what context each task type actually needs:
-
-| Task Type | Essential Context | Optional Context | Skip |
-|-----------|-------------------|------------------|------|
-| Bug fix | Session, Exceptions | Decision Log | History, Strategy |
-| New feature | Session, Tasks, Decisions | Strategy | Full history |
-| Deployment | Deployment, Session | Tasks | History, Strategy |
-| Documentation | Context, Session | All | None |
-| Code review | Exceptions, Decisions | Session | History |
-
-### Relevance Questions
-
-Before loading a file, ask:
-1. Will this file help me complete the current task?
-2. Is there a summary/checkpoint that would suffice?
-3. Am I loading this out of habit or necessity?
-```
-
-#### 7.3 Active Context Management
-
-Manage context during long sessions:
-
-```markdown
-## Session Context Hygiene
-
-### Context Refresh Points
-
-At natural breakpoints, assess context health:
-
-**Every 3-5 work packages:**
-- Is my understanding of project state still accurate?
-- Have I drifted from documented preferences?
-- Am I making assumptions that should be verified?
-
-**When switching focus areas:**
-- Mentally "close" context from previous area
-- Load fresh context for new area
-- Don't carry assumptions across domains
-
-### Context Compartmentalization
-
-For sessions with multiple unrelated tasks:
-
-1. Complete Task A fully before starting Task B
-2. Update Session.md between tasks
-3. Don't let Task A context pollute Task B decisions
-4. Each task should be traceable to its own context
-```
-
-#### 7.4 Context Effectiveness Metrics
-
-Measure whether context is being used well:
-
-```markdown
-## Context Effectiveness Indicators
-
-### Positive Indicators
-- Decisions reference documented rationale
-- Work follows established patterns without re-discovery
-- No "rediscovering" known information
-- Session picks up smoothly from previous
-
-### Negative Indicators
-- Asking user questions answered in documentation
-- Making decisions that contradict Decision Log
-- Re-implementing existing patterns differently
-- Context compaction happening frequently
-- User correcting AI about project facts
-
-### Tracking
-
-| Session | Context Load | Questions Asked | Corrections Needed | Compactions |
-|---------|--------------|-----------------|-------------------|-------------|
-| 2026-01-20 A | Optimal | 0 | 0 | 0 |
-| 2026-01-20 B | Heavy | 2 | 1 | 1 |
-```
-
-#### 7.5 Context Recovery Protocol
-
-When context is lost or degraded:
-
-```markdown
-## Context Recovery
-
-### Partial Context Loss
-When some context is lost (compaction, long pause):
-
-1. Re-read Session.md TL;DR
-2. Re-read current task from Tasks.md
-3. Ask user: "We were working on X, correct?"
-4. Proceed with verified context
-
-### Full Context Loss
-When starting fresh or after major compaction:
-
-1. Read CLAUDE.md mandatory requirements
-2. Read most recent Context Checkpoint (if exists)
-3. Read Session.md completely
-4. Provide full status summary to user
-5. Await confirmation before proceeding
-
-### Context Mismatch
-When your context conflicts with reality:
-
-1. STOP current work
-2. Identify the discrepancy
-3. Ask user for clarification
-4. Update relevant documentation
-5. Resume with corrected context
-```
-
-#### 7.6 Context Conservation Best Practices
-
-Agent directives for context conservation:
-
-```markdown
-## Context Conservation Directives
-
-### DO:
-- Re-read files when uncertain rather than assume
-- Update documentation as you work (keep it fresh)
-- Compartmentalize context by task/area
-- Verify assumptions at natural breakpoints
-- Ask clarifying questions early (cheaper than wrong work)
-
-### DON'T:
-- Assume loaded context is still current after delays
-- Mix context from unrelated tasks
-- Ignore contradictions between docs and reality
-- Continue working when context feels stale
-- Load historical context when current state suffices
-
-### Conservation Principle
-> Load minimum context needed, verify it's current,
-> update it as you work, refresh when uncertain.
-```
-
-### Implementation Approach
-
-**Phase 1: Directives**
-- Add context freshness checks to mandatory requirements
-- Define context profiles for common task types
-- Create context recovery protocol
-
-**Phase 2: Templates**
-- Add freshness timestamps to all context files
-- Create "Last Verified" fields
-- Add context health checklist
-
-**Phase 3: Practices**
-- Establish refresh point cadence
-- Train context compartmentalization
-- Implement effectiveness tracking
+*Original concepts (freshness checks, staleness indicators, context recovery) merged into E10 as "Context Freshness Protocol". E10 now covers both periodic audits AND real-time freshness.*
 
 ---
 
@@ -750,6 +538,16 @@ The goal is appropriate communication, not minimal communication.
 | Preamble frequency | High | Rare |
 | User re-reading rate | Often | Seldom |
 | Information density | Low | High |
+
+### Status
+
+**Status: IMPLEMENTED (Session 16)**
+
+Added to `CLAUDE.md.template`:
+- Communication Efficiency section with output guidelines
+- Response patterns (good/bad examples)
+- Verbosity levels (minimal/standard/detailed)
+- Match response to need guidance
 
 ---
 
@@ -2881,6 +2679,7 @@ Current → [30 days / 200 lines] → Aging → [6 months] → Archive
 
 | Enhancement | Complexity | Impact | Priority |
 |-------------|------------|--------|----------|
+| E8: Superfluous Communication Suppression | Low | High | IMPLEMENTED |
 | E9: Performance Monitoring & Validation | Low | High | IMPLEMENTED |
 | E10: CxMS Health Check | Low | High | IMPLEMENTED |
 | E13: Community Telemetry & Case Study Pipeline | Low | High | IMPLEMENTED |
@@ -2891,18 +2690,16 @@ Current → [30 days / 200 lines] → Aging → [6 months] → Archive
 | E20: Multi-Tool Profile Export | Medium | High | IMPLEMENTED |
 | E5: Context Compression Strategies | - | - | SUPERSEDED by E21 |
 | E6: Token Usage & Conservation | - | - | SUPERSEDED by E21 |
+| E7: Context Usage & Conservation | - | - | SUPERSEDED by E10 |
 | E11: Log Aging & Archival | - | - | SUPERSEDED by E21 |
 | **E21: Context Lifecycle Management** | Medium | Very High | 1 (Next) |
-| E7: Context Usage & Conservation | Low | High | 2 |
-| E8: Superfluous Communication Suppression | Low | High | 3 |
-| E14: CxMS Portability Kit | Medium | Very High | 4 |
-| E15: CxMS Update & Release Management | Low | Very High | 5 |
-| E1: Cross-Agent Coordination | Medium | High | 6 |
-| E12: Multi-Agent CxMS Orchestration | High | Very High | 7 (Enterprise) |
-| E2: Periodic Context Verification | Low | Medium | 8 |
-| E3: Automated Session Handoff | Low | Medium | 9 |
-| E4: Multi-Project Dashboard | Medium | Medium | 10 |
-| E5: Context Compression | High | Medium | 17 |
+| E14: CxMS Portability Kit | Medium | Very High | 2 |
+| E15: CxMS Update & Release Management | Low | Very High | 3 |
+| E1: Cross-Agent Coordination | Medium | High | 4 |
+| E12: Multi-Agent CxMS Orchestration | High | Very High | 5 (Enterprise) |
+| E2: Periodic Context Verification | Low | Medium | 6 |
+| E3: Automated Session Handoff | Low | Medium | 7 |
+| E4: Multi-Project Dashboard | Medium | Medium | 8 |
 
 ---
 

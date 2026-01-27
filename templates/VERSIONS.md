@@ -11,7 +11,7 @@ This file is the single source of truth for template versions. AI assistants sho
 
 | Template | Version | Description |
 |----------|---------|-------------|
-| `CLAUDE.md.template` | 1.6 | Project overview with AI requirements + Context Monitoring + Approvals |
+| `CLAUDE.md.template` | 1.7 | Project overview + Context Monitoring + Approvals + Communication Efficiency (E8) |
 | `CLAUDE.md.existing-project.template` | 1.0 | Adding CxMS to existing projects |
 | `PROJECT_Approvals.md.template` | 1.0 | Pre-approved operations to reduce permission prompts |
 | `PROJECT_Startup.md.template` | 1.1 | Single-file session initialization + telemetry consent |
@@ -99,6 +99,7 @@ This file is the single source of truth for template versions. AI assistants sho
 
 | Date | CxMS Version | Changes |
 |------|--------------|---------|
+| 2026-01-27 | 1.6.2 | **E8 Communication Efficiency** + E7 merged into E10, E21 consolidation |
 | 2026-01-27 | 1.6.1 | **E20 Multi-Tool Profile Export** - export to Cursor, Copilot, Windsurf, Aider |
 | 2026-01-27 | 1.6 | **E19 Role-Based Deployment Profiles** - web-developer profile, cxms-profile CLI |
 | 2026-01-25 | 1.5 | E16 Parent-Child Inheritance, E17 Approvals template |

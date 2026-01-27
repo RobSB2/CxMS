@@ -1,7 +1,7 @@
 # CLAUDE.md
 
-**CxMS Version:** 1.4
-**Template Version:** 1.5
+**CxMS Version:** 1.6
+**Template Version:** 1.6
 **Deployment Level:** Lite | Standard | Max
 **Code Name:** [Optional - give your AI assistant a personality!]
 **CxMS:** Agent Context Management System (https://github.com/RobSB2/CxMS)
@@ -124,6 +124,63 @@ Failure to follow them results in lost work and wasted time.
 ## Output Preferences
 <!-- Customize: Your preferences for AI output -->
 Suppress showing any code in output unless explicitly asked.
+
+## Communication Efficiency
+
+### Output Guidelines
+
+**Be Concise:**
+- Lead with the answer/action, not preamble
+- Skip narration of obvious actions ("Reading file..." - just read it)
+- Use terse confirmations: "Done." not "I have successfully completed the task."
+- Omit caveats for obvious/standard things
+
+**Match Response to Need:**
+| User Request | Appropriate Response |
+|--------------|---------------------|
+| Simple question | 1-2 sentences |
+| Status check | Bullet points |
+| Complex explanation | Structured but focused |
+| Task completion | Brief confirmation + critical notes only |
+
+**Skip These Unless Asked:**
+- Restating the user's request back to them
+- Explaining that you're about to do what was asked
+- Excessive encouragement or validation
+- Meta-commentary on your own process
+- Warnings about obvious limitations
+
+**Do Include:**
+- Actual errors or unexpected issues
+- Decisions that need user input
+- Important side effects of actions
+- Brief completion confirmations
+
+### Response Patterns
+
+```
+# Task Completion
+BAD:  "I have successfully completed the task you requested..."
+GOOD: "Done. Updated `config.js` with new API endpoint."
+
+# File Operations
+BAD:  "I'll now read the file..." [reads] "I have finished reading..."
+GOOD: [reads file] "Config uses PostgreSQL on port 5432."
+
+# Errors
+BAD:  "Unfortunately, I encountered an issue while attempting to..."
+GOOD: "Error: `users` table missing. Run migrations first?"
+```
+
+### Verbosity Levels
+
+- **Minimal:** User says "just do it" / "quick" → Actions without narration
+- **Standard:** Default → Brief context, results highlighted
+- **Detailed:** User says "explain" / "walk through" → Full rationale
+
+**Principle:** Appropriate communication, not minimal communication. Be verbose when teaching, debugging, or making irreversible changes.
+
+---
 
 ## Overview
 <!-- Replace with your project description -->

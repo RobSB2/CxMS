@@ -15,7 +15,7 @@
 | Repo | https://github.com/RobSB2/CxMS |
 | Dashboard | https://robsb2.github.io/CxMS/dashboard |
 | Templates | 27 + profiles system + VERSIONS.md |
-| Enhancements | 21 documented, 8 implemented, 3 superseded (E5, E6, E11 → E21) |
+| Enhancements | 21 documented, 9 implemented, 4 superseded |
 | CxMS Files | 8 self-tracking + 5 tools + dashboard + profiles |
 | Next | Complete remaining profiles, npm publish |
 
@@ -50,8 +50,9 @@
 
 **Files Modified:**
 - `tools/cxms-profile.mjs` (v1.1.0 - added export command)
-- `templates/VERSIONS.md` (v1.6.1)
-- `CxMS_Product_Roadmap.md` (E20 implemented, E21 added, E5/E6/E11 superseded)
+- `templates/VERSIONS.md` (v1.6.2)
+- `templates/core/CLAUDE.md.template` (v1.7 - added Communication Efficiency section)
+- `CxMS_Product_Roadmap.md` (E20, E21, E8 implemented; E5/E6/E7/E11 superseded)
 - `CxMS_Tasks.md` (TASK-010 complete)
 - `CxMS_Session.md`
 
@@ -67,11 +68,14 @@ node tools/cxms-profile.mjs export web-developer --format all
 node tools/cxms-profile.mjs export web-developer --format all --output ./my-project
 ```
 
+5. Merged E7 into E10 (Health Check now includes freshness protocol)
+6. Implemented E8 (Communication Efficiency) - added to CLAUDE.md.template
+
 **Roadmap Status After Session 16:**
 - 21 enhancements documented
-- 8 implemented (E9, E10, E13, E16, E17, E18, E19, E20)
-- 3 superseded (E5, E6, E11 → E21)
-- 10 in RFC stage
+- 9 implemented (E8, E9, E10, E13, E16, E17, E18, E19, E20)
+- 4 superseded (E5, E6, E7, E11)
+- 8 in RFC stage
 
 ---
 
