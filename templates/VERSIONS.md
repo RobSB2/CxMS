@@ -88,7 +88,7 @@ This file is the single source of truth for template versions. AI assistants sho
 | File | Version | Platform | Description |
 |------|---------|----------|-------------|
 | `cxms-report.mjs` | 1.1.0 | Node.js | Telemetry reporter with consent management |
-| `cxms-profile.mjs` | 1.0.0 | Node.js | Profile manager CLI |
+| `cxms-profile.mjs` | 1.1.0 | Node.js | Profile manager CLI with multi-tool export |
 | `statusline-command.sh` | 1.1.0 | Bash (Mac/Linux) | Context monitoring statusline script |
 | `statusline-command.ps1` | 1.0.0 | PowerShell (Windows) | Context monitoring statusline script |
 | `supabase-schema.sql` | 1.0 | SQL | Telemetry database schema |
@@ -99,6 +99,7 @@ This file is the single source of truth for template versions. AI assistants sho
 
 | Date | CxMS Version | Changes |
 |------|--------------|---------|
+| 2026-01-27 | 1.6.1 | **E20 Multi-Tool Profile Export** - export to Cursor, Copilot, Windsurf, Aider |
 | 2026-01-27 | 1.6 | **E19 Role-Based Deployment Profiles** - web-developer profile, cxms-profile CLI |
 | 2026-01-25 | 1.5 | E16 Parent-Child Inheritance, E17 Approvals template |
 | 2026-01-24 | 1.4 | Added VERSIONS.md, version check, health check, Context Monitoring |

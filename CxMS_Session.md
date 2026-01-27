@@ -3,7 +3,7 @@
 **Template Version:** 1.1
 **Purpose:** Track current development state for CxMS itself
 **Last Updated:** 2026-01-27
-**Session Number:** 15
+**Session Number:** 16
 
 ---
 
@@ -11,13 +11,53 @@
 
 | Field | Value |
 |-------|-------|
-| Status | Session 15: E19 Role-Based Deployment Profiles |
+| Status | Session 16: E20 Multi-Tool Profile Export |
 | Repo | https://github.com/RobSB2/CxMS |
 | Dashboard | https://robsb2.github.io/CxMS/dashboard |
 | Templates | 27 + profiles system + VERSIONS.md |
-| Enhancements | 20 documented (E9, E10, E13, E16, E17, E18, E19 implemented) |
+| Enhancements | 20 documented (E9, E10, E13, E16, E17, E18, E19, E20 implemented) |
 | CxMS Files | 8 self-tracking + 5 tools + dashboard + profiles |
 | Next | Complete remaining profiles, npm publish |
+
+---
+
+## Session 16 Note
+
+**Focus:** E20 Multi-Tool Profile Export
+
+**Key Accomplishments:**
+1. Reviewed 3 project configurations for role analysis:
+   - LPR LandTools → full-stack-developer (legacy PHP)
+   - ApprenticeStrikesBack → web-developer
+   - CxMS → project-manager / multi-agent coordinator
+2. Implemented E20: Multi-Tool Profile Export
+   - Added `export` command to cxms-profile.mjs (v1.1.0)
+   - Created transformers for 4 formats:
+     - `.cursorrules` (Cursor AI)
+     - `copilot-instructions.md` (GitHub Copilot)
+     - `.windsurfrules` (Windsurf)
+     - `CONVENTIONS.md` (Aider)
+   - Added `--format all` and `--output` options
+3. Tested export with web-developer profile
+
+**Files Modified:**
+- `tools/cxms-profile.mjs` (v1.1.0 - added export command)
+- `templates/VERSIONS.md` (v1.6.1)
+- `CxMS_Product_Roadmap.md` (E20 marked implemented)
+- `CxMS_Tasks.md` (TASK-010 complete)
+- `CxMS_Session.md`
+
+**Usage:**
+```bash
+# Export to single format
+node tools/cxms-profile.mjs export web-developer --format cursorrules
+
+# Export all formats
+node tools/cxms-profile.mjs export web-developer --format all
+
+# Export to specific directory
+node tools/cxms-profile.mjs export web-developer --format all --output ./my-project
+```
 
 ---
 
@@ -268,6 +308,7 @@
 
 | Session | Date | Key Accomplishments |
 |---------|------|---------------------|
+| 16 | 2026-01-27 | **E20 Multi-Tool Export** - export to Cursor, Copilot, Windsurf, Aider |
 | 15 | 2026-01-27 | **E19 Role-Based Profiles** - web-developer profile, cxms-profile CLI, v1.6 |
 | 14 | 2026-01-26 | **Community Dashboard LIVE** - GitHub Pages, Chart.js visualizations |
 | 13 | 2026-01-26 | PowerShell statusline PS5 fix (v1.0.1), LinkedIn Post #3 live |

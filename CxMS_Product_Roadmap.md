@@ -12,7 +12,7 @@
 
 This document tracks the CxMS product roadmap, including planned enhancements, implementation status, and priorities. Enhancements are discovered through real-world usage and community feedback.
 
-**Current Status:** 20 enhancements documented, 7 implemented (E9, E10, E13, E16, E17, E18, E19), 13 in RFC stage
+**Current Status:** 20 enhancements documented, 8 implemented (E9, E10, E13, E16, E17, E18, E19, E20), 12 in RFC stage
 
 ---
 
@@ -3216,7 +3216,16 @@ CxMS would be **first to market** with role-based, cross-tool configuration.
 
 ### Status
 
-**Status: RFC**
+**Status: IMPLEMENTED (Session 16)**
+
+Phase 1 complete:
+- [x] Add `export` command to cxms-profile.mjs
+- [x] Implement `.cursorrules` export (Cursor)
+- [x] Implement `copilot-instructions.md` export (GitHub Copilot)
+- [x] Implement `.windsurfrules` export (Windsurf)
+- [x] Implement `CONVENTIONS.md` export (Aider)
+- [x] Add `--format all` option
+- [x] Add `--output` option for custom output path
 
 ---
 
