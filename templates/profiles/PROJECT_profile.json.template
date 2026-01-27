@@ -1,0 +1,23 @@
+{
+  "$schema": "https://cxms.dev/schemas/profile.json",
+  "description": "CxMS project profile configuration",
+
+  "profiles": [
+    "web-developer"
+  ],
+
+  "merge_strategy": "last-wins",
+
+  "external_skills": [],
+
+  "overrides": {
+    "permissions": {},
+    "env": {}
+  },
+
+  "contexts": {
+    "tech-stack": "React 18, TypeScript, Vite",
+    "testing-strategy": "Vitest for unit, Playwright for E2E",
+    "api-patterns": "REST with React Query"
+  }
+}

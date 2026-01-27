@@ -2924,6 +2924,161 @@ node cxms-report.mjs --auto      # Auto-submit if consented (session end)
 
 ---
 
+## Enhancement 19: Role-Based Deployment Profiles
+
+### Problem Statement
+
+Current CxMS deployment is **tool-agnostic** - it manages context but doesn't configure role-appropriate tools:
+
+1. **Per-session tool installation** - Users configure Playwright, MCP servers each session
+2. **No role-specific guidance** - Web developers and PMs get identical CLAUDE.md templates
+3. **Tool discovery burden** - Users don't know which tools fit their role
+4. **Repeated configuration** - Each project requires manual tool setup
+
+**User Pain Point:** "Seems kind of crazy that each Claude session has to install tools like Playwright vs global tools/skills."
+
+### Proposed Solution: Role-Based Deployment Profiles
+
+Extend CxMS with **deployment profiles** that bundle:
+- Pre-configured global tools
+- Role-specific CLAUDE_EXTENSION.md guidance
+- Recommended MCP servers and Anthropic skills
+- Domain-appropriate context templates
+
+**Architecture:**
+```
+CxMS Deployment
+├── Level (Lite/Standard/Max)      ← Context depth (existing)
+└── Profile (Web Dev/PM/Data/...)  ← Role-specific tooling (NEW)
+```
+
+### Profile Structure
+
+**Global Installation (`~/.cxms/profiles/`):**
+```
+~/.cxms/
+├── profiles/
+│   ├── VERSIONS.md              ← Profile version tracking
+│   ├── web-developer/
+│   │   ├── SKILL.md             ← Anthropic-compatible metadata
+│   │   ├── CLAUDE_EXTENSION.md  ← Role-specific AI guidance
+│   │   ├── settings.json        ← Claude Code permissions
+│   │   ├── install.sh           ← Unix tool installation
+│   │   ├── install.ps1          ← Windows tool installation
+│   │   └── installed.json       ← Tracks installed tools
+│   ├── project-manager/
+│   └── data-engineer/
+└── config.json                  ← Global CxMS settings
+```
+
+**Project-Local Configuration (`./cxms/`):**
+```
+./cxms/
+├── profile.json                 ← Active profiles + overrides
+└── CLAUDE_EXTENSION.local.md    ← Project-specific additions
+```
+
+### Core Profiles
+
+| Profile | Global Tools | MCP Servers | Anthropic Skills |
+|---------|-------------|-------------|------------------|
+| **web-developer** | playwright, prettier, eslint | fetch, filesystem | webapp-testing |
+| **project-manager** | - | fetch | doc-coauthoring, internal-comms |
+| **data-engineer** | duckdb | postgres, sqlite | xlsx, pdf |
+| **devops** | docker, terraform, kubectl | fetch, filesystem | - |
+| **technical-writer** | vale, markdownlint | fetch | docx, pdf, brand-guidelines |
+
+### Design Decisions
+
+**1. Layered Architecture:** Global profiles + project-local overrides
+- Tools installed globally once (e.g., Playwright browsers ~500MB)
+- Project-specific tweaks version-controlled locally
+
+**2. Profile Composition:** Multiple profiles with merge strategy
+```json
+{
+  "profiles": ["web-developer", "technical-writer"],
+  "merge_strategy": "last-wins"
+}
+```
+
+**3. Anthropic Skills Compatibility:** Same SKILL.md format, optional imports
+```yaml
+---
+name: web-developer
+description: Full-stack web development...
+anthropic_skills:
+  - webapp-testing
+---
+```
+
+**4. Tool Versioning:** Latest by default, optional pinning
+```json
+{ "tools": ["playwright", "prettier@3.x", "eslint@8.57.0"] }
+```
+
+**5. MCP Auto-Configuration:** Configure with user confirmation on profile install
+
+**6. Profile Updates:** VERSIONS.md pattern with update notifications
+
+### CLI Interface
+
+```bash
+# List available profiles
+cxms profile list
+
+# Install profile globally (one-time)
+cxms profile install web-developer
+
+# Apply to project
+cxms init --level standard --profile web-developer
+
+# Check for updates
+cxms profile check
+
+# Update profiles
+cxms profile update web-developer
+```
+
+### Implementation Phases
+
+**Phase 1: Core Infrastructure**
+- [ ] Create `profiles/` directory structure in templates
+- [ ] Build `cxms-profile.mjs` CLI tool
+- [ ] Implement web-developer profile (prototype)
+- [ ] Update CLAUDE.md template with profile support
+
+**Phase 2: Profile Library**
+- [ ] Implement project-manager profile
+- [ ] Implement data-engineer profile
+- [ ] Implement devops profile
+- [ ] Implement technical-writer profile
+
+**Phase 3: Integration**
+- [ ] Profile composition/merge logic
+- [ ] Anthropic skills import
+- [ ] Profile update notifications
+- [ ] Telemetry for profile adoption
+
+### Value Proposition
+
+| Benefit | Impact |
+|---------|--------|
+| One-time tool setup | Install once, use everywhere |
+| Role-appropriate context | AI understands your domain immediately |
+| Reduced session friction | No per-session tool configuration |
+| Community-driven | Profiles can be shared and improved |
+| Anthropic-compatible | Works with official skills marketplace |
+
+### Status
+
+**Status: IN PROGRESS (Session 15)**
+
+- Design complete (see `drafts/E19_Role_Based_Deployment_Profiles.md`)
+- Prototyping web-developer profile
+
+---
+
 ## Implementation Priority
 
 | Enhancement | Complexity | Impact | Priority |
@@ -2937,7 +3092,8 @@ node cxms-report.mjs --auto      # Auto-submit if consented (session end)
 | E16: Parent-Child CxMS Convention Inheritance | Low | High | 7 (IMPLEMENTED) |
 | E17: Pre-Approved Operations | Low | High | 8 (IMPLEMENTED) |
 | E18: Automated Telemetry with Consent | Low | High | 9 (IMPLEMENTED) |
-| E1: Cross-Agent Coordination | Medium | High | 10 |
+| E19: Role-Based Deployment Profiles | Medium | Very High | 10 (IN PROGRESS) |
+| E1: Cross-Agent Coordination | Medium | High | 11 |
 | E12: Multi-Agent CxMS Orchestration | High | Very High | 10 (Enterprise) |
 | E6: Token Usage & Conservation | Medium | High | 11 |
 | E7: Context Usage & Conservation | Medium | High | 12 |

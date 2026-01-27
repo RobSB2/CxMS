@@ -1,0 +1,67 @@
+{
+  "$schema": "https://claude.ai/schemas/claude-code-settings.json",
+  "profile": {
+    "id": "web-developer",
+    "version": "1.0.0",
+    "description": "Claude Code settings for web development"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(yarn:*)",
+      "Bash(pnpm:*)",
+      "Bash(node:*)",
+      "Bash(playwright:*)",
+      "Bash(prettier:*)",
+      "Bash(eslint:*)",
+      "Bash(tsc:*)",
+      "Bash(vite:*)",
+      "Bash(next:*)",
+      "Bash(nuxt:*)",
+      "Bash(git:*)",
+      "mcp__fetch__*",
+      "mcp__filesystem__*"
+    ],
+    "deny": []
+  },
+  "env": {
+    "PLAYWRIGHT_BROWSERS_PATH": "~/.cache/ms-playwright",
+    "NODE_ENV": "development"
+  },
+  "mcp_servers": {
+    "fetch": {
+      "package": "@anthropic/fetch",
+      "description": "Make HTTP requests for API testing"
+    },
+    "filesystem": {
+      "package": "@anthropic/filesystem",
+      "description": "File system operations",
+      "config": {
+        "allowed_paths": ["./"]
+      }
+    }
+  },
+  "tools": {
+    "global": {
+      "playwright": {
+        "version": "latest",
+        "install_browsers": true,
+        "browser_path": "~/.cache/ms-playwright"
+      },
+      "prettier": {
+        "version": "latest"
+      },
+      "eslint": {
+        "version": "latest"
+      }
+    }
+  },
+  "context_hints": [
+    "Check for package.json to identify project type",
+    "Look for playwright.config.ts for existing test setup",
+    "Review tsconfig.json for TypeScript configuration",
+    "Check .prettierrc or prettier.config.js for formatting rules",
+    "Review .eslintrc for linting configuration"
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "version": "1.0.0",
+  "description": "CxMS Role-Based Deployment Profiles",
+  "profiles": [
+    {
+      "id": "web-developer",
+      "name": "Web Developer",
+      "description": "Full-stack web development with testing, browser automation, and frontend tools. Triggers on: React, Vue, Next.js, TypeScript, testing, Playwright, CSS, frontend, API development.",
+      "status": "stable",
+      "tools": {
+        "global": ["playwright", "prettier", "eslint"],
+        "mcp_servers": ["@anthropic/fetch", "@anthropic/filesystem"],
+        "anthropic_skills": ["webapp-testing", "web-artifacts-builder"]
+      },
+      "files": [
+        "web-developer/SKILL.md",
+        "web-developer/CLAUDE_EXTENSION.md",
+        "web-developer/settings.json"
+      ],
+      "contexts": ["tech-stack", "api-patterns", "testing-strategy"]
+    },
+    {
+      "id": "project-manager",
+      "name": "Project Manager / Agent Coordinator",
+      "description": "Multi-agent coordination, documentation workflows, and project tracking. Triggers on: planning, coordination, documentation, team communication, roadmaps, requirements.",
+      "status": "planned",
+      "tools": {
+        "global": [],
+        "mcp_servers": ["@anthropic/fetch"],
+        "anthropic_skills": ["doc-coauthoring", "internal-comms"]
+      },
+      "files": [
+        "project-manager/SKILL.md",
+        "project-manager/CLAUDE_EXTENSION.md",
+        "project-manager/settings.json"
+      ],
+      "contexts": ["team-structure", "project-timeline", "stakeholders"]
+    },
+    {
+      "id": "data-engineer",
+      "name": "Data Engineer",
+      "description": "Data pipelines, SQL, analytics, and ETL workflows. Triggers on: SQL, databases, pandas, data pipelines, ETL, analytics, data modeling.",
+      "status": "planned",
+      "tools": {
+        "global": ["duckdb"],
+        "mcp_servers": ["@anthropic/postgres", "@anthropic/sqlite"],
+        "anthropic_skills": ["xlsx", "pdf"]
+      },
+      "files": [
+        "data-engineer/SKILL.md",
+        "data-engineer/CLAUDE_EXTENSION.md",
+        "data-engineer/settings.json"
+      ],
+      "contexts": ["data-sources", "schema-docs", "pipeline-architecture"]
+    },
+    {
+      "id": "devops",
+      "name": "DevOps / Infrastructure",
+      "description": "CI/CD, containers, cloud infrastructure, and deployment automation. Triggers on: Docker, Kubernetes, Terraform, AWS, Azure, GCP, CI/CD, infrastructure.",
+      "status": "planned",
+      "tools": {
+        "global": ["docker", "terraform", "kubectl"],
+        "mcp_servers": ["@anthropic/fetch", "@anthropic/filesystem"],
+        "anthropic_skills": []
+      },
+      "files": [
+        "devops/SKILL.md",
+        "devops/CLAUDE_EXTENSION.md",
+        "devops/settings.json"
+      ],
+      "contexts": ["infra-topology", "deployment-targets", "security-policies"]
+    },
+    {
+      "id": "technical-writer",
+      "name": "Technical Writer",
+      "description": "Documentation, API specs, and content creation. Triggers on: documentation, README, API docs, tutorials, technical writing, style guides.",
+      "status": "planned",
+      "tools": {
+        "global": ["vale", "markdownlint"],
+        "mcp_servers": ["@anthropic/fetch"],
+        "anthropic_skills": ["docx", "pdf", "doc-coauthoring", "brand-guidelines"]
+      },
+      "files": [
+        "technical-writer/SKILL.md",
+        "technical-writer/CLAUDE_EXTENSION.md",
+        "technical-writer/settings.json"
+      ],
+      "contexts": ["audience-personas", "terminology", "brand-voice"]
+    }
+  ],
+  "merge_rules": {
+    "tools.global": "union",
+    "tools.mcp_servers": "union_dedup",
+    "tools.anthropic_skills": "union_dedup",
+    "permissions": "union",
+    "claude_extension": "concatenate"
+  }
+}

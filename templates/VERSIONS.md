@@ -1,7 +1,7 @@
 # CxMS Template Versions
 
-**CxMS Framework Version:** 1.5
-**Last Updated:** 2026-01-26
+**CxMS Framework Version:** 1.6
+**Last Updated:** 2026-01-27
 
 This file is the single source of truth for template versions. AI assistants should fetch this file to check for updates.
 
@@ -62,11 +62,33 @@ This file is the single source of truth for template versions. AI assistants sho
 | `MIGRATION.md` | 1.0 | Fresh install & upgrade guide |
 | `VERSIONS.md` | 1.0 | This file |
 
+## Role-Based Profiles (`templates/profiles/`)
+
+| Profile | Version | Status | Description |
+|---------|---------|--------|-------------|
+| `web-developer` | 1.0.0 | Stable | Playwright, Prettier, ESLint, web testing |
+| `project-manager` | - | Planned | Multi-agent coordination, documentation |
+| `data-engineer` | - | Planned | DuckDB, SQL, data pipelines |
+| `devops` | - | Planned | Docker, Terraform, infrastructure |
+| `technical-writer` | - | Planned | Vale, documentation, content creation |
+
+**Profile Files:**
+| File | Description |
+|------|-------------|
+| `MANIFEST.json` | Profile registry and metadata |
+| `PROJECT_profile.json.template` | Project-local profile configuration |
+| `{profile}/SKILL.md` | Anthropic-compatible profile metadata |
+| `{profile}/CLAUDE_EXTENSION.md` | Role-specific AI guidance |
+| `{profile}/settings.json` | Claude Code permission presets |
+| `{profile}/install.sh` | Unix tool installation script |
+| `{profile}/install.ps1` | Windows tool installation script |
+
 ## Tools (`tools/`)
 
 | File | Version | Platform | Description |
 |------|---------|----------|-------------|
 | `cxms-report.mjs` | 1.1.0 | Node.js | Telemetry reporter with consent management |
+| `cxms-profile.mjs` | 1.0.0 | Node.js | Profile manager CLI |
 | `statusline-command.sh` | 1.1.0 | Bash (Mac/Linux) | Context monitoring statusline script |
 | `statusline-command.ps1` | 1.0.0 | PowerShell (Windows) | Context monitoring statusline script |
 | `supabase-schema.sql` | 1.0 | SQL | Telemetry database schema |
@@ -77,6 +99,7 @@ This file is the single source of truth for template versions. AI assistants sho
 
 | Date | CxMS Version | Changes |
 |------|--------------|---------|
+| 2026-01-27 | 1.6 | **E19 Role-Based Deployment Profiles** - web-developer profile, cxms-profile CLI |
 | 2026-01-25 | 1.5 | E16 Parent-Child Inheritance, E17 Approvals template |
 | 2026-01-24 | 1.4 | Added VERSIONS.md, version check, health check, Context Monitoring |
 | 2026-01-24 | 1.3 | E14 Portability Kit, E15 Update Management, Multi-tool support |

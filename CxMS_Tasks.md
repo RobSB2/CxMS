@@ -2,11 +2,35 @@
 
 **Template Version:** 1.0
 **Purpose:** Track development tasks for CxMS itself
-**Last Updated:** 2026-01-26 (Session 11)
+**Last Updated:** 2026-01-27 (Session 15)
 
 ---
 
 ## Active Tasks
+
+### TASK-009: E19 Role-Based Deployment Profiles
+**Status:** In Progress
+**Priority:** High
+**Description:** Implement role-based deployment profiles with global tooling
+
+**Checklist:**
+- [x] Design profile architecture (layered, composable, Anthropic-compatible)
+- [x] Create MANIFEST.json with 5 profile definitions
+- [x] Build web-developer profile (SKILL.md, CLAUDE_EXTENSION.md, settings.json)
+- [x] Create installation scripts (install.sh, install.ps1)
+- [x] Build cxms-profile.mjs CLI tool
+- [x] Update VERSIONS.md (v1.6)
+- [x] Document E19 in roadmap
+- [ ] Build project-manager profile
+- [ ] Build data-engineer profile
+- [ ] Build devops profile
+- [ ] Build technical-writer profile
+- [ ] Test end-to-end install workflow
+- [ ] Update README with profiles documentation
+
+**Next Action:** Build remaining profiles or test web-developer install
+
+---
 
 ### TASK-006: E16 + E17 Implementation
 **Status:** Complete
