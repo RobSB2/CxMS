@@ -12,7 +12,7 @@
 
 This document tracks the CxMS product roadmap, including planned enhancements, implementation status, and priorities. Enhancements are discovered through real-world usage and community feedback.
 
-**Current Status:** 18 enhancements documented, 6 implemented (E9, E10, E13, E16, E17, E18), 12 in RFC stage
+**Current Status:** 20 enhancements documented, 7 implemented (E9, E10, E13, E16, E17, E18, E19), 13 in RFC stage
 
 ---
 
@@ -3072,10 +3072,151 @@ cxms profile update web-developer
 
 ### Status
 
-**Status: IN PROGRESS (Session 15)**
+**Status: IMPLEMENTED (Session 15)**
 
-- Design complete (see `drafts/E19_Role_Based_Deployment_Profiles.md`)
-- Prototyping web-developer profile
+- All 5 profiles complete: web-developer, project-manager, data-engineer, devops, technical-writer
+- `cxms-profile.mjs` CLI tool operational
+- web-developer profile tested end-to-end
+
+---
+
+## Enhancement 20: Multi-Tool Profile Export
+
+### Problem Statement
+
+CxMS profiles are currently **Claude Code exclusive**. However, many developers use multiple AI coding assistants:
+
+- Cursor with `.cursorrules`
+- GitHub Copilot with `copilot-instructions.md`
+- Windsurf with `.windsurfrules`
+- Aider with `.aider.conf.yml` and `CONVENTIONS.md`
+- Gemini with `GEMINI.md`
+
+Each tool has its own configuration format, but they all contain similar information:
+- Coding conventions and style
+- Framework-specific guidance
+- Role-appropriate instructions
+
+**Opportunity:** CxMS profiles contain rich role-based guidance that could benefit users of ANY AI coding tool, not just Claude Code.
+
+### Proposed Solution: Multi-Tool Export
+
+Add export functionality to generate tool-specific configs from CxMS profiles:
+
+```bash
+# Export to Cursor format
+cxms profile export web-developer --format cursorrules
+# Creates: .cursorrules
+
+# Export to GitHub Copilot format
+cxms profile export web-developer --format copilot
+# Creates: .github/copilot-instructions.md
+
+# Export to Windsurf format
+cxms profile export web-developer --format windsurfrules
+# Creates: .windsurfrules
+
+# Export to Aider format
+cxms profile export web-developer --format aider
+# Creates: CONVENTIONS.md
+
+# Export all formats at once
+cxms profile export web-developer --format all
+```
+
+### Export Mapping
+
+| CxMS Component | Cursor | Copilot | Windsurf | Aider |
+|----------------|--------|---------|----------|-------|
+| CLAUDE_EXTENSION.md | .cursorrules | copilot-instructions.md | .windsurfrules | CONVENTIONS.md |
+| Pre-approved operations | Rules section | Instructions | Rules | Config |
+| Tool recommendations | Comments | Comments | Comments | - |
+| Framework patterns | Code rules | Code rules | Code rules | Code rules |
+
+### Format Transformations
+
+**From CLAUDE_EXTENSION.md:**
+```markdown
+## Pre-Approved Operations
+| Operation | Command Pattern |
+|-----------|-----------------|
+| Run tests | `npm test` |
+| Format code | `npx prettier --write` |
+
+## Framework Patterns
+- Use functional components with hooks
+- Prefer TypeScript strict mode
+```
+
+**To .cursorrules:**
+```
+You are a web developer assistant.
+
+When working on this codebase:
+- Run tests with: npm test
+- Format code with: npx prettier --write
+
+Framework conventions:
+- Use functional components with hooks
+- Prefer TypeScript strict mode
+```
+
+**To copilot-instructions.md:**
+```markdown
+# Coding Standards
+
+## Testing
+Run tests with `npm test`
+
+## Formatting
+Use Prettier: `npx prettier --write`
+
+## React Conventions
+- Use functional components with hooks
+- Prefer TypeScript strict mode
+```
+
+### Implementation Phases
+
+**Phase 1: Core Export (MVP)**
+- [ ] Add `export` command to cxms-profile.mjs
+- [ ] Implement `.cursorrules` export
+- [ ] Implement `copilot-instructions.md` export
+- [ ] Implement `.windsurfrules` export
+
+**Phase 2: Full Coverage**
+- [ ] Implement Aider `CONVENTIONS.md` export
+- [ ] Implement Gemini `GEMINI.md` export
+- [ ] Add `--format all` option
+- [ ] Preserve tool-specific features in exports
+
+**Phase 3: Sync & Watch**
+- [ ] `cxms profile sync` - regenerate all exports when profile changes
+- [ ] `cxms profile watch` - auto-regenerate on file change
+- [ ] Git hooks integration for auto-sync
+
+### Value Proposition
+
+| Benefit | Impact |
+|---------|--------|
+| Single source of truth | Define once, export everywhere |
+| Tool flexibility | Switch AI tools without losing config |
+| Team consistency | Same conventions across all AI assistants |
+| CxMS differentiation | Only system with cross-tool export |
+
+### Competitive Landscape
+
+**Current state (Jan 2026):**
+- [cursor.directory](https://cursor.directory/) - Cursor rules only
+- [awesome-copilot](https://github.com/github/awesome-copilot) - Copilot instructions only
+- [ClaudeMDEditor](https://www.claudemdeditor.com/) - Visual editor, no generation
+- **No tool generates cross-platform configs from a single source**
+
+CxMS would be **first to market** with role-based, cross-tool configuration.
+
+### Status
+
+**Status: RFC**
 
 ---
 
@@ -3092,7 +3233,8 @@ cxms profile update web-developer
 | E16: Parent-Child CxMS Convention Inheritance | Low | High | 7 (IMPLEMENTED) |
 | E17: Pre-Approved Operations | Low | High | 8 (IMPLEMENTED) |
 | E18: Automated Telemetry with Consent | Low | High | 9 (IMPLEMENTED) |
-| E19: Role-Based Deployment Profiles | Medium | Very High | 10 (IN PROGRESS) |
+| E19: Role-Based Deployment Profiles | Medium | Very High | 10 (IMPLEMENTED) |
+| E20: Multi-Tool Profile Export | Medium | High | 11 |
 | E1: Cross-Agent Coordination | Medium | High | 11 |
 | E12: Multi-Agent CxMS Orchestration | High | Very High | 10 (Enterprise) |
 | E6: Token Usage & Conservation | Medium | High | 11 |
