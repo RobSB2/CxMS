@@ -124,7 +124,8 @@ $installedJson = @{
     mcp_servers = @("@anthropic/fetch", "@anthropic/filesystem")
 } | ConvertTo-Json -Depth 3
 
-$installedJson | Out-File -FilePath "$CXMS_DIR\installed.json" -Encoding UTF8
+# Write without BOM for JSON compatibility
+[System.IO.File]::WriteAllText("$CXMS_DIR\installed.json", $installedJson)
 Write-Success "Profile record created at $CXMS_DIR\installed.json"
 
 Write-Host ""

@@ -23,7 +23,7 @@
       "id": "project-manager",
       "name": "Project Manager / Agent Coordinator",
       "description": "Multi-agent coordination, documentation workflows, and project tracking. Triggers on: planning, coordination, documentation, team communication, roadmaps, requirements.",
-      "status": "planned",
+      "status": "stable",
       "tools": {
         "global": [],
         "mcp_servers": ["@anthropic/fetch"],
