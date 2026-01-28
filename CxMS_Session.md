@@ -2,8 +2,8 @@
 
 **Template Version:** 1.1
 **Purpose:** Track current development state for CxMS itself
-**Last Updated:** 2026-01-27
-**Session Number:** 16
+**Last Updated:** 2026-01-28
+**Session Number:** 17
 
 ---
 
@@ -11,13 +11,45 @@
 
 | Field | Value |
 |-------|-------|
-| Status | Session 16: E20 Multi-Tool Profile Export |
+| Status | Session 17: GitHub metrics, Death Star prompt assist |
 | Repo | https://github.com/RobSB2/CxMS |
 | Dashboard | https://robsb2.github.io/CxMS/dashboard |
 | Templates | 27 + profiles system + VERSIONS.md |
 | Enhancements | 21 documented, 9 implemented, 4 superseded |
 | CxMS Files | 8 self-tracking + 5 tools + dashboard + profiles |
 | Next | Complete remaining profiles, npm publish |
+
+---
+
+## Session 17 Note
+
+**Focus:** GitHub metrics review, Death Star prompt engineering assist
+
+**Key Accomplishments:**
+1. Full CxMS startup sequence executed (via CxMS_Startup.md)
+2. GitHub traffic review:
+   - 601 views (236 unique) - up from 557
+   - 760 clones (257 unique) - up from 632
+   - 5 stars, 2 forks
+   - Sustained clone rate (~128/day)
+3. Supabase telemetry dashboard checked:
+   - 2 unique installations, 15 submissions
+   - Versions: v1.4 (1), v1.5 (2), v1.6 (1)
+   - All users in Americas (US East)
+4. Death Star prompt engineering (separate project):
+   - Improved prompts for AI workstation build specs
+   - Improved prompts for private LLM platform architecture
+   - Removed unrelated obituary search task
+   - Multi-agent coordination: WebDev CLAUDE handling execution
+
+**Files Modified (external project):**
+- `C:\Users\Public\PhpstormProjects\death-star\death-star-prompt.md`
+
+**Traffic (14-day rolling):**
+- 601 views (236 unique)
+- 760 clones (257 unique)
+
+**Codename:** Master Yoda activated 🐸
 
 ---
 
@@ -345,6 +377,7 @@ node tools/cxms-profile.mjs export web-developer --format all --output ./my-proj
 
 | Session | Date | Key Accomplishments |
 |---------|------|---------------------|
+| 17 | 2026-01-28 | **Metrics & Prompt Eng** - GitHub traffic, Death Star prompts, multi-agent |
 | 16 | 2026-01-27 | **E20 Multi-Tool Export** - export to Cursor, Copilot, Windsurf, Aider |
 | 15 | 2026-01-27 | **E19 Role-Based Profiles** - web-developer profile, cxms-profile CLI, v1.6 |
 | 14 | 2026-01-26 | **Community Dashboard LIVE** - GitHub Pages, Chart.js visualizations |
