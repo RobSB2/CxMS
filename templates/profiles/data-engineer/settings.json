@@ -1,0 +1,47 @@
+{
+  "$schema": "https://claude.ai/schemas/claude-code-settings.json",
+  "profile": {
+    "id": "data-engineer",
+    "version": "1.0.0",
+    "description": "Claude Code settings for data engineering and analytics"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(duckdb:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(pip:*)",
+      "Bash(git:*)",
+      "mcp__postgres__*",
+      "mcp__sqlite__*",
+      "mcp__fetch__*"
+    ],
+    "deny": []
+  },
+  "env": {},
+  "mcp_servers": {
+    "postgres": {
+      "package": "@anthropic/postgres",
+      "description": "PostgreSQL database access"
+    },
+    "sqlite": {
+      "package": "@anthropic/sqlite",
+      "description": "SQLite database access"
+    }
+  },
+  "tools": {
+    "global": {
+      "duckdb": {
+        "version": "latest",
+        "description": "Embedded SQL analytics database"
+      }
+    }
+  },
+  "context_hints": [
+    "Check for schema documentation in docs/ or schemas/",
+    "Look for existing SQL files in queries/ or sql/",
+    "Review data pipeline configs (airflow/, prefect/, etc.)",
+    "Check for data validation rules in tests/",
+    "Look for .env files with database connection strings"
+  ]
+}

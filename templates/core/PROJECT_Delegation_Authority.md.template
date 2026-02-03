@@ -1,0 +1,187 @@
+# [PROJECT] - Delegation Authority
+
+**CxMS Version:** 1.6
+**Template Version:** 1.0
+**Purpose:** Central authority file for multi-agent task delegation
+**Human Operator:** [Name]
+**Last Updated:** [Date]
+
+---
+
+## Authority Grant
+
+This document establishes delegation authority for AI agents operating within the [PROJECT] context.
+
+**Principle:** Only the human operator can grant delegation authority. Agents cannot self-authorize or expand their own scope.
+
+---
+
+## Delegation Token
+
+```
+Token: [PROJECT]-[YEAR]-[OPERATOR_INITIALS]-[RANDOM_4CHAR]
+Example: CXMS-2026-RSB-7X9K
+```
+
+**Token Location:** This file (or `.local` variant for sensitive deployments)
+**Token Rotation:** Annually or after any security incident
+
+---
+
+## Authorized Coordinators
+
+| Coordinator Agent | Token | Authorized Since | Notes |
+|-------------------|-------|------------------|-------|
+| [COORDINATOR_1] | [TOKEN] | [DATE] | Primary coordinator |
+
+---
+
+## Delegation Scope Matrix
+
+### By Agent Pair
+
+| Coordinator | Can Delegate To | Task Types | Path Restrictions | Operation Limits |
+|-------------|-----------------|------------|-------------------|------------------|
+| [COORD_1] | [AGENT_A] | docs, graphics, UI | templates/, docs/ | read, write |
+| [COORD_1] | [AGENT_B] | code, tests | src/, tests/ | read, write, execute |
+
+### Task Type Definitions
+
+| Task Type | Description | Example Tasks |
+|-----------|-------------|---------------|
+| docs | Documentation creation/editing | README updates, guides |
+| graphics | Visual asset creation | Diagrams, icons, charts |
+| code | Source code implementation | Features, bug fixes |
+| tests | Test creation/execution | Unit tests, integration tests |
+| research | Information gathering | Web search, file analysis |
+| review | Code/doc review | PR reviews, audits |
+
+### Operation Definitions
+
+| Operation | Description | Risk Level |
+|-----------|-------------|------------|
+| read | Read files only | Low |
+| write | Create/modify files | Medium |
+| execute | Run commands/scripts | High |
+| delete | Remove files | High - Requires explicit scope |
+
+---
+
+## Prohibited Delegations
+
+The following CANNOT be delegated without explicit human approval per-instance:
+
+| Operation | Reason |
+|-----------|--------|
+| `.local` file modifications | Protected IP/sensitive content |
+| Credential/secret access | Security boundary |
+| Git force operations | Destructive potential |
+| File deletions | Data loss risk |
+| External API calls with auth | Security boundary |
+| Scope expansion requests | Only human can grant |
+
+---
+
+## Verification Protocol
+
+### For Coordinators (When Delegating)
+
+1. Include delegation token in task file
+2. Specify exact scope (paths, operations)
+3. Set task expiration (optional)
+4. Log delegation in Activity Log
+
+### For Sub-Agents (When Receiving)
+
+1. Verify token matches this authority file
+2. Verify coordinator is in Authorized Coordinators list
+3. Verify task is within scope matrix
+4. Reject if any verification fails
+5. Log acceptance/rejection
+
+### Rejection Response Template
+
+```markdown
+**DELEGATION REJECTED**
+
+Reason: [Token mismatch | Coordinator not authorized | Task outside scope]
+Details: [Specific issue]
+Action Required: Human operator must grant explicit approval
+
+Delegation File: [path]
+Authority File: [PROJECT]_Delegation_Authority.md
+```
+
+---
+
+## Audit Trail
+
+### Recent Delegations
+
+| Date | Coordinator | Sub-Agent | Task | Status | Notes |
+|------|-------------|-----------|------|--------|-------|
+| | | | | | |
+
+### Rejected Delegations
+
+| Date | Coordinator | Sub-Agent | Task | Rejection Reason |
+|------|-------------|-----------|------|------------------|
+| | | | | |
+
+---
+
+## Revocation
+
+### Immediate Revocation
+
+To revoke all delegations immediately:
+1. Change the token in this file
+2. Notify all agents of token change
+3. Log revocation event
+
+### Selective Revocation
+
+To revoke specific coordinator authority:
+1. Remove coordinator from Authorized Coordinators table
+2. Clear their entries from Scope Matrix
+3. Log revocation event
+
+---
+
+## Emergency Procedures
+
+### Suspected Unauthorized Delegation
+
+1. STOP all agent operations
+2. Review Activity Logs and Audit Trail
+3. Check for scope violations
+4. Revoke tokens if necessary
+5. Document incident
+
+### Token Compromise
+
+1. Generate new token immediately
+2. Update this file
+3. Propagate to all agent CLAUDE.md files
+4. Review all activity during compromise window
+
+---
+
+## Related Files
+
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Delegated_Tasks.md` | Task inbox for receiving delegations |
+| `[PROJECT]_Activity_Log.md` | Delegation audit trail |
+| `CLAUDE.md` | Token verification reference |
+
+---
+
+## Document Control
+
+| Field | Value |
+|-------|-------|
+| Created | [DATE] |
+| Last Modified | [DATE] |
+| Human Approval | Required for any changes |
+| Classification | [Internal / Confidential] |

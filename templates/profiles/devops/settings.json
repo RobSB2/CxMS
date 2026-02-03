@@ -1,0 +1,75 @@
+{
+  "$schema": "https://claude.ai/schemas/claude-code-settings.json",
+  "profile": {
+    "id": "devops",
+    "version": "1.0.0",
+    "description": "Claude Code settings for infrastructure and DevOps"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(docker:build)",
+      "Bash(docker:run)",
+      "Bash(docker:ps)",
+      "Bash(docker:logs)",
+      "Bash(docker:exec)",
+      "Bash(docker:images)",
+      "Bash(docker compose:*)",
+      "Bash(terraform:init)",
+      "Bash(terraform:plan)",
+      "Bash(terraform:fmt)",
+      "Bash(terraform:validate)",
+      "Bash(kubectl:get)",
+      "Bash(kubectl:describe)",
+      "Bash(kubectl:logs)",
+      "Bash(kubectl:config)",
+      "Bash(git:*)",
+      "mcp__fetch__*",
+      "mcp__filesystem__*"
+    ],
+    "deny": []
+  },
+  "env": {},
+  "mcp_servers": {
+    "fetch": {
+      "package": "@anthropic/fetch",
+      "description": "HTTP requests for API interactions"
+    },
+    "filesystem": {
+      "package": "@anthropic/filesystem",
+      "description": "File system operations"
+    }
+  },
+  "tools": {
+    "global": {
+      "docker": {
+        "version": "latest",
+        "description": "Container runtime",
+        "install_note": "Install Docker Desktop or Docker Engine"
+      },
+      "terraform": {
+        "version": "latest",
+        "description": "Infrastructure as Code"
+      },
+      "kubectl": {
+        "version": "latest",
+        "description": "Kubernetes CLI"
+      }
+    }
+  },
+  "context_hints": [
+    "Check for Dockerfile or docker-compose.yml",
+    "Look for Terraform files in terraform/ or infra/",
+    "Review Kubernetes manifests in k8s/ or deploy/",
+    "Check CI/CD configs in .github/workflows/ or .gitlab-ci.yml",
+    "Look for infrastructure documentation in docs/infra/"
+  ],
+  "dangerous_commands": {
+    "require_confirmation": [
+      "terraform apply",
+      "terraform destroy",
+      "kubectl delete",
+      "docker system prune",
+      "docker volume prune"
+    ]
+  }
+}

@@ -1,0 +1,435 @@
+# CLAUDE.md
+
+**CxMS Version:** 1.6
+**Template Version:** 1.6
+**Deployment Level:** Lite | Standard | Max
+**Code Name:** [Optional - give your AI assistant a personality!]
+**CxMS:** Agent Context Management System (https://github.com/RobSB2/CxMS)
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+<!-- Code Name Examples: Master Yoda (wise/patient), Luke Skywalker (action-ready),
+     Obi-Wan Kenobi (diplomatic). Fun it is, required it is not. -->
+
+---
+
+## MANDATORY REQUIREMENTS
+
+### Session Start Requirements
+
+Before ANY work, you MUST:
+1. Read this file completely
+2. Read `[PROJECT]_Approvals.md` for pre-approved operations (skip permission prompts for these)
+3. Read `[PROJECT]_Session.md` completely
+4. Read `[PROJECT]_Tasks.md` completely
+5. Provide verification summary to user
+
+**After reading, you MUST provide:**
+- Current active task (from Tasks.md)
+- Last session date (from Session.md)
+- What was done last session (from Session.md)
+- Recommended next action
+
+**If you cannot provide this summary, you have not read the required files.**
+
+### CxMS Version & Health Check (On Session Start)
+
+After providing the session summary, perform version and health checks:
+
+**Version Check:**
+1. Read the `CxMS Version` from this file
+2. Fetch: `https://raw.githubusercontent.com/RobSB2/CxMS/main/templates/VERSIONS.md`
+3. Compare versions - if local < remote, notify user:
+   > "CxMS update available (vX.X → vY.Y). Would you like me to check what's new?"
+4. If user accepts, follow `MIGRATION.md` update process
+
+**Deployment Health Check:**
+1. Read the `Deployment Level` from this file (Lite/Standard/Max)
+2. Inventory which CxMS files exist in the project
+3. Check for level-up signals (see `DEPLOYMENT.md` for criteria)
+4. If upgrade recommended, notify user:
+   > "Based on [signal], you might benefit from adding [file]. Would you like to upgrade to [level]?"
+
+**Note:** If fetch fails (offline, etc.), skip version check silently and continue. Health check runs locally.
+
+### Session End Requirements
+
+Before ending OR when context compacts, you MUST:
+1. Update `[PROJECT]_Session.md` with all changes
+2. Update Session Metrics section (if tracking enabled)
+3. Update `[PROJECT]_Tasks.md` if task status changed
+4. Log any significant decisions in `[PROJECT]_Decision_Log.md` (if using)
+5. Run telemetry if enabled (see below)
+6. Confirm update completion to user
+
+### Telemetry Configuration
+
+CxMS includes optional telemetry to help improve the system. **No personal info, project names, or code is collected.**
+
+| Setting | Value |
+|---------|-------|
+| Telemetry | Enabled / Disabled |
+| Installation ID | [auto-generated on first run] |
+
+**On Session Start:**
+```bash
+node tools/cxms-report.mjs --retry-queue --quiet
+```
+This flushes any queued submissions from previous sessions.
+
+**On Session End:**
+```bash
+node tools/cxms-report.mjs --auto --quiet
+```
+This queues metrics locally, then attempts remote submit.
+
+**Opt-Out:** Users can disable anytime:
+```bash
+node tools/cxms-report.mjs --revoke
+```
+
+**Opt Back In:**
+```bash
+node tools/cxms-report.mjs --consent
+```
+
+**Check Status:**
+```bash
+node tools/cxms-report.mjs --status
+```
+
+**Dashboard:** https://robsb2.github.io/CxMS/dashboard
+
+*Telemetry helps track which enhancements are most requested and validates CxMS effectiveness. Participation is appreciated but never required.*
+
+### Context Monitoring (CRITICAL)
+
+**Active Monitoring - READ `.claude/context-status.json`:**
+- Check context status every 10 tool calls or after any large file read (>500 lines)
+- The statusline script updates this file with current context %
+- Example: `{"ctx_pct": 38, "remaining_percentage": 62, "updated": "..."}`
+
+**On Session Start:**
+- Read `.claude/context-status.json` and note starting context %
+- If starting above 50%, proactively plan for shorter session
+
+**Threshold Actions:**
+| Context % | Action |
+|-----------|--------|
+| 65% | WARN user: "Context at 65%. Recommend checkpoint soon." |
+| 75% | AUTO-CHECKPOINT: Write checkpoint to Session.md immediately |
+| 80% | STOP: Full session save, do NOT continue until user confirms |
+
+**Note:** Auto-compaction triggers around 85% - the 80% STOP gives buffer before data loss.
+
+**Checkpoint Format (for Session.md):**
+```markdown
+### Checkpoint [TIMESTAMP] - Context at [X]%
+
+**Current Task:** [What we're working on]
+**Progress:** [What's done, what remains]
+**Key Files:** [file:line references for work in progress]
+**Pending Decisions:** [Any unresolved items]
+**Resume Prompt:** [Exact prompt to continue from here]
+```
+
+**Pre-Compaction Save Protocol (90%+):**
+1. STOP all work immediately
+2. Write full checkpoint to `[PROJECT]_Session.md`
+3. List ALL work in progress with file:line references
+4. Note uncommitted changes (run `git status`)
+5. Write continuation prompt for new session
+6. Tell user: "Session saved. Start new session with: [continuation prompt]"
+
+**Why This Matters:** Auto-compaction preserves a summary but loses nuance. Proactive saves preserve full context.
+
+### Mid-Session Requirements (if metrics tracking enabled)
+
+After significant work packages:
+1. Consider updating Session Metrics (compaction events, tasks completed)
+2. Update Session.md if context is getting full
+3. Do checkpoint saves at natural breakpoints in long sessions
+
+### Periodic Context Verification (E2)
+
+Every 3-5 work packages, you MUST:
+
+1. **Re-read CLAUDE.md preferences section** - Verify you're following stated conventions
+2. **Verify current work aligns with active task** - Check Tasks.md for drift
+3. **Check Decision Log** - Review relevant prior decisions (if using)
+4. **Confirm approach with user** - If any drift detected, ask before continuing
+
+**Trigger Conditions for Immediate Re-Read:**
+- User mentions something contradicting your understanding
+- You're unsure about a preference or pattern
+- Starting work on a different area of the codebase
+- Context compaction warning appears (65%+)
+- After any auto-compaction event
+
+**Why This Matters:** Long sessions can drift from documented context. Periodic verification prevents decisions inconsistent with project preferences.
+
+### CxMS Health Check (Staleness Audit)
+
+When requested or at session end, perform a staleness audit:
+
+1. **Read all CxMS files** - Load current state of each
+2. **Cross-reference data** - Check for inconsistencies:
+   - Task status matches between Tasks.md and Session.md
+   - File counts/deployments align across files
+   - Activity log covers recent deployments
+   - Session.md reflects current work
+3. **Generate Status Report** - Table format with status and notes
+4. **List Required Updates** - Specific issues to fix
+5. **Offer to update** - "Want me to update these files?"
+
+**Status Icons:**
+- ✅ Current/OK - No action needed
+- ⚠️ Stale/Inconsistent - Needs update
+- ❌ Missing - File expected but not found
+
+```
+┌────────────────────────────────────────────────────────┐
+│  BEFORE ENDING ANY SESSION OR COMPACTING:              │
+│                                                        │
+│  You MUST update [PROJECT]_Session.md                  │
+│                                                        │
+│  FAILURE TO DO THIS = LOST WORK                        │
+└────────────────────────────────────────────────────────┘
+```
+
+### These requirements are NON-NEGOTIABLE
+Failure to follow them results in lost work and wasted time.
+
+---
+
+## Cross-Session Coordination (E1)
+
+<!--
+OPTIONAL: Enable this section if coordinating with other AI sessions.
+Remove this comment block when configuring.
+
+This project participates in cross-session coordination with other AI agents.
+-->
+
+### Configuration
+
+| Setting | Value |
+|---------|-------|
+| Coordination Enabled | Yes / No |
+| Notification File | `CROSS_SESSION_NOTIFICATIONS.md` |
+| Session Registry | `[PATH]/SESSION_REGISTRY.md` |
+
+### Related Projects
+
+| Project | Path | Relationship |
+|---------|------|--------------|
+| [PROJECT_A] | [PATH] | [e.g., "Methodology source"] |
+| [PROJECT_B] | [PATH] | [e.g., "Shared components"] |
+
+### Work Package Completion Requirements
+
+After completing each significant work package, you MUST:
+
+1. **Check Cross-Session Notifications**
+   - Read `CROSS_SESSION_NOTIFICATIONS.md`
+   - If notifications exist addressed to this session or "ALL":
+     - Read and understand each notification
+     - Complete required actions before proceeding
+     - Add acknowledgment with session ID and timestamp
+     - Move to "Acknowledged Notifications" section
+
+2. **Post Notifications if Needed**
+   - If your changes affect other sessions, post a notification
+   - Include: files changed, impact description, required actions
+   - Set appropriate priority (High/Medium/Low)
+
+3. **Update Session Registry**
+   - Update "Last Active" timestamp
+   - Update "Current Focus" if changed
+   - At session end: move to Session History with accomplishments
+
+### Definition: Work Package
+
+A work package is a logical unit of completed work:
+- A task marked complete
+- A set of related file changes committed
+- A deployment action
+- A significant decision made and documented
+
+### Session ID Format
+
+Generate your session ID as: `[PROJECT]-[YYYY-MM-DD]-[SEQUENCE]`
+
+Example: `CxMS-2026-01-20-A` (first CxMS session on Jan 20)
+
+---
+
+## Output Preferences
+<!-- Customize: Your preferences for AI output -->
+Suppress showing any code in output unless explicitly asked.
+
+## Communication Efficiency
+
+### Output Guidelines
+
+**Be Concise:**
+- Lead with the answer/action, not preamble
+- Skip narration of obvious actions ("Reading file..." - just read it)
+- Use terse confirmations: "Done." not "I have successfully completed the task."
+- Omit caveats for obvious/standard things
+
+**Match Response to Need:**
+| User Request | Appropriate Response |
+|--------------|---------------------|
+| Simple question | 1-2 sentences |
+| Status check | Bullet points |
+| Complex explanation | Structured but focused |
+| Task completion | Brief confirmation + critical notes only |
+
+**Skip These Unless Asked:**
+- Restating the user's request back to them
+- Explaining that you're about to do what was asked
+- Excessive encouragement or validation
+- Meta-commentary on your own process
+- Warnings about obvious limitations
+
+**Do Include:**
+- Actual errors or unexpected issues
+- Decisions that need user input
+- Important side effects of actions
+- Brief completion confirmations
+
+### Response Patterns
+
+```
+# Task Completion
+BAD:  "I have successfully completed the task you requested..."
+GOOD: "Done. Updated `config.js` with new API endpoint."
+
+# File Operations
+BAD:  "I'll now read the file..." [reads] "I have finished reading..."
+GOOD: [reads file] "Config uses PostgreSQL on port 5432."
+
+# Errors
+BAD:  "Unfortunately, I encountered an issue while attempting to..."
+GOOD: "Error: `users` table missing. Run migrations first?"
+```
+
+### Verbosity Levels
+
+- **Minimal:** User says "just do it" / "quick" → Actions without narration
+- **Standard:** Default → Brief context, results highlighted
+- **Detailed:** User says "explain" / "walk through" → Full rationale
+
+**Principle:** Appropriate communication, not minimal communication. Be verbose when teaching, debugging, or making irreversible changes.
+
+---
+
+## Overview
+<!-- Replace with your project description -->
+This is **[PROJECT NAME]**, a [brief description of what it does].
+
+## Project Structure
+
+| Directory | Purpose | Database |
+|-----------|---------|----------|
+| `src/` | Main source code | - |
+| `tests/` | Test files | - |
+
+## Tech Stack
+
+- **Backend**: [Language] [Version], [Framework]
+- **Frontend**: [Framework/Library]
+- **Database**: [Type] [Version]
+- **Build**: [Build tool if any]
+
+## Key Files
+
+- `[path/to/config]` - Configuration
+- `[path/to/entry]` - Main entry point
+
+## Database Connections
+<!-- If applicable -->
+Database credentials are in `[path/to/db/config]`.
+
+## Development Commands
+
+```bash
+# Install dependencies
+[command]
+
+# Run development server
+[command]
+
+# Run tests
+[command]
+
+# Build for production
+[command]
+```
+
+## Development Preferences
+<!-- Your preferences for new code -->
+- Prefer [X] over [Y] for [reason]
+- New features should go in [directory]
+- Follow [coding standard/style guide]
+
+---
+
+## Document Reading Order
+
+For full context, read in this order:
+1. This file (CLAUDE.md)
+2. `[PROJECT]_Context.md` - Documentation index
+3. `[PROJECT]_Session.md` - Current state
+4. `[PROJECT]_Tasks.md` - What needs doing
+
+For specific activities:
+- **Planning:** Also read `[PROJECT]_Plan.md`, `[PROJECT]_Strategy.md`
+- **Development:** Also read `[PROJECT]_Inventory.md`, `[PROJECT]_Exceptions.md`
+- **Review:** Also read `[PROJECT]_Decision_Log.md`, `[PROJECT]_Activity_Log.md`
+
+---
+
+## Documentation Index
+
+### Core Files (Required)
+| File | Purpose | Update Frequency |
+|------|---------|------------------|
+| `CLAUDE.md` | Project overview (this file) | Rarely |
+| `[PROJECT]_Approvals.md` | Pre-approved operations | When permissions change |
+| `[PROJECT]_Context.md` | Documentation index | When docs change |
+| `[PROJECT]_Session.md` | Current state | **Every session** |
+| `[PROJECT]_Tasks.md` | Task tracker | As tasks change |
+| `[PROJECT]_Prompt_History.md` | Audit trail | Each significant prompt |
+
+### Log Files (Optional)
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| `[PROJECT]_Activity_Log.md` | What was done (deployments, DB changes) | Track significant actions |
+| `[PROJECT]_Decision_Log.md` | Why decisions were made | Architectural choices |
+| `[PROJECT]_Issue_Log.md` | Problems encountered | Debug patterns |
+| `[PROJECT]_Session_Summary.md` | Quick session reference | Fast overview needed |
+| `[PROJECT]_Deployment.md` | TEST/PROD status | Multi-environment |
+| `[PROJECT]_Compaction_Log.md` | Context loss events | Debug context issues |
+| `[PROJECT]_Performance_Log.md` | CxMS effectiveness metrics | Periodic review (30-60 days) |
+
+### Project Documentation (Optional)
+| File | Purpose | When to Use |
+|------|---------|-------------|
+| `[PROJECT]_Plan.md` | Multi-phase project plan | Large features |
+| `[PROJECT]_Inventory.md` | Component listing | Complex codebases |
+| `[PROJECT]_Strategy.md` | AI workflow docs | Long-running AI work |
+| `[PROJECT]_Exceptions.md` | Technical workarounds | Edge cases exist |
+
+---
+
+## Document Version Control
+
+| Document | Version | Last Updated | Last Verified |
+|----------|---------|--------------|---------------|
+| CLAUDE.md | 1.0 | [DATE] | [DATE] |
+| Session.md | - | [dynamic] | [dynamic] |
+| Tasks.md | - | [dynamic] | [dynamic] |
+
+**Verification means:** AI read file and confirmed contents match project state

@@ -1,0 +1,190 @@
+# [Project Name] - Issue Log
+
+**Template Version:** 1.0
+**Purpose:** Track issues, errors, and their resolutions for pattern recognition
+**Created:** [DATE]
+**Format:** Append new issues, update status when resolved
+
+---
+
+## Active Issues
+
+### ISSUE-001: [Issue Title]
+**Reported:** [DATE]
+**Status:** 🔴 Open | 🟡 Investigating | 🟢 Resolved
+**Severity:** Critical | High | Medium | Low
+**Category:** Bug | Configuration | Environment | Process | Documentation | Other
+
+**Description:**
+[What went wrong - be specific]
+
+**Steps to Reproduce:**
+1. [Step 1]
+2. [Step 2]
+3. [Observe issue]
+
+**Expected Behavior:**
+[What should happen]
+
+**Actual Behavior:**
+[What actually happens]
+
+**Error Messages:**
+```
+[Any error output, stack traces, log entries]
+```
+
+**Environment:**
+- Server: [TEST/PROD/LOCAL]
+- Browser: [if applicable]
+- User: [if applicable]
+
+**Investigation Notes:**
+- [DATE]: [Finding or action taken]
+- [DATE]: [Finding or action taken]
+
+**Resolution:**
+[How it was fixed - filled when resolved]
+
+**Root Cause:**
+[What caused the issue - filled when understood]
+
+**Prevention:**
+[How to prevent recurrence]
+
+**Related:**
+- TASK-XXX
+- DEC-XXX
+- Similar issues: ISSUE-XXX
+
+---
+
+### ISSUE-002: [Issue Title]
+...
+
+---
+
+## Resolved Issues
+
+### ISSUE-XXX: [Resolved Issue Title]
+**Reported:** [DATE]
+**Resolved:** [DATE]
+**Resolution Time:** [X days/hours]
+**Status:** 🟢 Resolved
+**Severity:** [Severity]
+**Category:** [Category]
+
+**Description:**
+[Brief description]
+
+**Resolution:**
+[How it was fixed]
+
+**Root Cause:**
+[What caused it]
+
+**Prevention:**
+[Preventive measures taken]
+
+---
+
+## Issue Statistics
+
+### By Status
+| Status | Count |
+|--------|-------|
+| 🔴 Open | 0 |
+| 🟡 Investigating | 0 |
+| 🟢 Resolved | 0 |
+| **Total** | **0** |
+
+### By Category
+| Category | Open | Resolved | Total |
+|----------|------|----------|-------|
+| Bug | 0 | 0 | 0 |
+| Configuration | 0 | 0 | 0 |
+| Environment | 0 | 0 | 0 |
+| Process | 0 | 0 | 0 |
+| Documentation | 0 | 0 | 0 |
+| Other | 0 | 0 | 0 |
+
+### By Severity
+| Severity | Open | Resolved |
+|----------|------|----------|
+| Critical | 0 | 0 |
+| High | 0 | 0 |
+| Medium | 0 | 0 |
+| Low | 0 | 0 |
+
+---
+
+## Common Patterns
+
+Document recurring issue patterns here for quick reference.
+
+### [Pattern Name]
+**Issues:** ISSUE-001, ISSUE-005, ISSUE-012
+**Symptoms:** [Common symptoms]
+**Typical Cause:** [What usually causes this]
+**Quick Fix:** [Standard resolution]
+
+---
+
+## Issue Template
+
+Copy when adding new issues:
+
+```markdown
+### ISSUE-XXX: [Issue Title]
+**Reported:** [DATE]
+**Status:** 🔴 Open
+**Severity:** Critical | High | Medium | Low
+**Category:** Bug | Configuration | Environment | Process | Documentation | Other
+
+**Description:**
+[What went wrong]
+
+**Steps to Reproduce:**
+1. [Step 1]
+2. [Step 2]
+
+**Expected Behavior:**
+[What should happen]
+
+**Actual Behavior:**
+[What actually happens]
+
+**Error Messages:**
+```
+[Error output]
+```
+
+**Environment:**
+- Server: [TEST/PROD/LOCAL]
+
+**Investigation Notes:**
+- [DATE]: [Finding]
+
+**Resolution:**
+[TBD]
+
+**Root Cause:**
+[TBD]
+
+**Prevention:**
+[TBD]
+
+**Related:**
+- TASK-XXX
+```
+
+---
+
+## Severity Guidelines
+
+| Severity | Definition | Response Time |
+|----------|------------|---------------|
+| Critical | System down, data loss, security breach | Immediate |
+| High | Major feature broken, significant impact | Same day |
+| Medium | Feature degraded, workaround exists | Within week |
+| Low | Minor issue, cosmetic, enhancement | As time permits |

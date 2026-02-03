@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CxMS Community Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>CxMS Community Dashboard</h1>
+      <p class="subtitle">Anonymous telemetry from the CxMS community</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Stats -->
+    <section class="hero-stats">
+      <div class="stat-card" id="stat-installations">
+        <div class="stat-value"><span class="loading">--</span></div>
+        <div class="stat-label">Total Installations</div>
+      </div>
+      <div class="stat-card" id="stat-active">
+        <div class="stat-value"><span class="loading">--</span></div>
+        <div class="stat-label">Active (30 days)</div>
+      </div>
+      <div class="stat-card" id="stat-effectiveness">
+        <div class="stat-value"><span class="loading">--</span></div>
+        <div class="stat-label">Avg Effectiveness</div>
+      </div>
+      <div class="stat-card" id="stat-restore">
+        <div class="stat-value"><span class="loading">--</span></div>
+        <div class="stat-label">Avg Restore Time</div>
+      </div>
+    </section>
+
+    <!-- Charts Grid -->
+    <section class="charts-grid">
+      <!-- File Adoption -->
+      <div class="chart-card">
+        <h2>File Adoption</h2>
+        <p class="chart-description">Which CxMS files are being used</p>
+        <div class="chart-container">
+          <canvas id="chart-file-adoption"></canvas>
+        </div>
+      </div>
+
+      <!-- Deployment Level Comparison -->
+      <div class="chart-card">
+        <h2>Deployment Levels</h2>
+        <p class="chart-description">Lite vs Standard vs Max effectiveness</p>
+        <div class="chart-container">
+          <canvas id="chart-deployment"></canvas>
+        </div>
+      </div>
+
+      <!-- Feature Demand -->
+      <div class="chart-card">
+        <h2>Feature Demand</h2>
+        <p class="chart-description">Most requested features</p>
+        <div class="chart-container chart-container-sm">
+          <canvas id="chart-features"></canvas>
+        </div>
+      </div>
+
+      <!-- Version Distribution -->
+      <div class="chart-card">
+        <h2>Version Distribution</h2>
+        <p class="chart-description">CxMS versions in use</p>
+        <div class="chart-container chart-container-pie">
+          <canvas id="chart-versions"></canvas>
+        </div>
+      </div>
+
+      <!-- Geographic Distribution -->
+      <div class="chart-card chart-card-wide">
+        <h2>Geographic Distribution</h2>
+        <p class="chart-description">Where CxMS users are located</p>
+        <div class="chart-container chart-container-wide">
+          <canvas id="chart-geography"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Error State -->
+    <div id="error-state" class="error-state hidden">
+      <p>Unable to load dashboard data. Please try again later.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        <a href="https://github.com/RobSB2/CxMS">CxMS on GitHub</a> |
+        Data is anonymous and aggregated |
+        <a href="https://github.com/RobSB2/CxMS/blob/main/tools/cxms-report.mjs">View telemetry script</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

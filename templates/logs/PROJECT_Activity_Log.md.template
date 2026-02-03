@@ -1,0 +1,111 @@
+# [Project Name] - Activity Log
+
+**Template Version:** 1.0
+**Purpose:** Record of significant actions/changes made to the system
+**Created:** [DATE]
+**Format:** Chronological, append new entries at top (newest first)
+
+---
+
+## Activity Types
+
+| Code | Type | Description |
+|------|------|-------------|
+| DEP | Deployment | Code deployed to TEST/PROD |
+| DB | Database | Schema changes, migrations, data fixes |
+| CFG | Configuration | Config file changes, environment variables |
+| INT | Integration | External system changes, API updates |
+| SEC | Security | Permission changes, credential updates |
+| INF | Infrastructure | Server, hosting, network changes |
+| DOC | Documentation | Significant doc updates |
+| REL | Release | Version releases, tags |
+
+---
+
+## Activity Log
+
+### [CURRENT MONTH YEAR]
+
+#### ACT-001: [TYPE] - [Brief Description]
+**Date:** [DATE]
+**Time:** [TIME]
+**Performed By:** [Name/AI]
+**Description:** [What was done]
+
+**Details:**
+- [Detail 1]
+- [Detail 2]
+
+**Files Changed:**
+| File | Change |
+|------|--------|
+| `path/to/file` | [What changed] |
+
+**Verification:** ✅ Confirmed working | ❌ Issues found | ⏳ Pending
+**Related:** TASK-XXX, DEC-XXX
+**Rollback:** [How to undo if needed]
+
+---
+
+#### ACT-002: [TYPE] - [Brief Description]
+...
+
+---
+
+### [PREVIOUS MONTH YEAR]
+
+...
+
+---
+
+## Quick Stats
+
+| Month | DEP | DB | CFG | INT | SEC | INF | DOC | REL | Total |
+|-------|-----|----|----|-----|-----|-----|-----|-----|-------|
+| [Month] | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| **Total** | **0** | **0** | **0** | **0** | **0** | **0** | **0** | **0** | **0** |
+
+---
+
+## Activity Template
+
+Copy when adding new entries:
+
+```markdown
+#### ACT-XXX: [TYPE] - [Brief Description]
+**Date:** [DATE]
+**Time:** [TIME]
+**Performed By:** [Name/AI]
+**Description:** [What was done]
+
+**Details:**
+- [Detail 1]
+- [Detail 2]
+
+**Files Changed:**
+| File | Change |
+|------|--------|
+| `file` | [change] |
+
+**Verification:** ✅ Confirmed working | ❌ Issues found | ⏳ Pending
+**Related:** TASK-XXX, DEC-XXX
+**Rollback:** [How to undo if needed]
+```
+
+---
+
+## Difference from Other Logs
+
+| Log | Records | Example |
+|-----|---------|---------|
+| **Prompt_History** | What user asked | "Deploy the tracking system" |
+| **Decision_Log** | Why something was decided | "Chose PostgreSQL because..." |
+| **Activity_Log** | What was actually done | "Deployed tracker.php to TEST at 14:30" |
+| **Issue_Log** | Problems encountered | "Deployment failed due to permission error" |
+| **Session_Summary** | Session overview | "Session 5: Completed tracking deployment" |
+
+---
+
+## Notes
+
+<!-- Add any notes about activity logging conventions here -->

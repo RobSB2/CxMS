@@ -1,0 +1,155 @@
+# Cross-Session Notifications
+
+**CxMS Version:** 1.6
+**Template Version:** 1.0
+**Purpose:** Inter-session communication for coordinated multi-agent work
+**Check Frequency:** At session start, after each work package
+**Location:** Project root or shared coordination directory
+
+---
+
+## How This File Works
+
+1. **Sending Session** posts a notification when changes affect other sessions
+2. **Receiving Session** checks this file at session start and after work packages
+3. **Acknowledgment** moves notification to history section
+4. **Human** can review notification history for audit trail
+
+---
+
+## Pending Notifications
+
+<!--
+Add new notifications here using the template below.
+Notifications addressed to "ALL" should be read by all sessions.
+Notifications addressed to specific sessions can be ignored by others.
+-->
+
+### NOTIF-[NUMBER]
+
+**Timestamp:** [YYYY-MM-DD HH:MM]
+**From Session:** [Project Name - Session ID]
+**To Session:** [Target Project or "ALL"]
+**Priority:** High | Medium | Low
+**Subject:** [Brief description]
+
+**Message:**
+[Detailed explanation of what changed and why it matters]
+
+**Files Affected:**
+- [file1.md] - [what changed]
+- [file2.md] - [what changed]
+
+**Action Required:**
+- [ ] [Specific action 1]
+- [ ] [Specific action 2]
+
+**Acknowledged By:** [Session name, timestamp - filled by receiver]
+
+---
+
+## Acknowledged Notifications
+
+<!-- Move acknowledged notifications here for audit trail -->
+
+### Example: NOTIF-000 (Template)
+
+**Timestamp:** 2026-01-20 13:30
+**From Session:** CxMS-2026-01-20-A
+**To Session:** ALL
+**Priority:** Medium
+**Subject:** CxMS v1.6 template updates
+
+**Message:**
+CLAUDE.md.template has been updated with E1 Cross-Session Coordination.
+All projects using CxMS should update their CLAUDE.md to include the new
+Cross-Session Coordination section.
+
+**Files Affected:**
+- templates/core/CLAUDE.md.template - Added Cross-Session Coordination section
+- templates/multi-agent/CROSS_SESSION_NOTIFICATIONS.md.template - NEW
+
+**Action Required:**
+- [x] Review new template sections
+- [x] Update project CLAUDE.md if desired
+
+**Acknowledged By:** LPR-2026-01-20-B, 2026-01-20 14:15
+
+---
+
+## Notification Protocol
+
+### When to Post a Notification
+
+Post a notification when your changes might affect other sessions:
+
+| Change Type | Notify? | Priority |
+|-------------|---------|----------|
+| Template structure change | Yes - ALL | High |
+| Shared file renamed/moved | Yes - affected | High |
+| API/interface change | Yes - consumers | High |
+| New convention established | Yes - ALL | Medium |
+| Bug fix in shared code | Yes - users | Medium |
+| Documentation update | Optional | Low |
+| Internal refactor (no API change) | No | - |
+
+### Notification Template
+
+```markdown
+### NOTIF-[NUMBER]
+
+**Timestamp:** [YYYY-MM-DD HH:MM]
+**From Session:** [Project Name - Session ID]
+**To Session:** [Target or "ALL"]
+**Priority:** High | Medium | Low
+**Subject:** [Brief description]
+
+**Message:**
+[What changed, why, and what receivers need to know]
+
+**Files Affected:**
+- [list files]
+
+**Action Required:**
+- [ ] [what receiver must do]
+
+**Acknowledged By:**
+```
+
+### Acknowledgment Protocol
+
+When you receive a notification addressed to your session:
+
+1. **Read** the full notification
+2. **Complete** all required actions
+3. **Add acknowledgment** with your session ID and timestamp
+4. **Move** the notification to "Acknowledged Notifications" section
+
+### Priority Definitions
+
+| Priority | Meaning | Response Time |
+|----------|---------|---------------|
+| **High** | Breaking change, must act before continuing | Immediate |
+| **Medium** | Important change, act soon | Before next work package |
+| **Low** | FYI, acknowledge when convenient | End of session |
+
+---
+
+## Session ID Format
+
+Session IDs follow the pattern: `[PROJECT]-[DATE]-[SEQUENCE]`
+
+Examples:
+- `CxMS-2026-01-20-A` (first CxMS session on Jan 20)
+- `LPR-2026-01-20-B` (second LPR session on Jan 20)
+- `ASB-2026-01-21-A` (first ASB session on Jan 21)
+
+---
+
+## Related Files
+
+| File | Purpose |
+|------|---------|
+| `SESSION_REGISTRY.md` | Track active sessions |
+| `CLAUDE.md` | Cross-Session Coordination config |
+| `[PROJECT]_Activity_Log.md` | Detailed activity audit |

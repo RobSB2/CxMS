@@ -1,0 +1,40 @@
+{
+  "$schema": "https://claude.ai/schemas/claude-code-settings.json",
+  "profile": {
+    "id": "project-manager",
+    "version": "1.0.0",
+    "description": "Claude Code settings for project coordination and multi-agent orchestration"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(git:status)",
+      "Bash(git:log)",
+      "Bash(git:diff)",
+      "Bash(gh:*)",
+      "mcp__fetch__*"
+    ],
+    "deny": []
+  },
+  "env": {},
+  "mcp_servers": {
+    "fetch": {
+      "package": "@anthropic/fetch",
+      "description": "Make HTTP requests for external integrations"
+    }
+  },
+  "tools": {
+    "global": {}
+  },
+  "context_hints": [
+    "Check for PROJECT_Session.md for current project state",
+    "Check for PROJECT_Tasks.md for work tracking",
+    "Look for CROSS_SESSION_NOTIFICATIONS.md for coordination",
+    "Review SESSION_REGISTRY.md for active sessions",
+    "Check PROJECT_Roadmap.md for strategic direction"
+  ],
+  "coordination": {
+    "notification_file": "CROSS_SESSION_NOTIFICATIONS.md",
+    "session_registry": "SESSION_REGISTRY.md",
+    "handoff_protocol": true
+  }
+}

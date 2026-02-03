@@ -1,0 +1,209 @@
+# [Project Name] - Session Context
+
+**CxMS Version:** 1.4
+**Template Version:** 1.1
+
+```
+┌────────────────────────────────────────────────────────┐
+│              COMPACTION WARNING                         │
+│                                                         │
+│  If context is about to compact or session is ending:  │
+│  1. STOP current work                                   │
+│  2. Update this file IMMEDIATELY                        │
+│  3. Confirm update to user                              │
+│  4. Then proceed with compaction/end                    │
+└────────────────────────────────────────────────────────┘
+```
+
+**Purpose:** Preserves context between Claude Code sessions. Update before session end.
+**Session Number:** [INCREMENT EACH SESSION]
+**Last Updated:** [DATE TIME]
+**Last Updated By:** [Human / AI]
+**Metrics Tracking:** [Started DATE or "Not started"]
+
+---
+
+## Session Metrics (Enhancement 9)
+
+**Tracking Period Start:** [DATE]
+
+### This Session
+| Metric | Value | Notes |
+|--------|-------|-------|
+| Session # | [N] | |
+| Context Restore Time | [seconds] | Time to productive work |
+| Files Loaded | [N] | CxMS files read at start |
+| Re-explain Requests | [N] | AI asked for info in docs |
+| Compaction Events | [N] | Context window exceeded |
+| User Corrections | [N] | User corrected AI about documented info |
+| Tasks Completed | [N] | |
+| Mid-Session Updates | [N] | Updates before session end |
+| Session End Compliance | [Yes/No] | Updated Session.md before end |
+
+### Cumulative (All Sessions)
+| Metric | Total | Avg/Session |
+|--------|-------|-------------|
+| Sessions Tracked | [N] | - |
+| Compaction Events | [N] | [avg] |
+| Re-explain Requests | [N] | [avg] |
+| User Corrections | [N] | [avg] |
+
+### File Size Tracking
+| File | Lines | Status |
+|------|-------|--------|
+| [PROJECT]_Session.md | [N] | [OK/Monitor/Prune] |
+| [PROJECT]_Tasks.md | [N] | [OK/Monitor/Prune] |
+| **Total CxMS Footprint** | [N] | [OK/Monitor] |
+
+*Note: Context Value > Token Cost. Don't prune useful context for arbitrary limits.*
+
+---
+
+## Integrity Check
+
+**On Session Start, verify these match reality:**
+
+| Check | Expected | Actual | Match? |
+|-------|----------|--------|--------|
+| Active Task | [From last session] | [Current] | ✅/❌ |
+| Pending Items Count | [Number] | [Number] | ✅/❌ |
+| Last Modified File | [Filename] | [Verify exists] | ✅/❌ |
+
+**If any don't match:** Investigate before proceeding. Note discrepancy in Issue Log.
+
+---
+
+## Context Verification (AI Must Complete)
+
+When starting a new session, fill this out to confirm context loading:
+
+| Verification Item | Value |
+|-------------------|-------|
+| Session.md Last Updated | [DATE from file] |
+| Active Task ID | [From Tasks.md] |
+| Last Completed Item | [From Session.md] |
+| Files Modified Last Session | [Count from Session.md] |
+
+**If these values are blank or wrong, context was not properly loaded.**
+
+---
+
+## Current Work Status
+
+### Active Task
+<!-- What you're currently working on -->
+[None - awaiting instructions]
+
+### Completed This Session
+<!-- Check off as you complete -->
+1. ✅ [Example: Initial project setup]
+
+### Pending
+- [ ] [Pending item]
+
+### Blockers/Questions
+- [None currently]
+
+---
+
+## Recent Changes (This Session)
+
+### Files Modified
+| File | Change Description |
+|------|-------------------|
+| - | - |
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `CLAUDE.md` | Project overview |
+| `[PROJECT]_Session.md` | This file |
+
+### Decisions Made
+| Decision | Rationale |
+|----------|-----------|
+| - | - |
+
+---
+
+## Context for Next Session
+
+**What was I doing?**
+- Initial project setup
+
+**What should I do next?**
+- Await user instructions
+
+**Important context to remember:**
+- [Key information]
+
+**Key files for reference:**
+| File | Purpose |
+|------|---------|
+| `CLAUDE.md` | Project overview |
+
+---
+
+## Session History
+
+| Session # | Date | Focus | Key Accomplishment |
+|-----------|------|-------|-------------------|
+| 1 | [DATE] | Initial setup | Created project structure |
+
+---
+
+## Update Template
+
+When updating this document, copy and fill out:
+
+```markdown
+**Session Number:** [INCREMENT]
+**Last Updated:** [DATE TIME]
+**Last Updated By:** AI
+
+## Current Work Status
+
+### Active Task
+[Task]
+
+### Completed This Session
+1. ✅ [Item]
+
+### Pending
+- [ ] [Item]
+
+### Blockers/Questions
+- [Item or "None"]
+
+---
+
+## Recent Changes (This Session)
+
+### Files Modified
+| File | Change Description |
+|------|-------------------|
+| `file` | [change] |
+
+### Files Created
+| File | Purpose |
+|------|---------|
+| `file` | [purpose] |
+
+### Decisions Made
+| Decision | Rationale |
+|----------|-----------|
+| [Decision] | [Why] |
+
+---
+
+## Context for Next Session
+
+**What was I doing?**
+- [Current work]
+
+**What should I do next?**
+- [Recommended next step]
+
+**Important context to remember:**
+- [Key information that must not be lost]
+```

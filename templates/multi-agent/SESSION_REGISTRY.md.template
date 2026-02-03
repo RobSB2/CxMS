@@ -1,0 +1,167 @@
+# Session Registry
+
+**CxMS Version:** 1.6
+**Template Version:** 1.0
+**Purpose:** Track active AI sessions for cross-session coordination
+**Updated By:** Each session at start and end
+**Location:** Shared coordination directory (accessible to all projects)
+
+---
+
+## How This File Works
+
+1. **Session Start:** Register your session in Active Sessions table
+2. **During Session:** Update "Last Active" and "Current Focus" as work progresses
+3. **Session End:** Move entry to Session History with accomplishments
+4. **Coordination:** Check for other active sessions before major changes
+
+---
+
+## Active Sessions
+
+| Session ID | Project | Started | Last Active | Current Focus | Status |
+|------------|---------|---------|-------------|---------------|--------|
+| | | | | | |
+
+<!--
+Status values:
+- Active: Currently working
+- Idle: Session open but not actively working
+- Ending: Wrapping up, about to close
+
+Example entry:
+| CxMS-2026-01-20-A | Context_Management_System | 13:00 | 14:30 | E1 Implementation | Active |
+-->
+
+---
+
+## Session History
+
+| Session ID | Project | Date | Duration | Key Accomplishments |
+|------------|---------|------|----------|---------------------|
+| | | | | |
+
+<!--
+Move completed sessions here with summary of what was done.
+
+Example entry:
+| CxMS-2026-01-20-A | Context_Management_System | 2026-01-20 | 2.5 hrs | E1 templates created, CLAUDE.md updated |
+-->
+
+---
+
+## Registration Protocol
+
+### On Session Start
+
+Add a row to Active Sessions:
+
+```markdown
+| [PROJECT]-[DATE]-[SEQ] | [Project Name] | [HH:MM] | [HH:MM] | [Initial focus] | Active |
+```
+
+**Session ID Format:** `[PROJECT]-[YYYY-MM-DD]-[A-Z]`
+- PROJECT: Short project identifier (CxMS, LPR, ASB)
+- DATE: Current date
+- SEQ: Letter sequence (A, B, C...) for multiple sessions same day
+
+### During Session
+
+Update your row periodically:
+- **Last Active:** Current time
+- **Current Focus:** What you're working on now
+- **Status:** Active, Idle, or Ending
+
+### On Session End
+
+1. Update status to "Ending"
+2. Move row to Session History
+3. Add duration and accomplishments summary
+4. Check for pending notifications to post
+
+---
+
+## Coordination Checks
+
+### Before Major Changes
+
+Before making changes that affect other projects:
+
+1. **Check Active Sessions** - Is anyone else working on affected areas?
+2. **If Yes:**
+   - Consider waiting, or
+   - Post a notification before proceeding
+3. **If No:** Proceed, but post notification after for awareness
+
+### Conflict Resolution
+
+If two sessions are working on the same area:
+
+| Scenario | Resolution |
+|----------|------------|
+| Same file, different sections | Coordinate via notifications |
+| Same file, same section | One session waits |
+| Different files, shared interface | Post notification of changes |
+| Independent work | No coordination needed |
+
+---
+
+## Multi-Project View
+
+### Project Status Summary
+
+| Project | Last Session | Sessions Today | Primary Focus |
+|---------|--------------|----------------|---------------|
+| CxMS | | | |
+| LPR | | | |
+| ASB | | | |
+
+<!--
+Update this summary periodically to give quick overview of all project activity.
+-->
+
+### Cross-Project Dependencies
+
+| Project A | Depends On | Project B | Dependency Type |
+|-----------|------------|-----------|-----------------|
+| LPR | → | CxMS | Methodology templates |
+| ASB | → | CxMS | Session management |
+
+<!--
+Document known dependencies so sessions know when to notify.
+-->
+
+---
+
+## Session Statistics
+
+### Daily Summary
+
+| Date | Total Sessions | Projects Active | Notifications Sent |
+|------|----------------|-----------------|-------------------|
+| | | | |
+
+### Weekly Trends
+
+| Week | Sessions | Avg Duration | Cross-Project Notifications |
+|------|----------|--------------|----------------------------|
+| | | | |
+
+---
+
+## Related Files
+
+| File | Purpose |
+|------|---------|
+| `CROSS_SESSION_NOTIFICATIONS.md` | Inter-session messages |
+| `[PROJECT]/CLAUDE.md` | Project-specific coordination config |
+| `[PROJECT]_Session.md` | Detailed session state |
+
+---
+
+## Notes
+
+- This file should be in a location accessible to all coordinated projects
+- Consider using a central `AI_Coordination/` directory
+- Each project's CLAUDE.md should reference this registry location
+- Human operator can review this file for activity overview

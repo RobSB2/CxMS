@@ -1,0 +1,66 @@
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Temporary files
+*.tmp
+*~
+
+# Local-only files (NEVER commit)
+*.local.md
+*.local.html
+*.local.json
+*.local.mjs
+*.local.template
+*.local.drawio
+
+# Commercial/Proprietary content (NEVER commit)
+OCF*
+*DeathStar*
+*MAOC*
+*IA-SOC*
+*Commercial*
+*Monetiz*
+*Financial*
+*NDA*
+drafts/*Commercial*
+drafts/*Consulting*
+
+# Private directories
+social-media/
+merch/
+drafts/
+case-studies/
+training-artifacts/
+sna-extracted/
+
+# Session/operational files (use templates, not live files)
+CxMS_Session.md
+CxMS_Session_Archive.md
+CxMS_Decision_Log.md
+CxMS_Activity_Log.md
+CxMS_Prompt_History.md
+CxMS_Prompt_Library.md
+CxMS_Approvals.md
+CxMS_Product_Roadmap.md
+CxMS_Performance_Log.md
+CxMS_Startup.md
+CxMS_Tasks.md
+*_Session.md
+*_Tasks.md
+*_Approvals.md
+
+# Local directives
+.local.env/
+
+# CxMS telemetry (local tracking)
+.cxms/
+
+# Claude Code local data
+.claude/

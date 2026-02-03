@@ -1,0 +1,45 @@
+{
+  "name": "cxms",
+  "version": "1.6.0",
+  "description": "Agent Context Management System - Persistent memory for AI coding assistants",
+  "keywords": [
+    "ai",
+    "claude",
+    "context",
+    "memory",
+    "ai-assistant",
+    "coding-assistant",
+    "documentation",
+    "session-management",
+    "prompt-engineering"
+  ],
+  "homepage": "https://opencxms.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RobSB2/CxMS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RobSB2/CxMS/issues"
+  },
+  "license": "MIT",
+  "author": "Robert S Briggs II <rob@opencxms.org>",
+  "type": "module",
+  "bin": {
+    "cxms": "./bin/cxms.mjs",
+    "cxms-report": "./tools/cxms-report.mjs",
+    "cxms-profile": "./tools/cxms-profile.mjs",
+    "sna-extract": "./tools/sna-extract.mjs"
+  },
+  "files": [
+    "bin/",
+    "tools/",
+    "templates/",
+    "scripts/"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/postinstall.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

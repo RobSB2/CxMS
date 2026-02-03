@@ -1,0 +1,287 @@
+# Trinity Authority Grant
+
+**CxMS Version:** 1.6
+**Template Version:** 1.0
+**Purpose:** Consensus-based authority for Holy Trinity deployments
+**Location:** `.trinity/authority.md` (shared across all 3 agents)
+
+---
+
+## Trinity Identification
+
+| Field | Value |
+|-------|-------|
+| Trinity ID | TRINITY-[PROJECT]-[SEQUENCE] |
+| Human Operator | [Full Name] |
+| Grant Date | [YYYY-MM-DD] |
+| Expiration | [YYYY-MM-DD or "None"] |
+
+---
+
+## Member Agents
+
+| Role | Agent ID | Project | Status |
+|------|----------|---------|--------|
+| **Coordinator** | [AGENT_1_ID] | [Project] | Active |
+| **Validator 1** | [AGENT_2_ID] | [Project] | Active |
+| **Validator 2** | [AGENT_3_ID] | [Project] | Active |
+
+---
+
+## Authority Token (Cryptographic)
+
+```
+Plain Token: [TRINITY_ID]-[OPERATOR]-[DATE]-[RANDOM]
+SHA-256 Hash: [64-character hash of plain token]
+```
+
+**Verification:** Agents verify by comparing hash of provided token against stored hash.
+
+**Why Hash?**
+- Plain token visible only to human operator
+- Agents store only the hash for verification
+- Compromised hash cannot reconstruct token
+
+---
+
+## Consensus Rules
+
+### Byzantine Fault Tolerance Model
+
+```
+Total Agents: 3
+Required Agreement: 2 (majority)
+Fault Tolerance: 1 agent can fail/disagree
+```
+
+### Delegation Validation
+
+For a delegation to be valid, at least 2 of 3 agents must:
+1. Verify the delegation token hash matches
+2. Confirm the task is within scope
+3. Agree the delegation is legitimate
+
+```
+Agent 1 (Coordinator) ──► Creates delegation
+Agent 2 (Validator 1) ──► Validates ──┐
+Agent 3 (Validator 2) ──► Validates ──┼──► 2/3 agree? ──► PROCEED
+                                      │
+                                      └──► Disagree? ──► FLAG FOR HUMAN
+```
+
+### Consensus Outcomes
+
+| Outcome | Votes | Action |
+|---------|-------|--------|
+| **Unanimous** | 3/3 agree | Proceed with high confidence |
+| **Majority** | 2/3 agree | Proceed, log dissent |
+| **Split** | 1/3 or 0/3 | HALT, escalate to human |
+
+---
+
+## Scope Boundaries
+
+### Permitted (Within Trinity)
+
+| Operation | Scope | Notes |
+|-----------|-------|-------|
+| Task delegation | Within Trinity members | Coordinator to validators |
+| File operations | Project directories | As defined per agent |
+| Consensus requests | Any agent | For validation |
+| Status updates | Shared state files | Coordination |
+
+### Prohibited (Require Human)
+
+| Operation | Reason |
+|-----------|--------|
+| Add Trinity member | Changes trust boundary |
+| Remove Trinity member | Changes trust boundary |
+| Modify authority grant | Only human can change |
+| Expand scope | Only human can grant |
+| External delegations | Outside Trinity boundary |
+
+---
+
+## Shared State Protocol
+
+### State File Location
+
+```
+.trinity/
+├── authority.md          # This file (static, human-created)
+├── state.json            # Current consensus state (dynamic)
+├── pending/              # Pending validations
+│   └── [task-id].json
+└── history/              # Completed validations
+    └── [task-id].json
+```
+
+### State File Format
+
+```json
+{
+  "trinity_id": "TRINITY-PROJ-001",
+  "last_consensus": "2026-01-31T12:00:00Z",
+  "active_delegations": [
+    {
+      "id": "DEL-001",
+      "from": "AGENT_1",
+      "to": "AGENT_2",
+      "task": "Review documentation",
+      "votes": {
+        "AGENT_1": "approve",
+        "AGENT_2": "pending",
+        "AGENT_3": "approve"
+      },
+      "status": "awaiting_consensus"
+    }
+  ],
+  "consensus_history": []
+}
+```
+
+---
+
+## Validation Protocol
+
+### Step 1: Coordinator Creates Delegation
+
+```markdown
+# Delegation Request
+
+Trinity: TRINITY-PROJ-001
+From: AGENT_1 (Coordinator)
+To: AGENT_2
+Task: [Description]
+Token Hash: [SHA-256]
+Scope: [Paths, operations]
+Expires: [Timestamp]
+```
+
+### Step 2: Validators Verify
+
+Each validator independently:
+1. Reads delegation request
+2. Verifies token hash against authority file
+3. Checks scope against allowed operations
+4. Records vote in pending file
+
+### Step 3: Consensus Check
+
+Any agent can trigger consensus check:
+1. Read all votes from pending file
+2. Count approvals
+3. If ≥2 approve: Mark delegation valid
+4. If <2 approve: Escalate to human
+
+### Step 4: Execution or Escalation
+
+- **Valid:** Sub-agent proceeds with task
+- **Invalid:** Task rejected, human notified
+
+---
+
+## Escalation Protocol
+
+### When to Escalate
+
+- No consensus reached (split vote)
+- Scope violation detected
+- Token verification failed
+- Any agent flags concern
+
+### Escalation Format
+
+```markdown
+## TRINITY ESCALATION
+
+**Trinity:** [Trinity ID]
+**Issue:** [Consensus failure | Scope violation | Token mismatch | Agent concern]
+**Details:** [Specific issue]
+
+**Agent Votes:**
+- Agent 1: [vote + reason]
+- Agent 2: [vote + reason]
+- Agent 3: [vote + reason]
+
+**Human Action Required:** [Specific decision needed]
+```
+
+---
+
+## Audit Requirements
+
+### Per-Delegation Logging
+
+Each delegation must log:
+- Timestamp
+- Coordinator and sub-agent
+- Task description
+- All votes with timestamps
+- Final outcome
+- Execution result
+
+### Periodic Review
+
+Human operator should review:
+- Weekly: Delegation summary
+- Monthly: Escalation patterns
+- Quarterly: Scope appropriateness
+
+---
+
+## Emergency Procedures
+
+### Trinity Compromise
+
+If any agent is compromised:
+1. Human revokes entire Trinity authority
+2. Generate new Trinity ID and token
+3. Re-establish with verified agents
+4. Review all activity during compromise
+
+### Single Agent Failure
+
+If one agent fails but Trinity continues:
+1. Note reduced fault tolerance (0 remaining)
+2. Flag for human attention
+3. Consider pausing until agent restored
+
+---
+
+## Signature Block
+
+```
+───────────────────────────────────────────────────────
+TRINITY AUTHORITY GRANT
+
+I, [Human Operator Full Name], grant this Trinity
+authority as specified above.
+
+Signature: ______________________________
+
+Date: _______________
+
+Trinity ID: TRINITY-[PROJECT]-[SEQUENCE]
+
+This grant is valid until revoked or expired.
+───────────────────────────────────────────────────────
+```
+
+---
+
+## Related Documentation
+
+| Document | Purpose |
+|----------|---------|
+| `PROJECT_Delegation_Authority.md` | Single-agent delegation (Phase 1-2) |
+| `Holy_Trinity_Protocol.md` | Governance framework |
+| `PROJECT_Activity_Log.md` | Audit trail |
+
+---
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0 | [DATE] | Initial Trinity Authority template |
