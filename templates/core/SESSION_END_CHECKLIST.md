@@ -1,7 +1,24 @@
 # Session End Checklist
 
-**CxMS Version:** 1.6
+**CxMS Version:** 1.7
 **Purpose:** Ensure proper session wrap-up and context preservation
+
+---
+
+## What's Automated (Hooks)
+
+If you have CxMS hooks installed (see `templates/core/HOOKS_CONFIG.md`), several steps in this checklist happen automatically:
+
+| Step | Hook | What It Does |
+|------|------|-------------|
+| Context monitoring | `cxms-context-check.mjs` | Warns at 65/75/80/83% automatically after every tool call |
+| Pre-compaction save | `cxms-pre-compact.mjs` | Saves TL;DR, checkpoint, tasks, and uncommitted files before context wipe |
+| Session timestamp | `cxms-session-end.mjs` | Writes end timestamp to Session.md when you exit |
+| Uncommitted warning | `cxms-session-end.mjs` | Warns you about uncommitted files on exit |
+| Telemetry | `cxms-session-end.mjs` | Submits anonymous telemetry if enabled |
+| Post-compaction recovery | SessionStart hook | Reads saved state back into context after compaction |
+
+**With hooks installed, your manual checklist is just steps 1-3 below.** Everything else is handled.
 
 ---
 
@@ -9,8 +26,7 @@
 
 Use this checklist:
 - Before ending any AI coding session
-- When context reaches 70%+ (check `.claude/context-status.json`)
-- When context is about to compact (you'll usually get a warning)
+- When context reaches 70%+ (hooks warn you automatically)
 - Before switching to a different project
 - At natural stopping points in long sessions
 
@@ -91,15 +107,16 @@ Update these if your project uses them:
 
 ### 4. Context-Aware Checkpoints
 
-**Monitor context usage** via `.claude/context-status.json`:
+> **With hooks:** `cxms-context-check.mjs` handles this automatically. It monitors context after every tool call and injects warnings directly into the conversation. You don't need to remember to check.
+>
+> **Without hooks:** Monitor context manually via `.claude/context-status.json`.
 
-| Context % | Action |
-|-----------|--------|
-| 65% | Warn user, suggest checkpoint |
-| 75% | Auto-checkpoint to Session.md |
-| 80% | STOP, full save, require confirmation |
-
-**Note:** Auto-compaction triggers ~85% - act before then!
+| Context % | Action | Automated? |
+|-----------|--------|-----------|
+| 65% | Warn user, suggest checkpoint | Yes (hook) |
+| 75% | Auto-checkpoint to Session.md | Yes (hook warns; you write checkpoint) |
+| 80% | STOP, full save, require confirmation | Yes (hook) |
+| 83% | Emergency — compaction imminent | Yes (hook) |
 
 **Checkpoint Format** (add to Session.md):
 ```markdown
@@ -112,9 +129,11 @@ Update these if your project uses them:
 **Resume Prompt:** [Exact prompt to continue from here]
 ```
 
-### 5. Pre-Compaction Emergency Save
+### 5. Pre-Compaction Save
 
-If context is compacting unexpectedly (80%+):
+> **With hooks:** `cxms-pre-compact.mjs` fires automatically before compaction and saves session state to `.claude/compaction-recovery.md`. After compaction, the SessionStart hook reads it back. No manual intervention needed.
+>
+> **Without hooks:** If context is compacting unexpectedly (80%+), use this emergency prompt:
 
 ```
 STOP - Context at critical level. Emergency save:
@@ -184,7 +203,9 @@ Comprehensive session wrap-up:
 
 ## Commit Reminder
 
-If you made code changes this session:
+> **With hooks:** `cxms-session-end.mjs` automatically warns you about uncommitted files when the session ends. You'll see: `[CxMS] WARNING: N uncommitted file(s). Consider committing before closing.`
+>
+> **Without hooks:** Remember to check manually:
 
 ```
 Before ending, let's commit our changes:
@@ -212,17 +233,29 @@ After session end updates, verify:
 |-------|------------|
 | End session without updating Session.md | Always update before ending |
 | Leave tasks in wrong status | Update task status accurately |
-| Forget uncommitted code changes | Commit or note in Session.md |
+| Forget uncommitted code changes | Install hooks — they warn you automatically |
 | Assume you'll remember context | Write it down in Session.md |
 | Skip updates for "quick" sessions | Every session needs updates |
+| Rely on directives for context monitoring | Install hooks — structural enforcement works |
 
 ---
 
 ## Related Documents
 
 - `SESSION_START_PROMPTS.md` - Session start workflow
+- `HOOKS_CONFIG.md` - Hook installation and configuration
 - `[PROJECT]_Session.md` - Session state tracking
 - `[PROJECT]_Tasks.md` - Task management
+
+---
+
+### Plain Language Summary
+
+This checklist used to be entirely manual — you had to remember to update Session.md, check context levels, save before compaction, and commit your changes. Agents would ignore these steps because they were just directives written in a file.
+
+With CxMS hooks, most of the checklist is now automated. Context monitoring fires after every tool call. Pre-compaction saves happen automatically. Session-end timestamps and uncommitted file warnings fire when you exit. The only manual steps left are the ones that require human judgment: writing what you accomplished, updating task status, and deciding what the next session needs to know.
+
+The checklist still documents everything for users who haven't installed hooks yet, but it clearly marks which steps are automated so you know what you can skip.
 
 ---
 
