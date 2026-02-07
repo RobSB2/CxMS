@@ -19,7 +19,7 @@
 # Credit: Based on workaround shared by @Memphizzz in anthropics/claude-code#18027
 #         PowerShell port for Windows users
 #
-# Version: 1.1.0 - Added compaction detection and logging
+# Version: 2.0.0 - Fixed inflated ctx% after compaction, prefer remaining_percentage
 #
 # Compaction Detection:
 #   - Reads previous context % from context-status.json
@@ -45,16 +45,27 @@ try {
         $usedPct = $data.context_window.used_percentage
         $remainingPct = $data.context_window.remaining_percentage
 
-        # Calculate percentage
-        if ($null -ne $usedPct -and $usedPct -ne "") {
+        # Calculate percentage — PREFER remaining_percentage (actual window occupancy)
+        # used_percentage is CUMULATIVE (counts all tokens ever, including compacted ones)
+        # and will exceed 100% after compaction. remaining_percentage is the real signal.
+        $reliable = $false
+        if ($null -ne $remainingPct -and $remainingPct -ne "" -and $remainingPct -ge 0 -and $remainingPct -le 100) {
+            # Best source: remaining_percentage directly from Claude Code
+            $ctxPct = [math]::Round(100 - $remainingPct)
+            $reliable = $true
+        } elseif ($null -ne $usedPct -and $usedPct -ne "" -and $usedPct -ge 0 -and $usedPct -le 100) {
+            # Fallback: used_percentage, but ONLY if it's sane (0-100)
             $ctxPct = [math]::Round($usedPct)
+            $reliable = $true
         } else {
+            # Last resort: manual calculation, capped at 100
             $currentTokens = $totalInput + $totalOutput
             if ($ctxSize -gt 0) {
-                $ctxPct = [math]::Round(($currentTokens * 100) / $ctxSize)
+                $ctxPct = [math]::Min(100, [math]::Round(($currentTokens * 100) / $ctxSize))
             } else {
                 $ctxPct = 0
             }
+            $reliable = $false
         }
 
         # Get model name
@@ -146,7 +157,8 @@ try {
             # ============================================
             $status = @{
                 ctx_pct = $ctxPct
-                used_percentage = $usedPct
+                reliable = $reliable
+                used_percentage_raw = $usedPct
                 remaining_percentage = $remainingPct
                 total_input_tokens = $totalInput
                 total_output_tokens = $totalOutput
