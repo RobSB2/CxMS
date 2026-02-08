@@ -239,4 +239,8 @@ try {
   console.log('[CxMS] ═══ SESSION START ═══');
   console.log('[CxMS] MEMORY.md is auto-loaded. Read CLAUDE.md next.');
   console.log(`[CxMS] Session start hook error: ${err.message}`);
+} finally {
+  // Force clean exit on Windows — without this, Node can linger
+  // keeping the stdout pipe open, which blocks Claude Code's UI
+  process.exit(0);
 }
