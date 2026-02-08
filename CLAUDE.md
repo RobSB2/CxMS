@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Version:** 1.6
+**Version:** 2.0
 **Code Name:** Master Yoda
 
 > *"Patience you must have. Document everything, you should. Future you, thank you will."*
@@ -13,12 +13,28 @@ This repository contains **CxMS (Agent Context Management System)** - persistent
 
 **Core Principle:** AI context is temporary; files are permanent. Everything the AI needs to know must exist in files it can read.
 
+## Hooks (Active)
+
+CxMS hooks are configured in `.claude/settings.json` and run automatically:
+
+| Hook | Script | Purpose |
+|------|--------|---------|
+| **SessionStart** | (inline) | Prints startup banner, checks for compaction recovery |
+| **PreToolUse** | `tools/cxms-context-warn.mjs` | Warns if context is critically low |
+| **PostToolUse** | `tools/cxms-context-check.mjs` | Monitors context % after each tool call |
+| **PreCompact** | `tools/cxms-pre-compact.mjs` | Saves session state before compaction |
+| **SessionEnd** | `tools/cxms-session-end.mjs` | Saves session state on exit |
+
+## Context Monitoring
+
+Automated by hooks. When the 80% gate blocks you: save session state and tell user to start a new session.
+
 ## Repository Structure
 
 ```
 CxMS/
-├── README.md                              # Start here
 ├── CLAUDE.md                              # This file
+├── README.md                              # Start here
 ├── CxMS_Introduction_and_Guide.md         # Full training guide
 ├── CxMS_Practical_Implementation_Guide.md # Implementation details
 │
@@ -32,11 +48,17 @@ CxMS/
 │   ├── multi-tool/                        # Cursor, Copilot, Aider, etc.
 │   └── profiles/                          # Role-based profiles
 │
-├── tools/                                 # CLI utilities
+├── tools/                                 # CLI utilities & hook scripts
 │   ├── cxms-cascade.mjs                   # Config inheritance
 │   ├── cxms-report.mjs                    # Telemetry
-│   └── cxms-profile.mjs                   # Profile manager
+│   ├── cxms-profile.mjs                   # Profile manager
+│   ├── cxms-context-warn.mjs              # Context warning hook
+│   ├── cxms-context-check.mjs             # Context monitoring hook
+│   ├── cxms-pre-compact.mjs               # Pre-compaction save hook
+│   ├── cxms-session-end.mjs               # Session end save hook
+│   └── cxms-memory-bridge.mjs             # Memory bridge (auto-persist)
 │
+├── opencxms-website/                      # opencxms.org (Next.js)
 └── docs/dashboard/                        # Community stats
 ```
 
@@ -49,25 +71,11 @@ CxMS/
 | `templates/DEPLOYMENT.md` | Deployment levels (Lite/Standard/Max) |
 | `templates/MIGRATION.md` | Fresh install or upgrade existing |
 
-## Using This Repository
-
-### To Learn About CxMS
-1. Read `CxMS_Introduction_and_Guide.md`
-2. Follow the "Getting Started in 10 Minutes" section
-3. Reference `CxMS_Practical_Implementation_Guide.md` for details
-
-### To Apply CxMS to Your Project
-1. Copy core templates from `templates/core/` to your project
-2. Customize `CLAUDE.md` with your project details
-3. Follow the session lifecycle in the guides
-
 ## Session Lifecycle
 
 ```
-START → Read CLAUDE.md → Read Session.md → WORK → Update Session.md → END
+START → Hooks fire → Read CLAUDE.md → WORK → Hooks save state → END
 ```
-
-Always update Session.md before ending a session!
 
 ## Contributing
 

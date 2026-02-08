@@ -62,5 +62,6 @@ CxMS_Tasks.md
 # CxMS telemetry (local tracking)
 .cxms/
 
-# Claude Code local data
-.claude/
+# Claude Code local data (track settings.json for hooks, ignore the rest)
+.claude/*
+!.claude/settings.json

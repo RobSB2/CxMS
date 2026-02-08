@@ -1,0 +1,61 @@
+{
+  "hooks": {
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/cxms-pre-compact.mjs",
+            "timeout": 30,
+            "statusMessage": "Saving session state before compaction..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/cxms-context-warn.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/cxms-context-check.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/cxms-session-end.mjs",
+            "timeout": 30,
+            "statusMessage": "Saving session state..."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node -e \"console.log('[CxMS] ═══ SESSION START ═══');console.log('[CxMS] Read CLAUDE.md for project guidance.');console.log('[CxMS] Hooks active: context monitoring, pre-compaction saves, session end saves.');const fs=require('fs');const f='.claude/compaction-recovery.md';if(fs.existsSync(f)){console.log('[CxMS] ═══ COMPACTION RECOVERY AVAILABLE ═══');console.log('[CxMS] Recovery file exists at .claude/compaction-recovery.md -- READ IT NOW.')}\"",
+            "statusMessage": "Loading CxMS project context..."
+          }
+        ]
+      }
+    ]
+  }
+}
