@@ -4,7 +4,7 @@
 
 [![Website](https://img.shields.io/badge/Website-opencxms.org-blue?style=for-the-badge)](https://opencxms.org)
 [![Dashboard](https://img.shields.io/badge/Dashboard-Live%20Stats-green?style=for-the-badge)](https://robsb2.github.io/CxMS/dashboard/)
-[![Version](https://img.shields.io/badge/Version-1.6.4-purple?style=for-the-badge)](templates/VERSIONS.md)
+[![Version](https://img.shields.io/badge/Version-2.0.0-purple?style=for-the-badge)](templates/VERSIONS.md)
 [![Contact](https://img.shields.io/badge/Contact-opencxms%40proton.me-orange?style=for-the-badge)](mailto:opencxms@proton.me)
 
 **Persistent memory for AI coding assistants through structured documentation.**
@@ -172,31 +172,98 @@ Export CxMS to Cursor, GitHub Copilot, Windsurf, and Aider.
 
 ---
 
+## What's New: CxMS Tools v2.0
+
+### Enforced Startup Sequence
+
+Previous versions relied on advisory text to get AI assistants to read startup files. **They often skipped it.** CxMS v2.0 solves this structurally:
+
+- **PreToolUse hook blocks all non-Read tools** until required startup files are confirmed read
+- AI physically cannot write code, run commands, or do anything productive until it reads your context files
+- PostToolUse detects when all files are read and unlocks the gate automatically
+
+```
+Session Start
+  ├── SessionStart hook creates enforcement state (complete: false)
+  ├── AI tries to Write/Edit/Bash → BLOCKED: "Read these files first"
+  ├── AI reads Startup.md, Approvals.md, Session.md, Tasks.md
+  ├── PostToolUse detects all read → unlocks gate (complete: true)
+  └── Normal work begins
+```
+
+### Cross-Repo Coordination
+
+If you use CxMS across multiple projects, instances can now communicate:
+
+- **Coordination file** (`~/.claude/coordination/cxms-coordination.json`) acts as a shared bulletin board
+- Instances see each other's status and tool versions at startup
+- The upstream project can leave messages for downstream instances (e.g., "new hook version available")
+
+### Automatic Context Protection (6 Hooks)
+
+| Hook | Trigger | What It Does |
+|------|---------|-------------|
+| **SessionStart** | Session begins | Creates startup enforcement, reads coordination messages |
+| **PreToolUse** | Before every tool | Enforces startup sequence, blocks at 80% context, compaction recovery |
+| **PostToolUse** | After every tool | Tracks breadcrumbs with edit summaries, detects startup completion, enforces checkpoints every 30 tool calls |
+| **PreCompact** | Before auto-compaction | Saves comprehensive recovery file with breadcrumbs, session state, active tasks, uncommitted changes |
+| **SessionEnd** | Session ends | Updates session file, runs telemetry, updates coordination file, syncs memory bridge |
+| **Memory Bridge** | Called by hooks | Syncs session state into Claude Code's native MEMORY.md (auto-loaded at next session start) |
+
+### Per-Project Configuration
+
+Each project gets a `.claude/cxms-config.json` that defines:
+- Which files must be read at startup (enforced by hooks)
+- Session and tasks file names
+- Coordination file path
+
+```json
+{
+  "project_name": "MyApp",
+  "startup_required_reads": ["MyApp_Startup.md", "MyApp_Approvals.md", "MyApp_Session.md", "MyApp_Tasks.md"],
+  "session_file": "MyApp_Session.md",
+  "tasks_file": "MyApp_Tasks.md",
+  "coordination_file": "~/.claude/coordination/cxms-coordination.json"
+}
+```
+
+---
+
 ## Session Lifecycle
 
 ```
 +-------------------------------------------------------------+
-|                    SESSION LIFECYCLE                         |
+|                    SESSION LIFECYCLE (v2.0)                   |
 +-------------------------------------------------------------+
 |                                                              |
 |  START                                                       |
 |    |                                                         |
 |    v                                                         |
 |  +-----------------+                                         |
-|  | Read CLAUDE.md  | <- Project overview                     |
+|  | SessionStart    | <- Hook creates enforcement state       |
+|  | hook fires      | <- Reads coordination messages          |
 |  +--------+--------+                                         |
 |           |                                                  |
 |           v                                                  |
 |  +-----------------+                                         |
-|  | Read Session.md | <- Current state                        |
+|  | Read CLAUDE.md  | <- Auto-loaded by Claude Code           |
 |  +--------+--------+                                         |
 |           |                                                  |
 |           v                                                  |
-|       [ WORK ]                                               |
+|  +-----------------+                                         |
+|  | Read Startup,   | <- ENFORCED: non-read tools blocked     |
+|  | Approvals,      |    until all files confirmed read       |
+|  | Session, Tasks  |                                         |
+|  +--------+--------+                                         |
+|           |                                                  |
+|           v                                                  |
+|       [ WORK ]    <- Breadcrumbs tracked, checkpoints        |
+|           |          enforced every 30 tool calls             |
 |           |                                                  |
 |           v                                                  |
 |  +-----------------+                                         |
-|  |Update Session.md| <- CRITICAL!                            |
+|  | PreCompact/     | <- Automatic recovery saves             |
+|  | SessionEnd      | <- State persisted to memory bridge     |
 |  +--------+--------+                                         |
 |           |                                                  |
 |           v                                                  |
@@ -205,7 +272,7 @@ Export CxMS to Cursor, GitHub Copilot, Windsurf, and Aider.
 +-------------------------------------------------------------+
 ```
 
-**Remember:** Always update Session.md before ending a session!
+**Remember:** Session saves are now automatic via hooks, but manual checkpoints are still valuable!
 
 ---
 
@@ -228,7 +295,13 @@ CxMS/
 │   ├── multi-tool/                        # Tool-specific configs (5)
 │   └── profiles/                          # Role-based profiles (5)
 │
-├── tools/                                 # CxMS utilities
+├── tools/                                 # CxMS utilities & hook scripts
+│   ├── cxms-session-start.mjs             # SessionStart hook (enforcement + coordination)
+│   ├── cxms-context-warn.mjs              # PreToolUse hook (startup gate + context gate)
+│   ├── cxms-context-check.mjs             # PostToolUse hook (breadcrumbs + completion)
+│   ├── cxms-pre-compact.mjs               # PreCompact hook (recovery saves)
+│   ├── cxms-session-end.mjs               # SessionEnd hook (state save + coordination)
+│   ├── cxms-memory-bridge.mjs             # Memory bridge (auto-persist to MEMORY.md)
 │   ├── cxms-cascade.mjs                   # Cascading config manager
 │   ├── cxms-report.mjs                    # Telemetry reporter
 │   ├── cxms-profile.mjs                   # Profile manager CLI

@@ -19,11 +19,11 @@ CxMS hooks are configured in `.claude/settings.json` and run automatically:
 
 | Hook | Script | Purpose |
 |------|--------|---------|
-| **SessionStart** | (inline) | Prints startup banner, checks for compaction recovery |
-| **PreToolUse** | `tools/cxms-context-warn.mjs` | Warns if context is critically low |
-| **PostToolUse** | `tools/cxms-context-check.mjs` | Monitors context % after each tool call |
-| **PreCompact** | `tools/cxms-pre-compact.mjs` | Saves session state before compaction |
-| **SessionEnd** | `tools/cxms-session-end.mjs` | Saves session state on exit |
+| **SessionStart** | `tools/cxms-session-start.mjs` | Creates startup enforcement state, reads coordination file, outputs banner |
+| **PreToolUse** | `tools/cxms-context-warn.mjs` | **Enforces startup sequence** + blocks at 80% context + compaction recovery |
+| **PostToolUse** | `tools/cxms-context-check.mjs` | Breadcrumb tracking, startup completion detection, checkpoint enforcement |
+| **PreCompact** | `tools/cxms-pre-compact.mjs` | Saves comprehensive recovery state before compaction |
+| **SessionEnd** | `tools/cxms-session-end.mjs` | Saves session state, updates coordination file |
 
 ## Context Monitoring
 
@@ -52,10 +52,11 @@ CxMS/
 │   ├── cxms-cascade.mjs                   # Config inheritance
 │   ├── cxms-report.mjs                    # Telemetry
 │   ├── cxms-profile.mjs                   # Profile manager
-│   ├── cxms-context-warn.mjs              # Context warning hook
-│   ├── cxms-context-check.mjs             # Context monitoring hook
-│   ├── cxms-pre-compact.mjs               # Pre-compaction save hook
-│   ├── cxms-session-end.mjs               # Session end save hook
+│   ├── cxms-session-start.mjs             # Session start + startup enforcement
+│   ├── cxms-context-warn.mjs              # PreToolUse gate (startup + context)
+│   ├── cxms-context-check.mjs             # PostToolUse (breadcrumbs + completion)
+│   ├── cxms-pre-compact.mjs               # Pre-compaction save
+│   ├── cxms-session-end.mjs               # Session end save + coordination
 │   └── cxms-memory-bridge.mjs             # Memory bridge (auto-persist)
 │
 ├── opencxms-website/                      # opencxms.org (Next.js)
