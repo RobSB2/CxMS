@@ -191,13 +191,33 @@ Session Start
   └── Normal work begins
 ```
 
-### Cross-Repo Coordination
+### Total Recall: Cross-Instance Memory Transfer
 
-If you use CxMS across multiple projects, instances can now communicate:
+If you use CxMS across multiple projects, AI instances can now **implant memories in each other**.
 
-- **Coordination file** (`~/.claude/coordination/cxms-coordination.json`) acts as a shared bulletin board
-- Instances see each other's status and tool versions at startup
-- The upstream project can leave messages for downstream instances (e.g., "new hook version available")
+One Claude instance finishes a session and writes a message to the coordination file. Next time a *different* Claude instance starts in a *different* project, it receives that message as if it were its own memory. The receiving instance never created that knowledge -- it was planted by another instance before it even started thinking.
+
+- **Coordination file** (`~/.claude/coordination/cxms-coordination.json`) is the memory implant device
+- Instances see each other's status, tool versions, and pending messages at startup
+- Any instance can leave messages for any other (e.g., "new hook version available", "entity name changed")
+- Messages are marked as read per-instance so they only show once
+
+```
+┌──────────────┐     coordination.json     ┌──────────────┐
+│  Project A   │ ──── writes message ────> │  Shared File │
+│  (Session 1) │                           │  (bulletin   │
+└──────────────┘                           │   board)     │
+                                           └──────┬───────┘
+                                                  │
+                                           reads at startup
+                                                  │
+                                           ┌──────▼───────┐
+                                           │  Project B   │
+                                           │  (Session 1) │
+                                           │  "memory"    │
+                                           │  implanted   │
+                                           └──────────────┘
+```
 
 ### Automatic Context Protection (6 Hooks)
 
