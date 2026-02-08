@@ -121,15 +121,24 @@ export function writeMemory(memoryPath, sections) {
 /**
  * Build the static Project section.
  * Only created on first run -- never overwritten.
- *
- * NOTE: Customize this for your project. Replace the file names and paths
- * with your own project's session file, tasks file, etc.
  */
 export function buildProjectSection(projectDir) {
+  // Read session/tasks file names from config if available
+  let sessionFile = 'PROJECT_Session.md';
+  let tasksFile = 'PROJECT_Tasks.md';
+  try {
+    const configPath = path.join(projectDir, '.claude', 'cxms-config.json');
+    if (fs.existsSync(configPath)) {
+      const config = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+      sessionFile = config.session_file || sessionFile;
+      tasksFile = config.tasks_file || tasksFile;
+    }
+  } catch { /* ignore */ }
+
   return [
     '',
-    '- **Session file:** PROJECT_Session.md',
-    '- **Tasks file:** PROJECT_Tasks.md',
+    '- **Session file:** ' + sessionFile,
+    '- **Tasks file:** ' + tasksFile,
     '- **Project dir:** ' + projectDir,
     '',
   ].join('\n');
@@ -239,10 +248,10 @@ export function updateMemory(projectDir, sessionData, tasksFilePath) {
   const memory = readMemory(memoryPath);
   const sections = memory.sections;
 
-  // Ensure preamble exists -- customize the project name for your project
+  // Ensure preamble exists
   if (!sections.has('_preamble')) {
-    const projectName = path.basename(projectDir);
-    sections.set('_preamble', '# CxMS Memory: ' + projectName + '\n');
+    const projName = path.basename(projectDir);
+    sections.set('_preamble', '# CxMS Memory: ' + projName + '\n');
   }
 
   // Ensure Project section exists (only created on first run)

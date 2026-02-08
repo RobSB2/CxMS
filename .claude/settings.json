@@ -51,7 +51,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node -e \"console.log('[CxMS] ═══ SESSION START ═══');console.log('[CxMS] Read CLAUDE.md for project guidance.');console.log('[CxMS] Hooks active: context monitoring, pre-compaction saves, session end saves.');const fs=require('fs');const f='.claude/compaction-recovery.md';if(fs.existsSync(f)){console.log('[CxMS] ═══ COMPACTION RECOVERY AVAILABLE ═══');console.log('[CxMS] Recovery file exists at .claude/compaction-recovery.md -- READ IT NOW.')}\"",
+            "command": "node tools/cxms-session-start.mjs",
+            "timeout": 15,
             "statusMessage": "Loading CxMS project context..."
           }
         ]

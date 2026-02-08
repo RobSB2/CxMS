@@ -4,15 +4,10 @@
  *
  * Fires when a Claude Code session ends, performing automated cleanup:
  *   1. Reads session metadata from stdin (session_id, reason, transcript_path)
- *   2. Updates [PROJECT]_Session.md with session-end timestamp
- *   3. Runs telemetry submission (cxms-report.mjs --auto --quiet) if available
+ *   2. Updates Session.local.md with session-end timestamp
+ *   3. Runs telemetry submission (cxms-report.mjs --auto --quiet)
  *   4. Logs the session end event to .claude/session-log.json
  *   5. Outputs a summary to stdout
- *
- * Requirements:
- *   - CxMS Session file in the project root
- *   - Statusline configured to write .claude/context-status.json
- *   - See: https://github.com/RobSB2/CxMS
  *
  * Hook Configuration (.claude/settings.json):
  *   {
@@ -36,12 +31,14 @@
  *
  * Output (stdout): Summary message (informational only — cannot block exit)
  *
- * Version: 1.0.0
+ * Version: 2.0.0 -- Add cross-repo coordination file updates
  */
 
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
 import { execSync } from 'child_process';
+import { updateMemory } from './cxms-memory-bridge.mjs';
 
 // ============================================
 // CONFIGURATION
@@ -118,6 +115,10 @@ function updateSessionFile(sessionFile, hookInput, contextStatus) {
 
   // Build the session-end marker line
   const endMarker = `**Session ended:** ${timestamp} | Context: ${ctxPct}% | ${reason}`;
+
+  // Strategy: Insert the end marker after the most recent "## Session N Checkpoint" header
+  // Look for the first line after the checkpoint header that is a blank line followed by ---
+  // or just append after the header block
 
   const lines = content.split('\n');
 
@@ -222,8 +223,7 @@ function logSessionEnd(hookInput, contextStatus, sessionFile, telemetryOk) {
 
 function getUncommittedCount() {
   try {
-    const nullDev = process.platform === 'win32' ? '2>nul' : '2>/dev/null';
-    const status = execSync(`git status --porcelain ${nullDev}`, {
+    const status = execSync('git status --porcelain 2>nul', {
       cwd: PROJECT_DIR,
       encoding: 'utf-8',
       timeout: 5000,
@@ -233,6 +233,60 @@ function getUncommittedCount() {
   } catch {
     return -1; // Unknown
   }
+}
+
+// ============================================
+// COORDINATION FILE UPDATE
+// ============================================
+
+const CONFIG_FILE = path.join(CLAUDE_DIR, 'cxms-config.json');
+
+function updateCoordinationFile(breadcrumbs) {
+  try {
+    if (!fs.existsSync(CONFIG_FILE)) return;
+    const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
+    const coordPath = config.coordination_file;
+    if (!coordPath) return;
+
+    const resolved = coordPath.replace(/^~/, os.homedir());
+    if (!fs.existsSync(resolved)) return;
+
+    const coord = JSON.parse(fs.readFileSync(resolved, 'utf-8'));
+    const projectName = config.project_name;
+
+    if (coord.instances && coord.instances[projectName]) {
+      coord.instances[projectName].last_session = new Date().toISOString();
+      coord.instances[projectName].cxms_version = config.cxms_version;
+      coord.instances[projectName].tool_version = config.tool_version;
+
+      // Build summary from breadcrumbs
+      if (breadcrumbs) {
+        const writes = (breadcrumbs.recent_operations || [])
+          .filter(op => op.type === 'write' && op.summary)
+          .slice(-3)
+          .map(op => op.summary)
+          .join('; ');
+        if (writes) {
+          coord.instances[projectName].last_session_summary = writes.substring(0, 200);
+        }
+      }
+    }
+
+    // Mark messages as read
+    if (coord.messages) {
+      for (const msg of coord.messages) {
+        if (msg.to && (msg.to.includes(projectName) || msg.to.includes('all'))) {
+          if (!msg.read_by || !msg.read_by.includes(projectName)) {
+            msg.read_by = msg.read_by || [];
+            msg.read_by.push(projectName);
+          }
+        }
+      }
+    }
+
+    coord.last_updated = new Date().toISOString();
+    fs.writeFileSync(resolved, JSON.stringify(coord, null, 2), 'utf-8');
+  } catch { /* best-effort */ }
 }
 
 // ============================================
@@ -270,7 +324,39 @@ async function main() {
   // 4. Check for uncommitted changes
   const uncommittedCount = getUncommittedCount();
 
-  // 5. Output summary to stdout
+  // 5. Update coordination file
+  try {
+    const bcPath = path.join(CLAUDE_DIR, 'session-breadcrumbs.json');
+    const bc = fs.existsSync(bcPath) ? JSON.parse(fs.readFileSync(bcPath, 'utf-8')) : null;
+    updateCoordinationFile(bc);
+  } catch { /* best-effort */ }
+
+  // 6. Update Claude Code memory (MEMORY.md) with session state
+  try {
+    const breadcrumbs = JSON.parse(
+      fs.readFileSync(path.join(CLAUDE_DIR, 'session-breadcrumbs.json'), 'utf-8')
+    );
+    const accomplished = (breadcrumbs.recent_operations || [])
+      .filter(op => op.type === 'write' && op.summary)
+      .slice(-8)
+      .map(op => {
+        const f = op.path ? path.basename(op.path) : '';
+        return op.summary ? (f + ': ' + op.summary).substring(0, 120) : f;
+      });
+
+    const tasksFile = findFile(['*_Tasks.md']);
+
+    updateMemory(PROJECT_DIR, {
+      ctxPct: ctxPct,
+      model: contextStatus.model || null,
+      reason: getReasonLabel(reason),
+      trigger: 'session-end',
+      filesModified: breadcrumbs.files_modified || [],
+      accomplished,
+    }, tasksFile);
+  } catch { /* best-effort -- memory bridge failure must not block exit */ }
+
+  // 7. Output summary to stdout
   console.log(`[CxMS] Session ended: ${getReasonLabel(reason)}`);
   if (ctxPct != null) {
     console.log(`[CxMS] Final context: ${ctxPct}%`);
