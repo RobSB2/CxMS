@@ -1,4 +1,4 @@
-# CxMS - Agent Context Management System
+# CxMS - Open Context Memory System
 
 <div align="center">
 
