@@ -179,7 +179,7 @@ async function main() {
         '[CxMS] COMPACTION DETECTED -- Context dropped from ' + prevPct + '% to ' + ctxPct + '%. ' +
         'Session state may be lost. BEFORE doing anything else: ' +
         '(1) Read .claude/compaction-recovery.md to restore session context. ' +
-        '(2) Write a checkpoint to CxMS-Commercial_Session.local.md confirming what you recovered. ' +
+        '(2) Write a checkpoint to your project Session file confirming what you recovered. ' +
         '(3) Then resume normal work.'
       );
       return;
@@ -197,7 +197,7 @@ async function main() {
     const buffer = 85 - ctxPct;
     block(
       '[CxMS] STOP -- Context at ' + ctxPct + '% (' + buffer + '% buffer before auto-compaction at 85%). ' +
-      'Do NOT execute any more tools until you save full session state to CxMS-Commercial_Session.local.md. ' +
+      'Do NOT execute any more tools until you save full session state to your project Session file. ' +
       'Include: (1) what was accomplished, (2) key decisions, (3) files modified, (4) current task, (5) resume prompt. ' +
       'Then tell the user: "Session saved. Context at ' + ctxPct + '%. Recommend starting a new session."'
     );

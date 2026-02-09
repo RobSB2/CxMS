@@ -370,7 +370,7 @@ function checkCheckpointDue(crumbs) {
   // Push to modelMessages for JSON additionalContext output
   modelMessages.push(
     '[CxMS] MANDATORY CHECKPOINT -- ' + sinceLast + ' tool calls since last save.',
-    '[CxMS] Write a DETAILED checkpoint to CxMS-Commercial_Session.local.md NOW.',
+    '[CxMS] Write a DETAILED checkpoint to your project Session file NOW.',
     '[CxMS] Include: (1) accomplishments, (2) key decisions, (3) files modified, (4) current task, (5) resume prompt.'
   );
   if (activityHint) modelMessages.push('[CxMS]' + activityHint);
@@ -433,7 +433,7 @@ function checkContextThresholds() {
     modelMessages.push(
       '[CxMS] COMPACTION DETECTED -- Context dropped from ' + prevPct + '% to ' + ctxPct + '%.',
       '[CxMS] Session state may have been lost. Read .claude/compaction-recovery.md to restore context.',
-      '[CxMS] Then write a checkpoint to CxMS-Commercial_Session.local.md confirming recovery.'
+      '[CxMS] Then write a checkpoint to your project Session file confirming recovery.'
     );
   }
 
