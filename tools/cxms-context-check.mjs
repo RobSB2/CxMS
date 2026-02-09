@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CxMS Context Check + Breadcrumb Tracker + Checkpoint Enforcer + Startup Completion (v5.0)
+ * CxMS Context Check + Breadcrumb Tracker + Checkpoint Enforcer (v6.0)
  *
  * PostToolUse hook that does THREE things:
  *
@@ -10,22 +10,15 @@
  *      checkpoint reminder that forces the agent to write detailed session
  *      state to Session.md. This is STRUCTURAL enforcement, not a directive.
  *
- * CRITICAL FIX (v4.0):
+ * Matcher: ^(Write|Edit|Bash|NotebookEdit)$ -- only fires for write/bash tools.
+ * Read, Glob, Grep, AskUserQuestion, Task etc. are never intercepted.
+ * This means ZERO spawns during startup (all startup actions are Reads).
+ *
+ * CRITICAL NOTE (v4.0+):
  *   PostToolUse console.log() is ONLY shown in verbose mode (Ctrl+O).
- *   The model NEVER sees plain stdout from PostToolUse hooks.
- *   Only SessionStart and UserPromptSubmit stdout reach the model.
+ *   To communicate with the model, we output JSON with additionalContext.
  *
- *   To communicate with the model from PostToolUse, we must output JSON
- *   with an additionalContext field. This is the documented mechanism:
- *   { "hookSpecificOutput": { "hookEventName": "PostToolUse", "additionalContext": "..." } }
- *
- *   As a safety net, a companion PreToolUse hook (cxms-context-warn.mjs)
- *   BLOCKS tool execution at EMERGENCY level (83%+) and on compaction.
- *   Block reasons ARE guaranteed to reach the model.
- *
- * Input (stdin): JSON from Claude Code PostToolUse event:
- *   { "tool_name": "Write", "tool_input": { "file_path": "...", ... } }
- *
+ * Input (stdin): JSON from Claude Code PostToolUse event
  * Output (stdout): JSON with additionalContext for model-visible warnings
  * Output (stderr): Same warnings for terminal verbose mode
  *
@@ -33,7 +26,8 @@
  *   .claude/context-check-state.json -- Threshold + checkpoint state
  *   .claude/session-breadcrumbs.json -- Rolling breadcrumb trail with edit summaries
  *
- * Version: 5.2.0 -- Resolve-on-first-chunk stdin (eliminates Windows pipe hang)
+ * Version: 6.0.0 -- Removed startup completion detection (handled by SessionStart
+ *   instructions). Matcher limits spawns to write/bash tools only.
  */
 
 import fs from 'fs';
@@ -68,7 +62,6 @@ const THRESHOLDS = [
 // MODEL MESSAGE COLLECTOR
 // ============================================
 
-// Messages that need to reach the model (not just terminal)
 const modelMessages = [];
 
 // ============================================
@@ -115,8 +108,6 @@ function getWorkDomain(relPath) {
 
 /**
  * Extract a meaningful summary of WHAT changed from tool input.
- * This is the difference between "Edit -> file.md" and
- * "Edit -> file.md: Added cross-vendor consensus section with 7 claims"
  */
 function extractEditSummary(toolName, toolInput) {
   if (!toolInput) return null;
@@ -273,66 +264,9 @@ function updateBreadcrumbs(toolName, toolInput) {
 }
 
 // ============================================
-// STARTUP COMPLETION DETECTION
-// ============================================
-
-const STARTUP_STATE_FILE = path.join(CLAUDE_DIR, 'startup-state.json');
-
-/**
- * Check if all required startup files have been read.
- * Compares startup_required_reads against breadcrumbs.files_read by basename.
- * When all are read, sets startup-state.json complete=true and notifies model.
- */
-function checkStartupCompletion(crumbs) {
-  try {
-    if (!fs.existsSync(STARTUP_STATE_FILE)) return;
-    const state = JSON.parse(fs.readFileSync(STARTUP_STATE_FILE, 'utf-8'));
-    if (state.complete === true) return;
-
-    const required = state.required_files || [];
-    if (required.length === 0) return;
-
-    // Normalize breadcrumb files_read to basenames for matching
-    const filesRead = (crumbs?.files_read || []).map(f => {
-      const normalized = f.replace(/\\/g, '/');
-      const parts = normalized.split('/');
-      return parts[parts.length - 1].toLowerCase();
-    });
-
-    const remaining = required.filter(req => {
-      const reqBase = req.replace(/\\/g, '/').split('/').pop().toLowerCase();
-      return !filesRead.includes(reqBase);
-    });
-
-    if (remaining.length === 0) {
-      // All required files have been read - startup complete!
-      state.complete = true;
-      state.completed_at = new Date().toISOString();
-      state.remaining = [];
-      state.files_read = [...filesRead];
-      fs.writeFileSync(STARTUP_STATE_FILE, JSON.stringify(state, null, 2), 'utf-8');
-
-      modelMessages.push(
-        '[CxMS] ✓ Startup complete. All required files read. You may now proceed with work.',
-        '[CxMS] Output the session summary (Step 3 of Startup.md) before starting on the user\'s request.'
-      );
-    } else {
-      // Update remaining list for PreToolUse to reference
-      state.remaining = remaining;
-      fs.writeFileSync(STARTUP_STATE_FILE, JSON.stringify(state, null, 2), 'utf-8');
-    }
-  } catch { /* best-effort */ }
-}
-
-// ============================================
 // CHECKPOINT ENFORCEMENT
 // ============================================
 
-/**
- * Check if it's time for a mandatory checkpoint.
- * Pushes reminder to modelMessages instead of console.log.
- * Returns true if a checkpoint was triggered.
- */
 function checkCheckpointDue(crumbs) {
   const toolCount = crumbs.tool_count || 0;
   const lastCheckpoint = crumbs.last_checkpoint_at || 0;
@@ -340,7 +274,6 @@ function checkCheckpointDue(crumbs) {
 
   if (sinceLast < CHECKPOINT_INTERVAL) return false;
 
-  // Build a summary of what happened since last checkpoint
   const recentWrites = crumbs.recent_operations
     .filter(op => op.type === 'write' && op.summary)
     .slice(-8);
@@ -367,7 +300,6 @@ function checkCheckpointDue(crumbs) {
     fileHint = '\nFiles modified: ' + modifiedFiles.join(', ');
   }
 
-  // Push to modelMessages for JSON additionalContext output
   modelMessages.push(
     '[CxMS] MANDATORY CHECKPOINT -- ' + sinceLast + ' tool calls since last save.',
     '[CxMS] Write a DETAILED checkpoint to your project Session file NOW.',
@@ -377,7 +309,6 @@ function checkCheckpointDue(crumbs) {
   if (fileHint) modelMessages.push('[CxMS]' + fileHint);
   modelMessages.push('[CxMS] This is NOT optional. Session state WILL BE LOST at compaction without it.');
 
-  // Update the checkpoint marker so we don't trigger again until next interval
   crumbs.last_checkpoint_at = toolCount;
   try {
     fs.writeFileSync(BREADCRUMBS_FILE, JSON.stringify(crumbs, null, 2), 'utf-8');
@@ -406,11 +337,7 @@ function checkContextThresholds() {
 
   const ctxPct = contextStatus.ctx_pct;
   if (ctxPct == null) return;
-
-  // Guard: if ctx_pct > 100, it's garbage data from cumulative token counting.
   if (ctxPct > 100) return;
-
-  // Guard: if the statusline flagged this reading as unreliable, skip warnings.
   if (contextStatus.reliable === false) return;
 
   let checkState = { lastWarnLevel: null, lastCtxPct: 0, checkCount: 0 };
@@ -422,14 +349,10 @@ function checkContextThresholds() {
 
   checkState.checkCount = (checkState.checkCount || 0) + 1;
 
-  // Detect compaction: if previous reading was high and current dropped significantly,
-  // reset warning state so thresholds can re-trigger cleanly in the new context.
+  // Detect compaction
   const prevPct = checkState.lastCtxPct || 0;
   if (prevPct >= 60 && (prevPct - ctxPct) >= 25) {
-    // Compaction detected -- reset warning state
     checkState.lastWarnLevel = null;
-
-    // Push compaction recovery message to model
     modelMessages.push(
       '[CxMS] COMPACTION DETECTED -- Context dropped from ' + prevPct + '% to ' + ctxPct + '%.',
       '[CxMS] Session state may have been lost. Read .claude/compaction-recovery.md to restore context.',
@@ -477,8 +400,6 @@ function readStdinFast(timeoutMs = 100) {
     process.stdin.setEncoding('utf-8');
     process.stdin.on('data', chunk => {
       data += chunk;
-      // Resolve immediately on first chunk — hook input fits in one chunk
-      // Don't wait for EOF (Windows pipe close can be slow)
       clearTimeout(timer);
       done(data);
     });
@@ -489,51 +410,9 @@ function readStdinFast(timeoutMs = 100) {
 }
 
 // ============================================
-// STARTUP COMPLETION (DIRECT — no breadcrumbs needed)
-// ============================================
-
-/**
- * Lightweight startup completion check that works directly with
- * startup-state.json, bypassing breadcrumb tracking entirely.
- * Used during startup fast path to avoid expensive I/O.
- */
-function checkStartupCompletionDirect(toolName, toolInput, state) {
-  if (toolName !== 'Read') return;
-  const filePath = toolInput?.file_path || '';
-  if (!filePath) return;
-
-  try {
-    const fileName = path.basename(filePath).toLowerCase();
-    const remaining = (state.remaining || state.required_files || []).filter(req => {
-      const reqBase = req.replace(/\\/g, '/').split('/').pop().toLowerCase();
-      return reqBase !== fileName;
-    });
-
-    state.remaining = remaining;
-    if (!state.files_read) state.files_read = [];
-    state.files_read.push(fileName);
-
-    if (remaining.length === 0) {
-      state.complete = true;
-      state.completed_at = new Date().toISOString();
-      modelMessages.push(
-        '[CxMS] ✓ Startup complete. All required files read. You may now proceed with work.',
-        '[CxMS] Output the session summary (Step 3 of Startup.md) before starting on the user\'s request.'
-      );
-    }
-
-    fs.writeFileSync(STARTUP_STATE_FILE, JSON.stringify(state, null, 2), 'utf-8');
-  } catch { /* best-effort */ }
-}
-
-// ============================================
 // OUTPUT HELPER
 // ============================================
 
-/**
- * Output accumulated model messages via the PostToolUse additionalContext
- * mechanism (the ONLY way PostToolUse can communicate with the model).
- */
 function outputModelMessages() {
   if (modelMessages.length > 0) {
     const filtered = modelMessages.filter(m => m && m.length > 0);
@@ -565,25 +444,6 @@ async function main() {
 
   const toolName = hookInput.tool_name || 'unknown';
   const toolInput = hookInput.tool_input || {};
-
-  // ---- STARTUP FAST PATH ----
-  // During startup, skip heavy work (breadcrumbs, context monitoring).
-  // Only check if startup sequence is now complete.
-  // Saves ~300ms per Read call (4 calls during startup = ~1.2s total).
-  let startupState = null;
-  try {
-    if (fs.existsSync(STARTUP_STATE_FILE)) {
-      startupState = JSON.parse(fs.readFileSync(STARTUP_STATE_FILE, 'utf-8'));
-    }
-  } catch { /* ignore */ }
-
-  if (startupState && !startupState.complete) {
-    checkStartupCompletionDirect(toolName, toolInput, startupState);
-    outputModelMessages();
-    return;
-  }
-
-  // ---- NORMAL PATH (startup complete) ----
 
   // 1. Track breadcrumbs with edit summaries
   let crumbs = null;

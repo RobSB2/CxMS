@@ -14,7 +14,7 @@
     ],
     "PreToolUse": [
       {
-        "matcher": "^(?!Read$|AskUserQuestion$)",
+        "matcher": "^(Write|Edit|Bash|NotebookEdit)$",
         "hooks": [
           {
             "type": "command",
@@ -32,7 +32,8 @@
             "command": "node tools/cxms-context-check.mjs",
             "timeout": 10
           }
-        ]
+        ],
+        "matcher": "^(Write|Edit|Bash|NotebookEdit)$"
       }
     ],
     "SessionEnd": [
