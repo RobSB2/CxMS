@@ -26,7 +26,7 @@ function banner() {
   console.log(`
 ${CYAN}╔════════════════════════════════════════════════════════════╗
 ║                                                            ║
-║   ${BOLD}CxMS${RESET}${CYAN} - Agent Context Management System              ║
+║   ${BOLD}CxMS${RESET}${CYAN} - OpenCxMS Memory System              ║
 ║                                                            ║
 ║   Persistent memory for AI coding assistants               ║
 ║                                                            ║

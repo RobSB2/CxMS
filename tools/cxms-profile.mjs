@@ -779,7 +779,7 @@ ${colors.bold}Profile Location:${colors.reset}
   Global:  ~/.cxms/profiles/
   Project: ./cxms/profile.json
 
-${colors.dim}Part of CxMS - Agent Context Management System${colors.reset}
+${colors.dim}Part of CxMS - OpenCxMS Memory System${colors.reset}
 `);
 }
 

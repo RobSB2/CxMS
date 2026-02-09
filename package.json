@@ -1,7 +1,7 @@
 {
   "name": "cxms",
   "version": "1.6.0",
-  "description": "Agent Context Management System - Persistent memory for AI coding assistants",
+  "description": "OpenCxMS Memory System - Persistent memory for AI coding assistants",
   "keywords": [
     "ai",
     "claude",

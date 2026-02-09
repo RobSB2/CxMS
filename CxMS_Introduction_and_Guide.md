@@ -1,4 +1,4 @@
-# CxMS - Open CxMS Memory System
+# CxMS - OpenCxMS Memory System
 ## A Practical Guide to AI Session Continuity
 
 **Version:** 1.0
@@ -114,7 +114,7 @@ None of these solve the fundamental problem: **AI needs structured, persistent, 
 
 ## What is CxMS?
 
-**CxMS (Open CxMS Memory System)** is a documentation-based methodology for maintaining AI session continuity.
+**CxMS (OpenCxMS Memory System)** is a documentation-based methodology for maintaining AI session continuity.
 
 In simple terms: **It's a set of markdown files that give AI assistants persistent memory.**
 

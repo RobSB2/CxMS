@@ -55,7 +55,7 @@ For new projects or starting over completely.
 Copy this prompt to your AI assistant:
 
 ```
-I want to set up CxMS (Agent Context Management System) for my project.
+I want to set up CxMS (OpenCxMS Memory System) for my project.
 
 1. Fetch the latest CxMS templates from: https://github.com/RobSB2/CxMS
 2. Read templates/DEPLOYMENT.md to understand deployment levels

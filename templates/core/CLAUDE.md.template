@@ -4,7 +4,7 @@
 **Template Version:** 1.6
 **Deployment Level:** Lite | Standard | Max
 **Code Name:** [Optional - give your AI assistant a personality!]
-**CxMS:** Agent Context Management System (https://github.com/RobSB2/CxMS)
+**CxMS:** OpenCxMS Memory System (https://github.com/RobSB2/CxMS)
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 

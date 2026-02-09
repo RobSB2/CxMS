@@ -21,7 +21,7 @@
 
 ## CxMS Integration
 
-This project uses **CxMS (Agent Context Management System)** for persistent AI memory.
+This project uses **CxMS (OpenCxMS Memory System)** for persistent AI memory.
 
 ### Key Files
 | File | Purpose | Update Frequency |

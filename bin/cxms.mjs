@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CxMS CLI - Agent Context Management System
+ * CxMS CLI - OpenCxMS Memory System
  *
  * Main entry point for the cxms command.
  *
@@ -31,7 +31,7 @@ const VERSION = '1.6.0';
 
 function showHelp() {
   console.log(`
-${CYAN}${BOLD}CxMS${RESET} - Agent Context Management System v${VERSION}
+${CYAN}${BOLD}CxMS${RESET} - OpenCxMS Memory System v${VERSION}
 
 ${BOLD}Usage:${RESET}
   cxms <command> [options]

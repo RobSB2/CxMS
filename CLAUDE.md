@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-This repository contains **CxMS (Open CxMS Memory System)** - persistent memory for AI coding assistants through structured documentation.
+This repository contains **CxMS (OpenCxMS Memory System)** - persistent memory for AI coding assistants through structured documentation.
 
 **Core Principle:** AI context is temporary; files are permanent. Everything the AI needs to know must exist in files it can read.
 
