@@ -23,7 +23,7 @@
  * Input (stdin): JSON from Claude Code PreToolUse event
  * Output (stdout): JSON with decision field
  *
- * Version: 2.0.0
+ * Version: 2.1.0 -- Fast path for Read/AskUserQuestion (zero file I/O) + stdin timeout
  */
 
 import fs from 'fs';
@@ -35,17 +35,6 @@ const CONTEXT_STATUS_FILE = path.join(CLAUDE_DIR, 'context-status.json');
 const CHECK_STATE_FILE = path.join(CLAUDE_DIR, 'context-check-state.json');
 const COMPACTION_GATE_FILE = path.join(CLAUDE_DIR, 'compaction-gate.json');
 const STARTUP_STATE_FILE = path.join(CLAUDE_DIR, 'startup-state.json');
-const CONFIG_FILE = path.join(CLAUDE_DIR, 'cxms-config.json');
-
-function getSessionFile() {
-  try {
-    if (fs.existsSync(CONFIG_FILE)) {
-      const config = JSON.parse(fs.readFileSync(CONFIG_FILE, 'utf-8'));
-      return config.session_file || 'PROJECT_Session.md';
-    }
-  } catch { /* ignore */ }
-  return 'PROJECT_Session.md';
-}
 
 // Tools allowed through during startup enforcement
 const STARTUP_ALLOWED_TOOLS = ['Read', 'Glob', 'Grep', 'AskUserQuestion'];
@@ -79,23 +68,49 @@ function block(reason) {
   process.stdout.write(JSON.stringify({ decision: 'block', reason }) + '\n');
 }
 
+// ============================================
+// STDIN HELPER (with timeout for Windows pipe issues)
+// ============================================
+
+function readStdinWithTimeout(timeoutMs = 1000) {
+  return new Promise((resolve) => {
+    let data = '';
+    let resolved = false;
+    const done = (result) => {
+      if (resolved) return;
+      resolved = true;
+      resolve(result);
+    };
+    const timer = setTimeout(() => done(data), timeoutMs);
+    process.stdin.setEncoding('utf-8');
+    process.stdin.on('data', chunk => { data += chunk; });
+    process.stdin.on('end', () => { clearTimeout(timer); done(data); });
+    process.stdin.on('error', () => { clearTimeout(timer); done(''); });
+    process.stdin.resume();
+  });
+}
+
 async function main() {
-  // Parse stdin for tool info
+  // Parse stdin for tool info (with timeout to prevent Windows pipe hanging)
   let hookInput = {};
   try {
-    const chunks = [];
-    for await (const chunk of process.stdin) {
-      chunks.push(chunk);
-    }
-    const raw = Buffer.concat(chunks).toString('utf-8').trim();
+    const raw = await readStdinWithTimeout(1000);
     if (raw) hookInput = JSON.parse(raw);
   } catch { /* ignore */ }
 
   const toolName = hookInput.tool_name || '';
+
+  // --- FAST PATH: Read and AskUserQuestion are ALWAYS allowed ---
+  // No file I/O needed. Saves ~200ms per call during startup (4 calls).
+  if (toolName === 'Read' || toolName === 'AskUserQuestion') {
+    approve();
+    return;
+  }
+
   const toolInput = hookInput.tool_input || {};
   const filePath = (toolInput.file_path || '').replace(/\\/g, '/').toLowerCase();
 
-  // --- STARTUP ENFORCEMENT (checked FIRST, before everything else) ---
+  // --- STARTUP ENFORCEMENT (only for non-Read/non-Ask tools) ---
   if (!checkStartupComplete(toolName)) {
     const remaining = getStartupRemaining();
     block(
@@ -105,12 +120,6 @@ async function main() {
     );
     return;
   }
-
-  // Always allow Read (needed for recovery and context gathering)
-  if (toolName === 'Read') { approve(); return; }
-
-  // Always allow user communication
-  if (toolName === 'AskUserQuestion') { approve(); return; }
 
   // Always allow writes to Session/checkpoint/recovery files
   if (toolName === 'Write' || toolName === 'Edit') {
@@ -147,8 +156,6 @@ async function main() {
   } catch { /* ignore */ }
 
   // --- COMPACTION DETECTION ---
-  // If ctx_pct dropped 25+ points from previous reading, compaction likely occurred.
-  // Use a one-shot gate file so we only block ONCE after compaction.
   if (prevPct >= 60 && (prevPct - ctxPct) >= 25) {
     let alreadyFired = false;
     try {
@@ -159,7 +166,6 @@ async function main() {
     } catch { /* ignore */ }
 
     if (!alreadyFired) {
-      // Write gate file so we don't block again
       try {
         fs.writeFileSync(COMPACTION_GATE_FILE, JSON.stringify({
           fired: true,
@@ -173,13 +179,12 @@ async function main() {
         '[CxMS] COMPACTION DETECTED -- Context dropped from ' + prevPct + '% to ' + ctxPct + '%. ' +
         'Session state may be lost. BEFORE doing anything else: ' +
         '(1) Read .claude/compaction-recovery.md to restore session context. ' +
-        '(2) Write a checkpoint to ' + getSessionFile() + ' confirming what you recovered. ' +
+        '(2) Write a checkpoint to CxMS-Commercial_Session.local.md confirming what you recovered. ' +
         '(3) Then resume normal work.'
       );
       return;
     }
   } else {
-    // Context is normal -- clear the compaction gate for next time
     try {
       if (fs.existsSync(COMPACTION_GATE_FILE)) {
         fs.unlinkSync(COMPACTION_GATE_FILE);
@@ -192,7 +197,7 @@ async function main() {
     const buffer = 85 - ctxPct;
     block(
       '[CxMS] STOP -- Context at ' + ctxPct + '% (' + buffer + '% buffer before auto-compaction at 85%). ' +
-      'Do NOT execute any more tools until you save full session state to ' + getSessionFile() + '. ' +
+      'Do NOT execute any more tools until you save full session state to CxMS-Commercial_Session.local.md. ' +
       'Include: (1) what was accomplished, (2) key decisions, (3) files modified, (4) current task, (5) resume prompt. ' +
       'Then tell the user: "Session saved. Context at ' + ctxPct + '%. Recommend starting a new session."'
     );
@@ -206,7 +211,5 @@ async function main() {
 main().catch(() => {
   approve();
 }).finally(() => {
-  // Force clean exit on Windows — without this, Node can linger
-  // keeping the stdout pipe open, which blocks Claude Code's UI
   process.exit(0);
 });

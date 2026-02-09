@@ -33,7 +33,7 @@
  *   .claude/context-check-state.json -- Threshold + checkpoint state
  *   .claude/session-breadcrumbs.json -- Rolling breadcrumb trail with edit summaries
  *
- * Version: 5.0.0 -- Add startup completion detection
+ * Version: 5.1.0 -- Startup fast path (skip breadcrumbs/context during startup) + stdin timeout
  */
 
 import fs from 'fs';
@@ -48,17 +48,6 @@ const CLAUDE_DIR = path.join(PROJECT_DIR, '.claude');
 const CONTEXT_STATUS_FILE = path.join(CLAUDE_DIR, 'context-status.json');
 const CHECK_STATE_FILE = path.join(CLAUDE_DIR, 'context-check-state.json');
 const BREADCRUMBS_FILE = path.join(CLAUDE_DIR, 'session-breadcrumbs.json');
-const CONFIG_FILE_PATH = path.join(CLAUDE_DIR, 'cxms-config.json');
-
-function getSessionFile() {
-  try {
-    if (fs.existsSync(CONFIG_FILE_PATH)) {
-      const config = JSON.parse(fs.readFileSync(CONFIG_FILE_PATH, 'utf-8'));
-      return config.session_file || 'PROJECT_Session.md';
-    }
-  } catch { /* ignore */ }
-  return 'PROJECT_Session.md';
-}
 
 const MAX_RECENT_OPS = 40;
 const MAX_FILES_TRACKED = 50;
@@ -381,7 +370,7 @@ function checkCheckpointDue(crumbs) {
   // Push to modelMessages for JSON additionalContext output
   modelMessages.push(
     '[CxMS] MANDATORY CHECKPOINT -- ' + sinceLast + ' tool calls since last save.',
-    '[CxMS] Write a DETAILED checkpoint to ' + getSessionFile() + ' NOW.',
+    '[CxMS] Write a DETAILED checkpoint to CxMS-Commercial_Session.local.md NOW.',
     '[CxMS] Include: (1) accomplishments, (2) key decisions, (3) files modified, (4) current task, (5) resume prompt.'
   );
   if (activityHint) modelMessages.push('[CxMS]' + activityHint);
@@ -444,7 +433,7 @@ function checkContextThresholds() {
     modelMessages.push(
       '[CxMS] COMPACTION DETECTED -- Context dropped from ' + prevPct + '% to ' + ctxPct + '%.',
       '[CxMS] Session state may have been lost. Read .claude/compaction-recovery.md to restore context.',
-      '[CxMS] Then write a checkpoint to ' + getSessionFile() + ' confirming recovery.'
+      '[CxMS] Then write a checkpoint to CxMS-Commercial_Session.local.md confirming recovery.'
     );
   }
 
@@ -472,60 +461,79 @@ function checkContextThresholds() {
 }
 
 // ============================================
-// MAIN
+// STDIN HELPER (with timeout for Windows pipe issues)
 // ============================================
 
-async function main() {
-  let hookInput = {};
+function readStdinWithTimeout(timeoutMs = 1000) {
+  return new Promise((resolve) => {
+    let data = '';
+    let resolved = false;
+    const done = (result) => {
+      if (resolved) return;
+      resolved = true;
+      resolve(result);
+    };
+    const timer = setTimeout(() => done(data), timeoutMs);
+    process.stdin.setEncoding('utf-8');
+    process.stdin.on('data', chunk => { data += chunk; });
+    process.stdin.on('end', () => { clearTimeout(timer); done(data); });
+    process.stdin.on('error', () => { clearTimeout(timer); done(''); });
+    process.stdin.resume();
+  });
+}
+
+// ============================================
+// STARTUP COMPLETION (DIRECT — no breadcrumbs needed)
+// ============================================
+
+/**
+ * Lightweight startup completion check that works directly with
+ * startup-state.json, bypassing breadcrumb tracking entirely.
+ * Used during startup fast path to avoid expensive I/O.
+ */
+function checkStartupCompletionDirect(toolName, toolInput, state) {
+  if (toolName !== 'Read') return;
+  const filePath = toolInput?.file_path || '';
+  if (!filePath) return;
+
   try {
-    const chunks = [];
-    for await (const chunk of process.stdin) {
-      chunks.push(chunk);
+    const fileName = path.basename(filePath).toLowerCase();
+    const remaining = (state.remaining || state.required_files || []).filter(req => {
+      const reqBase = req.replace(/\\/g, '/').split('/').pop().toLowerCase();
+      return reqBase !== fileName;
+    });
+
+    state.remaining = remaining;
+    if (!state.files_read) state.files_read = [];
+    state.files_read.push(fileName);
+
+    if (remaining.length === 0) {
+      state.complete = true;
+      state.completed_at = new Date().toISOString();
+      modelMessages.push(
+        '[CxMS] ✓ Startup complete. All required files read. You may now proceed with work.',
+        '[CxMS] Output the session summary (Step 3 of Startup.md) before starting on the user\'s request.'
+      );
     }
-    const raw = Buffer.concat(chunks).toString('utf-8').trim();
-    if (raw) hookInput = JSON.parse(raw);
-  } catch { /* ignore */ }
 
-  const toolName = hookInput.tool_name || 'unknown';
-  const toolInput = hookInput.tool_input || {};
-
-  // 1. Track breadcrumbs with edit summaries
-  let crumbs = null;
-  try {
-    crumbs = updateBreadcrumbs(toolName, toolInput);
+    fs.writeFileSync(STARTUP_STATE_FILE, JSON.stringify(state, null, 2), 'utf-8');
   } catch { /* best-effort */ }
+}
 
-  // 2. Check if startup sequence is now complete
-  if (crumbs) {
-    try {
-      checkStartupCompletion(crumbs);
-    } catch { /* best-effort */ }
-  }
+// ============================================
+// OUTPUT HELPER
+// ============================================
 
-  // 3. Check if mandatory checkpoint is due
-  if (crumbs) {
-    try {
-      checkCheckpointDue(crumbs);
-    } catch { /* best-effort */ }
-  }
-
-  // 4. Check context thresholds
-  try {
-    checkContextThresholds();
-  } catch { /* never crash */ }
-
-  // 5. Output JSON with additionalContext if we have messages for the model
-  //    This is the ONLY way PostToolUse hooks can communicate with the model.
-  //    Plain console.log() only shows in verbose mode (Ctrl+O), not to the model.
+/**
+ * Output accumulated model messages via the PostToolUse additionalContext
+ * mechanism (the ONLY way PostToolUse can communicate with the model).
+ */
+function outputModelMessages() {
   if (modelMessages.length > 0) {
     const filtered = modelMessages.filter(m => m && m.length > 0);
     if (filtered.length > 0) {
       const context = filtered.join('\n');
-
-      // stderr for terminal verbose display
       process.stderr.write(context + '\n');
-
-      // stdout JSON for model visibility (the actual fix)
       const output = {
         hookSpecificOutput: {
           hookEventName: 'PostToolUse',
@@ -537,10 +545,64 @@ async function main() {
   }
 }
 
+// ============================================
+// MAIN
+// ============================================
+
+async function main() {
+  // Parse stdin (with timeout to prevent Windows pipe hanging)
+  let hookInput = {};
+  try {
+    const raw = await readStdinWithTimeout(1000);
+    if (raw) hookInput = JSON.parse(raw);
+  } catch { /* ignore */ }
+
+  const toolName = hookInput.tool_name || 'unknown';
+  const toolInput = hookInput.tool_input || {};
+
+  // ---- STARTUP FAST PATH ----
+  // During startup, skip heavy work (breadcrumbs, context monitoring).
+  // Only check if startup sequence is now complete.
+  // Saves ~300ms per Read call (4 calls during startup = ~1.2s total).
+  let startupState = null;
+  try {
+    if (fs.existsSync(STARTUP_STATE_FILE)) {
+      startupState = JSON.parse(fs.readFileSync(STARTUP_STATE_FILE, 'utf-8'));
+    }
+  } catch { /* ignore */ }
+
+  if (startupState && !startupState.complete) {
+    checkStartupCompletionDirect(toolName, toolInput, startupState);
+    outputModelMessages();
+    return;
+  }
+
+  // ---- NORMAL PATH (startup complete) ----
+
+  // 1. Track breadcrumbs with edit summaries
+  let crumbs = null;
+  try {
+    crumbs = updateBreadcrumbs(toolName, toolInput);
+  } catch { /* best-effort */ }
+
+  // 2. Check if mandatory checkpoint is due
+  if (crumbs) {
+    try {
+      checkCheckpointDue(crumbs);
+    } catch { /* best-effort */ }
+  }
+
+  // 3. Check context thresholds
+  try {
+    checkContextThresholds();
+  } catch { /* never crash */ }
+
+  // 4. Output any accumulated model messages
+  outputModelMessages();
+}
+
 main().catch(() => {
   // noop - don't crash
 }).finally(() => {
-  // Force clean exit on Windows — without this, Node can linger
-  // keeping the stdout pipe open, which blocks Claude Code's UI
   process.exit(0);
 });
