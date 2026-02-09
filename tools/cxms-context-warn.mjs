@@ -23,7 +23,7 @@
  * Input (stdin): JSON from Claude Code PreToolUse event
  * Output (stdout): JSON with decision field
  *
- * Version: 2.1.0 -- Fast path for Read/AskUserQuestion (zero file I/O) + stdin timeout
+ * Version: 2.2.0 -- Matcher excludes Read/AskUserQuestion (zero spawns) + resolve-on-first-chunk stdin
  */
 
 import fs from 'fs';
@@ -72,7 +72,7 @@ function block(reason) {
 // STDIN HELPER (with timeout for Windows pipe issues)
 // ============================================
 
-function readStdinWithTimeout(timeoutMs = 1000) {
+function readStdinFast(timeoutMs = 100) {
   return new Promise((resolve) => {
     let data = '';
     let resolved = false;
@@ -83,7 +83,13 @@ function readStdinWithTimeout(timeoutMs = 1000) {
     };
     const timer = setTimeout(() => done(data), timeoutMs);
     process.stdin.setEncoding('utf-8');
-    process.stdin.on('data', chunk => { data += chunk; });
+    process.stdin.on('data', chunk => {
+      data += chunk;
+      // Resolve immediately on first chunk — hook input fits in one chunk
+      // Don't wait for EOF (Windows pipe close can be slow)
+      clearTimeout(timer);
+      done(data);
+    });
     process.stdin.on('end', () => { clearTimeout(timer); done(data); });
     process.stdin.on('error', () => { clearTimeout(timer); done(''); });
     process.stdin.resume();
@@ -94,18 +100,13 @@ async function main() {
   // Parse stdin for tool info (with timeout to prevent Windows pipe hanging)
   let hookInput = {};
   try {
-    const raw = await readStdinWithTimeout(1000);
+    const raw = await readStdinFast(100);
     if (raw) hookInput = JSON.parse(raw);
   } catch { /* ignore */ }
 
   const toolName = hookInput.tool_name || '';
-
-  // --- FAST PATH: Read and AskUserQuestion are ALWAYS allowed ---
-  // No file I/O needed. Saves ~200ms per call during startup (4 calls).
-  if (toolName === 'Read' || toolName === 'AskUserQuestion') {
-    approve();
-    return;
-  }
+  // Note: Read and AskUserQuestion are excluded by matcher in settings.json
+  // so this hook never fires for those tools (zero Node.js spawns).
 
   const toolInput = hookInput.tool_input || {};
   const filePath = (toolInput.file_path || '').replace(/\\/g, '/').toLowerCase();

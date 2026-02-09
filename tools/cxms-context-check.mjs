@@ -33,7 +33,7 @@
  *   .claude/context-check-state.json -- Threshold + checkpoint state
  *   .claude/session-breadcrumbs.json -- Rolling breadcrumb trail with edit summaries
  *
- * Version: 5.1.0 -- Startup fast path (skip breadcrumbs/context during startup) + stdin timeout
+ * Version: 5.2.0 -- Resolve-on-first-chunk stdin (eliminates Windows pipe hang)
  */
 
 import fs from 'fs';
@@ -464,7 +464,7 @@ function checkContextThresholds() {
 // STDIN HELPER (with timeout for Windows pipe issues)
 // ============================================
 
-function readStdinWithTimeout(timeoutMs = 1000) {
+function readStdinFast(timeoutMs = 100) {
   return new Promise((resolve) => {
     let data = '';
     let resolved = false;
@@ -475,7 +475,13 @@ function readStdinWithTimeout(timeoutMs = 1000) {
     };
     const timer = setTimeout(() => done(data), timeoutMs);
     process.stdin.setEncoding('utf-8');
-    process.stdin.on('data', chunk => { data += chunk; });
+    process.stdin.on('data', chunk => {
+      data += chunk;
+      // Resolve immediately on first chunk — hook input fits in one chunk
+      // Don't wait for EOF (Windows pipe close can be slow)
+      clearTimeout(timer);
+      done(data);
+    });
     process.stdin.on('end', () => { clearTimeout(timer); done(data); });
     process.stdin.on('error', () => { clearTimeout(timer); done(''); });
     process.stdin.resume();
@@ -553,7 +559,7 @@ async function main() {
   // Parse stdin (with timeout to prevent Windows pipe hanging)
   let hookInput = {};
   try {
-    const raw = await readStdinWithTimeout(1000);
+    const raw = await readStdinFast(100);
     if (raw) hookInput = JSON.parse(raw);
   } catch { /* ignore */ }
 

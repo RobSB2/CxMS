@@ -34,7 +34,7 @@
  * Input (stdin): JSON with { "trigger": "auto"|"manual" }
  * Output (stdout): Message injected into Claude's post-compaction context
  *
- * Version: 3.0.0
+ * Version: 3.1.0 -- Fix stdin: resolve-on-first-chunk (eliminates Windows pipe hang)
  */
 
 import fs from 'fs';
@@ -316,15 +316,33 @@ function formatBreadcrumbsForRecovery(crumbs) {
 // MAIN
 // ============================================
 
+function readStdinFast(timeoutMs = 100) {
+  return new Promise((resolve) => {
+    let data = '';
+    let resolved = false;
+    const done = (result) => {
+      if (resolved) return;
+      resolved = true;
+      resolve(result);
+    };
+    const timer = setTimeout(() => done(data), timeoutMs);
+    process.stdin.setEncoding('utf-8');
+    process.stdin.on('data', chunk => {
+      data += chunk;
+      clearTimeout(timer);
+      done(data);
+    });
+    process.stdin.on('end', () => { clearTimeout(timer); done(data); });
+    process.stdin.on('error', () => { clearTimeout(timer); done(''); });
+    process.stdin.resume();
+  });
+}
+
 async function main() {
-  // Read hook input from stdin
+  // Read hook input from stdin (resolve on first chunk, 100ms timeout)
   let hookInput = {};
   try {
-    const chunks = [];
-    for await (const chunk of process.stdin) {
-      chunks.push(chunk);
-    }
-    const raw = Buffer.concat(chunks).toString('utf-8').trim();
+    const raw = await readStdinFast(100);
     if (raw) hookInput = JSON.parse(raw);
   } catch { /* ignore parse errors */ }
 
