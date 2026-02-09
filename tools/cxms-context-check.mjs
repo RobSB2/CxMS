@@ -538,5 +538,9 @@ async function main() {
 }
 
 main().catch(() => {
+  // noop - don't crash
+}).finally(() => {
+  // Force clean exit on Windows — without this, Node can linger
+  // keeping the stdout pipe open, which blocks Claude Code's UI
   process.exit(0);
 });

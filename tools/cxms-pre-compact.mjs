@@ -509,5 +509,8 @@ async function main() {
 main().catch(err => {
   // Hook must not crash — fail silently with a note
   console.error(`[CxMS Pre-Compact Hook Error] ${err.message}`);
-  process.exit(0); // Exit 0 so we don't block compaction
+}).finally(() => {
+  // Force clean exit on Windows — without this, Node can linger
+  // keeping the stdout pipe open, which blocks Claude Code's UI
+  process.exit(0);
 });
