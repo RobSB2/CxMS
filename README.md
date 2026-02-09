@@ -1,4 +1,4 @@
-# CxMS - Open Context Memory System
+# CxMS - Open CxMS Memory System
 
 <div align="center">
 
