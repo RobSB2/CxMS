@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * CxMS Context Check + Breadcrumb Tracker + Checkpoint Enforcer (v6.0)
+ * CxMS Context Check + Breadcrumb Tracker + Checkpoint Enforcer (v6.1)
  *
  * PostToolUse hook that does THREE things:
  *
@@ -26,8 +26,9 @@
  *   .claude/context-check-state.json -- Threshold + checkpoint state
  *   .claude/session-breadcrumbs.json -- Rolling breadcrumb trail with edit summaries
  *
- * Version: 6.0.0 -- Removed startup completion detection (handled by SessionStart
- *   instructions). Matcher limits spawns to write/bash tools only.
+ * Version: 6.1.0 -- Added lazy breadcrumb init (reset stale breadcrumbs from
+ *   previous session). SessionStart hook eliminated; startup instructions
+ *   moved to MEMORY.md for zero-spawn startup.
  */
 
 import fs from 'fs';
@@ -211,7 +212,13 @@ function updateBreadcrumbs(toolName, toolInput) {
   try {
     if (fs.existsSync(BREADCRUMBS_FILE)) {
       const raw = fs.readFileSync(BREADCRUMBS_FILE, 'utf-8');
-      crumbs = JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      // Lazy session init: reset stale breadcrumbs from previous session (>2h old)
+      const sessionAge = Date.now() - new Date(parsed.session_start || 0).getTime();
+      if (sessionAge < 2 * 60 * 60 * 1000) {
+        crumbs = parsed;
+      }
+      // else: keep fresh defaults (new session)
     }
   } catch { /* start fresh */ }
 

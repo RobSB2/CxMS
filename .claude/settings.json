@@ -47,18 +47,6 @@
           }
         ]
       }
-    ],
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "node tools/cxms-session-start.mjs",
-            "timeout": 15,
-            "statusMessage": "Loading CxMS project context..."
-          }
-        ]
-      }
     ]
   }
 }

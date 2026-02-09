@@ -1,6 +1,8 @@
 # MEMORY.md
 
-On session start, read CLAUDE.md.
+## Startup (MANDATORY)
+
+Read CLAUDE.md before any other work.
 
 ## Key Facts
 
