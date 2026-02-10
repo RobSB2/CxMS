@@ -1,17 +1,20 @@
 #!/usr/bin/env node
 /**
- * CxMS Session Start Hook (v2.0)
+ * CxMS Session Start Hook (v3.0)
  *
  * Fires at session start. Outputs startup banner with required file list,
  * reads cross-repo coordination messages, and clears stale breadcrumbs.
+ * Creates startup-state.json gate for enforcement by PostToolUse tracker
+ * and PreToolUse blocker.
  *
- * v2.0: Removed startup-state.json creation. Startup enforcement is now
- *   purely instruction-based (this banner tells Claude what to read).
- *   PreToolUse/PostToolUse no longer fire during startup (matcher skips Reads).
+ * v3.0: Restored startup-state.json creation for hard enforcement.
+ *   PostToolUse(^Read$) tracks progress; PreToolUse(^Write|Edit|Bash$) blocks
+ *   until all required files are read. Performance: ~80ms total overhead
+ *   via matcher-based filtering and 100ms resolve-on-first-chunk stdin.
  *
  * Output: stdout (injected into Claude's initial context)
  *
- * Version: 2.0.0
+ * Version: 3.0.0
  */
 
 import fs from 'fs';
@@ -24,6 +27,7 @@ const CONFIG_FILE = path.join(CLAUDE_DIR, 'cxms-config.json');
 const BREADCRUMBS_FILE = path.join(CLAUDE_DIR, 'session-breadcrumbs.json');
 const COMPACTION_GATE_FILE = path.join(CLAUDE_DIR, 'compaction-gate.json');
 const RECOVERY_FILE = path.join(CLAUDE_DIR, 'compaction-recovery.md');
+const STARTUP_STATE_FILE = path.join(CLAUDE_DIR, 'startup-state.json');
 
 // ============================================
 // UTILITIES
@@ -108,6 +112,21 @@ function updateCoordinationTimestamp(config) {
 }
 
 // ============================================
+// STARTUP ENFORCEMENT
+// ============================================
+
+function createStartupState(requiredFiles) {
+  if (!requiredFiles || requiredFiles.length === 0) return;
+  const state = {
+    complete: false,
+    created_at: new Date().toISOString(),
+    required_files: requiredFiles,
+    read_files: [],
+  };
+  writeJson(STARTUP_STATE_FILE, state);
+}
+
+// ============================================
 // CLEANUP
 // ============================================
 
@@ -148,15 +167,18 @@ function main() {
 
   const projectName = config.project_name || path.basename(PROJECT_DIR);
 
-  // 2. Clear stale breadcrumbs
+  // 2. Create startup enforcement gate
+  const required = config.startup_required_reads || [];
+  createStartupState(required);
+
+  // 3. Clear stale breadcrumbs
   clearStaleBreadcrumbs();
 
-  // 3. Banner header
+  // 4. Banner header
   output.push(`[CxMS] ═══ SESSION START: ${projectName} ═══`);
   output.push('[CxMS] MEMORY.md is auto-loaded. Read CLAUDE.md next.');
 
-  // 4. Required reads list (instruction-based, not enforced by gate)
-  const required = config.startup_required_reads || [];
+  // 5. Required reads list (enforced by startup gate)
   if (required.length > 0) {
     output.push('[CxMS] ═══ STARTUP ENFORCEMENT ACTIVE ═══');
     output.push('[CxMS] You MUST read these files before any other work:');
@@ -166,7 +188,7 @@ function main() {
     output.push('[CxMS] Non-read tools will be BLOCKED until all files are read.');
   }
 
-  // 5. Coordination: messages and updates
+  // 6. Coordination: messages and updates
   const coord = readCoordination(config);
   if (coord) {
     const unread = getUnreadMessages(coord, projectName);
@@ -194,16 +216,10 @@ function main() {
     updateCoordinationTimestamp(config);
   }
 
-  // 6. Compaction recovery check
+  // 7. Compaction recovery check
   if (fs.existsSync(RECOVERY_FILE)) {
     output.push('[CxMS] ═══ COMPACTION RECOVERY AVAILABLE ═══');
     output.push('[CxMS] Recovery file exists at .claude/compaction-recovery.md -- READ IT NOW.');
-  }
-
-  // 7. MBR reference (project-specific, only if MBR exists)
-  const mbrPattern = path.join(PROJECT_DIR, 'drafts');
-  if (fs.existsSync(mbrPattern)) {
-    // Projects with a Master Context Index can add their own reference here
   }
 
   console.log(output.join('\n'));

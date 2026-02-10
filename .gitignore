@@ -65,3 +65,4 @@ CxMS_Tasks.md
 # Claude Code local data (track settings.json for hooks, ignore the rest)
 .claude/*
 !.claude/settings.json
+.claude/startup-state.json

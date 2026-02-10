@@ -1,16 +1,17 @@
 #!/usr/bin/env node
 /**
- * CxMS Context Warning Gate (v3.0)
+ * CxMS Context Warning Gate (v4.0)
  *
- * PreToolUse hook -- EMERGENCY tool gate + post-compaction recovery.
+ * PreToolUse hook -- startup gate + EMERGENCY tool gate + post-compaction recovery.
  *
  * Matcher: ^(Write|Edit|Bash|NotebookEdit)$ -- only fires for write/bash tools.
  * Read, Glob, Grep, AskUserQuestion, Task etc. are never intercepted.
  *
  * Behavior:
- *   - ctx_pct < 80%: approve (tool proceeds normally)
- *   - ctx_pct >= 80%: BLOCK tool (except Session writes + Reads)
- *   - Compaction detected: BLOCK first tool with recovery instructions
+ *   1. Startup gate: if startup-state.json exists and complete=false → BLOCK
+ *   2. ctx_pct < 80%: approve (tool proceeds normally)
+ *   3. ctx_pct >= 80%: BLOCK tool (except Session writes + Reads)
+ *   4. Compaction detected: BLOCK first tool with recovery instructions
  *
  * Allowed tools at 80%+:
  *   - Write/Edit to Session files (needed for emergency saves)
@@ -18,8 +19,9 @@
  * Input (stdin): JSON from Claude Code PreToolUse event
  * Output (stdout): JSON with decision field
  *
- * Version: 3.0.0 -- Removed startup enforcement (now handled by SessionStart instructions only).
- *   Matcher limits spawns to write/bash tools. Zero spawns during startup.
+ * Version: 4.0.0 -- Restored startup enforcement via startup-state.json gate.
+ *   PostToolUse(^Read$) tracks progress; this hook blocks until all required
+ *   files are read. Cost: one existsSync + readFileSync + JSON.parse (~5ms).
  */
 
 import fs from 'fs';
@@ -30,6 +32,7 @@ const CLAUDE_DIR = path.join(PROJECT_DIR, '.claude');
 const CONTEXT_STATUS_FILE = path.join(CLAUDE_DIR, 'context-status.json');
 const CHECK_STATE_FILE = path.join(CLAUDE_DIR, 'context-check-state.json');
 const COMPACTION_GATE_FILE = path.join(CLAUDE_DIR, 'compaction-gate.json');
+const STARTUP_STATE_FILE = path.join(CLAUDE_DIR, 'startup-state.json');
 
 function approve() {
   process.stdout.write(JSON.stringify({ decision: 'approve' }) + '\n');
@@ -37,6 +40,23 @@ function approve() {
 
 function block(reason) {
   process.stdout.write(JSON.stringify({ decision: 'block', reason }) + '\n');
+}
+
+// ============================================
+// STARTUP GATE CHECK (~5ms: existsSync + readFileSync + JSON.parse)
+// ============================================
+
+function checkStartupGate() {
+  try {
+    if (!fs.existsSync(STARTUP_STATE_FILE)) return null; // No gate
+    const state = JSON.parse(fs.readFileSync(STARTUP_STATE_FILE, 'utf-8'));
+    if (state.complete) return null; // Gate already lifted
+    const required = state.required_files || [];
+    const read = state.read_files || [];
+    const remaining = required.filter(f => !read.includes(f));
+    if (remaining.length === 0) return null; // All read (race condition safety)
+    return remaining;
+  } catch { return null; } // On error, don't block
 }
 
 // ============================================
@@ -85,6 +105,17 @@ async function main() {
       approve();
       return;
     }
+  }
+
+  // --- STARTUP GATE: Block if required reads incomplete ---
+  const remainingStartup = checkStartupGate();
+  if (remainingStartup) {
+    block(
+      '[CxMS] STARTUP INCOMPLETE -- You must read all required startup files before using ' +
+      toolName + '. Remaining: ' + remainingStartup.join(', ') + '. ' +
+      'Read these files now, then this tool will be unblocked.'
+    );
+    return;
   }
 
   // Read context status

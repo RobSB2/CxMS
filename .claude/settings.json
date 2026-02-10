@@ -1,5 +1,16 @@
 {
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/cxms-session-start.mjs",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PreCompact": [
       {
         "hooks": [
@@ -34,6 +45,16 @@
           }
         ],
         "matcher": "^(Write|Edit|Bash|NotebookEdit)$"
+      },
+      {
+        "matcher": "^Read$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node tools/cxms-startup-track.mjs",
+            "timeout": 5
+          }
+        ]
       }
     ],
     "SessionEnd": [
