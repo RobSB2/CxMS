@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * CxMS Context Warning Gate (v4.0)
+ * CxMS Context Warning Gate (v5.0)
  *
- * PreToolUse hook -- startup gate + EMERGENCY tool gate + post-compaction recovery.
+ * PreToolUse hook -- startup gate + context save-once gate + post-compaction recovery.
  *
  * Matcher: ^(Write|Edit|Bash|NotebookEdit)$ -- only fires for write/bash tools.
  * Read, Glob, Grep, AskUserQuestion, Task etc. are never intercepted.
@@ -10,18 +10,24 @@
  * Behavior:
  *   1. Startup gate: if startup-state.json exists and complete=false → BLOCK
  *   2. ctx_pct < 80%: approve (tool proceeds normally)
- *   3. ctx_pct >= 80%: BLOCK tool (except Session writes + Reads)
- *   4. Compaction detected: BLOCK first tool with recovery instructions
+ *   3. ctx_pct >= 80% (FIRST TIME): BLOCK once to force session save
+ *   4. ctx_pct >= 80% (AFTER SAVE): APPROVE — trust compaction recovery
+ *   5. Compaction detected: BLOCK first tool with recovery instructions
  *
- * Allowed tools at 80%+:
- *   - Write/Edit to Session files (needed for emergency saves)
+ * v5.0 CHANGE: The 80% gate is now a ONE-TIME save prompt, not a hard stop.
+ *   After the agent saves session state, all subsequent tools are approved.
+ *   The PreCompact hook handles the actual compaction at 85%, and the
+ *   compaction detection gate handles post-compaction recovery.
+ *   This lets us collect real data on compaction recovery in production.
+ *
+ * Allowed tools at 80%+ (always, even before save):
+ *   - Write/Edit to Session/checkpoint/recovery/breadcrumbs files
  *
  * Input (stdin): JSON from Claude Code PreToolUse event
  * Output (stdout): JSON with decision field
  *
- * Version: 4.0.0 -- Restored startup enforcement via startup-state.json gate.
- *   PostToolUse(^Read$) tracks progress; this hook blocks until all required
- *   files are read. Cost: one existsSync + readFileSync + JSON.parse (~5ms).
+ * Version: 5.0.0 -- One-time save gate replaces hard stop at 80%.
+ *   Trust compaction recovery system instead of forcing new sessions.
  */
 
 import fs from 'fs';
@@ -33,6 +39,7 @@ const CONTEXT_STATUS_FILE = path.join(CLAUDE_DIR, 'context-status.json');
 const CHECK_STATE_FILE = path.join(CLAUDE_DIR, 'context-check-state.json');
 const COMPACTION_GATE_FILE = path.join(CLAUDE_DIR, 'compaction-gate.json');
 const STARTUP_STATE_FILE = path.join(CLAUDE_DIR, 'startup-state.json');
+const CONTEXT_WARN_STATE_FILE = path.join(CLAUDE_DIR, 'context-warn-state.json');
 
 function approve() {
   process.stdout.write(JSON.stringify({ decision: 'approve' }) + '\n');
@@ -177,17 +184,47 @@ async function main() {
         fs.unlinkSync(COMPACTION_GATE_FILE);
       }
     } catch { /* ignore */ }
+    // Also reset the save-once warn state after compaction recovery
+    try {
+      if (fs.existsSync(CONTEXT_WARN_STATE_FILE)) {
+        fs.unlinkSync(CONTEXT_WARN_STATE_FILE);
+      }
+    } catch { /* ignore */ }
   }
 
-  // --- STOP GATE: Block at 80%+ ---
+  // --- SAVE-ONCE GATE: Block ONCE at 80%+ to force session save, then approve ---
   if (ctxPct >= 80) {
-    const buffer = 85 - ctxPct;
-    block(
-      '[CxMS] STOP -- Context at ' + ctxPct + '% (' + buffer + '% buffer before auto-compaction at 85%). ' +
-      'Do NOT execute any more tools until you save full session state to your project Session file. ' +
-      'Include: (1) what was accomplished, (2) key decisions, (3) files modified, (4) current task, (5) resume prompt. ' +
-      'Then tell the user: "Session saved. Context at ' + ctxPct + '%. Recommend starting a new session."'
-    );
+    // Check if we already warned this session
+    let alreadyWarned = false;
+    try {
+      if (fs.existsSync(CONTEXT_WARN_STATE_FILE)) {
+        const warnState = JSON.parse(fs.readFileSync(CONTEXT_WARN_STATE_FILE, 'utf-8'));
+        alreadyWarned = warnState.saved === true;
+      }
+    } catch { /* ignore */ }
+
+    if (!alreadyWarned) {
+      // First time hitting 80%: block once to force a session save
+      try {
+        fs.writeFileSync(CONTEXT_WARN_STATE_FILE, JSON.stringify({
+          saved: true,
+          at: new Date().toISOString(),
+          ctx_pct: ctxPct
+        }, null, 2), 'utf-8');
+      } catch { /* ignore */ }
+
+      const buffer = 85 - ctxPct;
+      block(
+        '[CxMS] SAVE CHECKPOINT -- Context at ' + ctxPct + '% (' + buffer + '% buffer before auto-compaction at 85%). ' +
+        'Save session state to your Session.local.md file NOW: ' +
+        '(1) what was accomplished, (2) key decisions, (3) files modified, (4) current task, (5) resume prompt. ' +
+        'After saving, CONTINUE WORKING — the compaction recovery system will handle the transition at 85%.'
+      );
+      return;
+    }
+
+    // Already warned and saved: approve — trust compaction recovery
+    approve();
     return;
   }
 

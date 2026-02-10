@@ -52,8 +52,8 @@ const MAX_SUMMARY_LENGTH = 200;
 const CHECKPOINT_INTERVAL = 30;
 
 // Context thresholds -- only warn once per crossing
-// 80%+ is handled by PreToolUse gate (cxms-context-warn.mjs) which blocks tools.
-// PostToolUse only needs to warn at levels BELOW the gate threshold.
+// 80%+ is handled by PreToolUse gate (cxms-context-warn.mjs) which blocks ONCE
+// to force a session save, then approves. PostToolUse warns at levels below that.
 const THRESHOLDS = [
   { pct: 75, level: 'CHECKPOINT', message: 'CHECKPOINT: Context at {pct}%. 10% buffer. Write checkpoint to Session.md immediately.' },
   { pct: 65, level: 'WARN', message: 'Context at {pct}%. 20% buffer remains before auto-compaction at 85%.' },
