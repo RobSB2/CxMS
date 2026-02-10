@@ -224,7 +224,7 @@ One Claude instance finishes a session and writes a message to the coordination 
 | Hook | Trigger | What It Does |
 |------|---------|-------------|
 | **SessionStart** | Session begins | Creates startup enforcement, reads coordination messages |
-| **PreToolUse** | Before every tool | Enforces startup sequence, blocks at 80% context, compaction recovery |
+| **PreToolUse** | Before every tool | Enforces startup sequence, one-time checkpoint save at 80% context (then approves), compaction recovery |
 | **PostToolUse** | After every tool | Tracks breadcrumbs with edit summaries, detects startup completion, enforces checkpoints every 30 tool calls |
 | **PreCompact** | Before auto-compaction | Saves comprehensive recovery file with breadcrumbs, session state, active tasks, uncommitted changes |
 | **SessionEnd** | Session ends | Updates session file, runs telemetry, updates coordination file, syncs memory bridge |
