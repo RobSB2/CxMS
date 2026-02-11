@@ -184,12 +184,16 @@ async function main() {
         fs.unlinkSync(COMPACTION_GATE_FILE);
       }
     } catch { /* ignore */ }
-    // Also reset the save-once warn state after compaction recovery
-    try {
-      if (fs.existsSync(CONTEXT_WARN_STATE_FILE)) {
-        fs.unlinkSync(CONTEXT_WARN_STATE_FILE);
-      }
-    } catch { /* ignore */ }
+    // Reset save-once warn state ONLY when below 80% (post-compaction recovery).
+    // Do NOT delete when still at 80%+ — that erases the "already warned" flag
+    // and causes the save-once gate to fire repeatedly instead of once. (v5.0.1 fix)
+    if (ctxPct < 80) {
+      try {
+        if (fs.existsSync(CONTEXT_WARN_STATE_FILE)) {
+          fs.unlinkSync(CONTEXT_WARN_STATE_FILE);
+        }
+      } catch { /* ignore */ }
+    }
   }
 
   // --- SAVE-ONCE GATE: Block ONCE at 80%+ to force session save, then approve ---
