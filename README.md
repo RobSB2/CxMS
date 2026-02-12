@@ -3,7 +3,6 @@
 <div align="center">
 
 [![Website](https://img.shields.io/badge/Website-opencxms.org-blue?style=for-the-badge)](https://opencxms.org)
-[![Dashboard](https://img.shields.io/badge/Dashboard-Live%20Stats-green?style=for-the-badge)](https://robsb2.github.io/CxMS/dashboard/)
 [![Version](https://img.shields.io/badge/Version-2.0.0-purple?style=for-the-badge)](templates/VERSIONS.md)
 [![Contact](https://img.shields.io/badge/Contact-opencxms%40proton.me-orange?style=for-the-badge)](mailto:opencxms@proton.me)
 
@@ -328,7 +327,7 @@ CxMS/
 │   ├── statusline-command.sh              # Context monitoring (Mac/Linux)
 │   └── statusline-command.ps1             # Context monitoring (Windows)
 │
-└── docs/dashboard/                        # Community telemetry dashboard
+└── docs/dashboard/                        # Community dashboard (coming soon)
 ```
 
 ---
@@ -363,7 +362,7 @@ No installation. No dependencies. No API keys. Just markdown files.
 | Resource | Link | Description |
 |----------|------|-------------|
 | **Website** | [opencxms.org](https://opencxms.org) | Official site - docs, getting started |
-| **Dashboard** | [GitHub Pages](https://robsb2.github.io/CxMS/dashboard/) | Community telemetry |
+| **GitHub** | [RobSB2/CxMS](https://github.com/RobSB2/CxMS) | Source code, issues |
 | **Contact** | [opencxms@proton.me](mailto:opencxms@proton.me) | Questions, feedback |
 
 ---
