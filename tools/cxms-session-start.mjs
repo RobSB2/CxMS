@@ -12,9 +12,15 @@
  *   until all required files are read. Performance: ~80ms total overhead
  *   via matcher-based filtering and 100ms resolve-on-first-chunk stdin.
  *
+ * v3.1: Clear stale context-check-state.json and context-warn-state.json
+ *   at session start. Fixes false compaction detection on new sessions —
+ *   old session's lastCtxPct (e.g. 73%) compared to new session's fresh
+ *   context (e.g. 23%) was triggering "compaction detected" block on the
+ *   very first write tool of every new session.
+ *
  * Output: stdout (injected into Claude's initial context)
  *
- * Version: 3.0.0
+ * Version: 3.1.0
  */
 
 import fs from 'fs';
@@ -26,6 +32,8 @@ const CLAUDE_DIR = path.join(PROJECT_DIR, '.claude');
 const CONFIG_FILE = path.join(CLAUDE_DIR, 'cxms-config.json');
 const BREADCRUMBS_FILE = path.join(CLAUDE_DIR, 'session-breadcrumbs.json');
 const COMPACTION_GATE_FILE = path.join(CLAUDE_DIR, 'compaction-gate.json');
+const CHECK_STATE_FILE = path.join(CLAUDE_DIR, 'context-check-state.json');
+const CONTEXT_WARN_STATE_FILE = path.join(CLAUDE_DIR, 'context-warn-state.json');
 const RECOVERY_FILE = path.join(CLAUDE_DIR, 'compaction-recovery.md');
 const STARTUP_STATE_FILE = path.join(CLAUDE_DIR, 'startup-state.json');
 
@@ -130,7 +138,7 @@ function createStartupState(requiredFiles) {
 // CLEANUP
 // ============================================
 
-function clearStaleBreadcrumbs() {
+function clearStaleSessionState() {
   const freshCrumbs = {
     session_start: new Date().toISOString(),
     last_updated: new Date().toISOString(),
@@ -143,12 +151,16 @@ function clearStaleBreadcrumbs() {
   };
   writeJson(BREADCRUMBS_FILE, freshCrumbs);
 
-  // Clear compaction gate from previous session
-  try {
-    if (fs.existsSync(COMPACTION_GATE_FILE)) {
-      fs.unlinkSync(COMPACTION_GATE_FILE);
-    }
-  } catch { /* ignore */ }
+  // Clear state files from previous session to prevent false positives.
+  // context-check-state.json stores lastCtxPct — if stale, the compaction
+  // detector sees "73% → 23%" on new session start and falsely fires.
+  // compaction-gate.json and context-warn-state.json also carry over.
+  const staleFiles = [COMPACTION_GATE_FILE, CHECK_STATE_FILE, CONTEXT_WARN_STATE_FILE];
+  for (const f of staleFiles) {
+    try {
+      if (fs.existsSync(f)) fs.unlinkSync(f);
+    } catch { /* ignore */ }
+  }
 }
 
 // ============================================
@@ -171,8 +183,8 @@ function main() {
   const required = config.startup_required_reads || [];
   createStartupState(required);
 
-  // 3. Clear stale breadcrumbs
-  clearStaleBreadcrumbs();
+  // 3. Clear stale session state (breadcrumbs, compaction gate, check state, warn state)
+  clearStaleSessionState();
 
   // 4. Banner header
   output.push(`[CxMS] ═══ SESSION START: ${projectName} ═══`);
