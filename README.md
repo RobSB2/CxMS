@@ -3,7 +3,7 @@
 <div align="center">
 
 [![Website](https://img.shields.io/badge/Website-opencxms.org-blue?style=for-the-badge)](https://opencxms.org)
-[![Version](https://img.shields.io/badge/Version-2.0.0-purple?style=for-the-badge)](templates/VERSIONS.md)
+[![Version](https://img.shields.io/badge/Version-3.0.0-purple?style=for-the-badge)](templates/VERSIONS.md)
 [![Contact](https://img.shields.io/badge/Contact-opencxms%40proton.me-orange?style=for-the-badge)](mailto:opencxms@proton.me)
 
 **Persistent memory for AI coding assistants through structured documentation.**
@@ -57,6 +57,31 @@ Session 1  Session 2  Session 3          Session 1  Session 2  Session 3
 | Re-explain everything | AI reads context files automatically |
 | Decisions forgotten | Decisions documented with rationale |
 | Inconsistent approaches | Consistent patterns maintained |
+
+---
+
+## What's New
+
+### v3.0.0 — Total Recall v2: Session ID Coordination (February 19, 2026)
+
+Multiple Claude Code sessions on the same project are now tracked individually. The coordination file gains an `active_sessions` array (schema 1.1, auto-migrated) that records each session's ID, status, context %, and model.
+
+- **Concurrent session detection:** Starting a second session on the same project triggers a `CONCURRENT SESSIONS DETECTED` banner with the sibling's age and context usage
+- **Session lifecycle:** SessionEnd marks sessions `completed` with final stats. Stale sessions auto-pruned (completed >1hr, active >4hr)
+- **Per-session message tracking:** Coordination messages record which specific session read them (`{project, session_id, read_at}` objects), backward-compatible with existing string format
+- **Per-session cleanup:** State files deleted on session exit; SessionStart only clears its own session's files (no longer destroys concurrent sessions' state)
+
+Updated: `cxms-session-start.mjs` (v3.1 → v4.0), `cxms-session-end.mjs` (v2.1 → v2.2)
+
+### v2.0.5 — Per-Session Context Isolation (February 19, 2026)
+
+Fixed a bug where two sessions on the same project shared a single `context-status.json`. Each session now writes to its own `context-status-{session_id}.json`. Compaction detection logging added.
+
+### v2.0.0 — Enforced Startup + Total Recall (February 8, 2026)
+
+Major release: PreToolUse hook blocks all non-Read tools until required startup files are confirmed read. Cross-instance memory transfer via coordination file. Full changelog at [opencxms.org/updates](https://opencxms.org/updates).
+
+---
 
 ### Works With Any AI Assistant
 
@@ -171,70 +196,17 @@ Export CxMS to Cursor, GitHub Copilot, Windsurf, and Aider.
 
 ---
 
-## What's New: CxMS Tools v2.0
-
-### Per-Session Context Isolation (v2.0.5 — February 19, 2026)
-
-When two Claude Code sessions run against the same project, they previously shared a single `context-status.json`. Session A's context percentage would overwrite Session B's, causing the wrong session to get blocked at 80%.
-
-**Fix:** Each session now writes to its own `context-status-{session_id}.json`. Hooks read only their own session's status file. Legacy `context-status.json` still written for backward compatibility. Stale per-session files auto-cleaned after 24 hours.
-
-The statusline command also now detects and logs compaction events to `.claude/compaction-log.json`.
-
-### Enforced Startup Sequence
-
-Previous versions relied on advisory text to get AI assistants to read startup files. **They often skipped it.** CxMS v2.0 solves this structurally:
-
-- **PreToolUse hook blocks all non-Read tools** until required startup files are confirmed read
-- AI physically cannot write code, run commands, or do anything productive until it reads your context files
-- PostToolUse detects when all files are read and unlocks the gate automatically
-
-```
-Session Start
-  ├── SessionStart hook creates enforcement state (complete: false)
-  ├── AI tries to Write/Edit/Bash → BLOCKED: "Read these files first"
-  ├── AI reads Startup.md, Approvals.md, Session.md, Tasks.md
-  ├── PostToolUse detects all read → unlocks gate (complete: true)
-  └── Normal work begins
-```
-
-### Total Recall: Cross-Instance Memory Transfer
-
-If you use CxMS across multiple projects, AI instances can now **implant memories in each other**.
-
-One Claude instance finishes a session and writes a message to the coordination file. Next time a *different* Claude instance starts in a *different* project, it receives that message as if it were its own memory. The receiving instance never created that knowledge -- it was planted by another instance before it even started thinking.
-
-- **Coordination file** (`~/.claude/coordination/cxms-coordination.json`) is the memory implant device
-- Instances see each other's status, tool versions, and pending messages at startup
-- Any instance can leave messages for any other (e.g., "new hook version available", "entity name changed")
-- Messages are marked as read per-instance so they only show once
-
-```
-┌──────────────┐     coordination.json     ┌──────────────┐
-│  Project A   │ ──── writes message ────> │  Shared File │
-│  (Session 1) │                           │  (bulletin   │
-└──────────────┘                           │   board)     │
-                                           └──────┬───────┘
-                                                  │
-                                           reads at startup
-                                                  │
-                                           ┌──────▼───────┐
-                                           │  Project B   │
-                                           │  (Session 1) │
-                                           │  "memory"    │
-                                           │  implanted   │
-                                           └──────────────┘
-```
+## Key Features
 
 ### Automatic Context Protection (6 Hooks)
 
 | Hook | Trigger | What It Does |
 |------|---------|-------------|
-| **SessionStart** | Session begins | Creates startup enforcement, reads coordination messages |
+| **SessionStart** | Session begins | Creates startup enforcement, registers session, reads coordination messages, detects concurrent sessions |
 | **PreToolUse** | Before every tool | Enforces startup sequence, one-time checkpoint save at 80% context (then approves), compaction recovery |
 | **PostToolUse** | After every tool | Tracks breadcrumbs with edit summaries, detects startup completion, enforces checkpoints every 30 tool calls |
 | **PreCompact** | Before auto-compaction | Saves comprehensive recovery file with breadcrumbs, session state, active tasks, uncommitted changes |
-| **SessionEnd** | Session ends | Updates session file, runs telemetry, updates coordination file, syncs memory bridge |
+| **SessionEnd** | Session ends | Updates session file, marks session completed, cleans up state files, syncs memory bridge |
 | **Memory Bridge** | Called by hooks | Syncs session state into Claude Code's native MEMORY.md (auto-loaded at next session start) |
 
 ### Per-Project Configuration
