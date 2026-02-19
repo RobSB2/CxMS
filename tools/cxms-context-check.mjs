@@ -26,9 +26,9 @@
  *   .claude/context-check-state.json -- Threshold + checkpoint state
  *   .claude/session-breadcrumbs.json -- Rolling breadcrumb trail with edit summaries
  *
- * Version: 6.1.0 -- Added lazy breadcrumb init (reset stale breadcrumbs from
- *   previous session). SessionStart hook eliminated; startup instructions
- *   moved to MEMORY.md for zero-spawn startup.
+ * Version: 7.0.0 -- Per-session context status files (fixes concurrent session
+ *   contamination). Uses session_id from hook input to read per-session status.
+ *   Based on v6.1 lazy breadcrumb init.
  */
 
 import fs from 'fs';
@@ -40,9 +40,21 @@ import path from 'path';
 
 const PROJECT_DIR = process.env.CLAUDE_PROJECT_DIR || process.cwd();
 const CLAUDE_DIR = path.join(PROJECT_DIR, '.claude');
-const CONTEXT_STATUS_FILE = path.join(CLAUDE_DIR, 'context-status.json');
-const CHECK_STATE_FILE = path.join(CLAUDE_DIR, 'context-check-state.json');
+// Legacy paths (used as fallback when no session_id)
+const LEGACY_CONTEXT_STATUS_FILE = path.join(CLAUDE_DIR, 'context-status.json');
+const LEGACY_CHECK_STATE_FILE = path.join(CLAUDE_DIR, 'context-check-state.json');
 const BREADCRUMBS_FILE = path.join(CLAUDE_DIR, 'session-breadcrumbs.json');
+
+// Per-session file paths (set after parsing session_id)
+let CONTEXT_STATUS_FILE = LEGACY_CONTEXT_STATUS_FILE;
+let CHECK_STATE_FILE = LEGACY_CHECK_STATE_FILE;
+
+function initSessionFiles(sessionId) {
+  if (sessionId) {
+    CONTEXT_STATUS_FILE = path.join(CLAUDE_DIR, `context-status-${sessionId}.json`);
+    CHECK_STATE_FILE = path.join(CLAUDE_DIR, `context-check-state-${sessionId}.json`);
+  }
+}
 
 const MAX_RECENT_OPS = 40;
 const MAX_FILES_TRACKED = 50;
@@ -309,7 +321,7 @@ function checkCheckpointDue(crumbs) {
 
   modelMessages.push(
     '[CxMS] MANDATORY CHECKPOINT -- ' + sinceLast + ' tool calls since last save.',
-    '[CxMS] Write a DETAILED checkpoint to your project Session file NOW.',
+    '[CxMS] Write a DETAILED checkpoint to your project Session.local.md NOW.',
     '[CxMS] Include: (1) accomplishments, (2) key decisions, (3) files modified, (4) current task, (5) resume prompt.'
   );
   if (activityHint) modelMessages.push('[CxMS]' + activityHint);
@@ -363,7 +375,7 @@ function checkContextThresholds() {
     modelMessages.push(
       '[CxMS] COMPACTION DETECTED -- Context dropped from ' + prevPct + '% to ' + ctxPct + '%.',
       '[CxMS] Session state may have been lost. Read .claude/compaction-recovery.md to restore context.',
-      '[CxMS] Then write a checkpoint to your project Session file confirming recovery.'
+      '[CxMS] Then write a checkpoint to your project Session.local.md confirming recovery.'
     );
   }
 
@@ -451,6 +463,10 @@ async function main() {
 
   const toolName = hookInput.tool_name || 'unknown';
   const toolInput = hookInput.tool_input || {};
+  const sessionId = hookInput.session_id || '';
+
+  // Initialize per-session file paths (v7.0)
+  initSessionFiles(sessionId);
 
   // 1. Track breadcrumbs with edit summaries
   let crumbs = null;

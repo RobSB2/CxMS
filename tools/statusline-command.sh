@@ -16,11 +16,11 @@
 #
 # Output:
 #   - Displays formatted status in Claude Code UI
-#   - Writes context stats to .claude/context-status.json in current project
+#   - Writes context stats to .claude/context-status-{session_id}.json in current project
 #
 # Credit: Based on workaround shared by @Memphizzz in anthropics/claude-code#18027
 #
-# Version: 1.1.0
+# Version: 3.0.0 - Per-session status files (fixes concurrent session contamination)
 
 # Colors (ANSI escape codes)
 ORANGE='\033[38;5;208m'
@@ -35,19 +35,23 @@ input=$(cat)
 
 # Check if we have usage data
 if echo "$input" | jq -e '.context_window' > /dev/null 2>&1; then
-    # Extract context window data (using actual Claude Code JSON structure)
+    # Extract context window data
     total_input=$(echo "$input" | jq -r '.context_window.total_input_tokens // 0')
     total_output=$(echo "$input" | jq -r '.context_window.total_output_tokens // 0')
     ctx_size=$(echo "$input" | jq -r '.context_window.context_window_size // 200000')
     used_pct=$(echo "$input" | jq -r '.context_window.used_percentage // empty')
     remaining_pct=$(echo "$input" | jq -r '.context_window.remaining_percentage // empty')
+    session_id=$(echo "$input" | jq -r '.session_id // empty')
 
-    # Use pre-calculated percentage if available, otherwise calculate
-    if [ -n "$used_pct" ] && [ "$used_pct" != "null" ]; then
-        # Round to integer
+    # Prefer remaining_percentage (actual window occupancy, not cumulative)
+    reliable="false"
+    if [ -n "$remaining_pct" ] && [ "$remaining_pct" != "null" ]; then
+        ctx_pct=$(printf "%.0f" "$(echo "100 - $remaining_pct" | bc 2>/dev/null || echo "$((100 - ${remaining_pct%.*}))")")
+        reliable="true"
+    elif [ -n "$used_pct" ] && [ "$used_pct" != "null" ]; then
         ctx_pct=$(printf "%.0f" "$used_pct")
+        reliable="true"
     else
-        # Calculate from tokens
         current_tokens=$((total_input + total_output))
         if [ "$ctx_size" -gt 0 ]; then
             ctx_pct=$(( (current_tokens * 100) / ctx_size ))
@@ -68,29 +72,47 @@ if echo "$input" | jq -e '.context_window' > /dev/null 2>&1; then
     # Extract model name
     model=$(echo "$input" | jq -r '.model.display_name // .model.id // "Claude"')
 
-    # Build status line
-    status="${CTX_COLOR}Ctx ${ctx_pct}%${RESET} ${PURPLE}${model}${RESET}"
-
     # Output status line
-    printf "%b" "$status"
+    printf "%b" "${CTX_COLOR}Ctx ${ctx_pct}%${RESET} ${PURPLE}${model}${RESET}"
 
-    # Write context status to JSON file for Claude to read
+    # Write context status to JSON file
     project_dir=$(echo "$input" | jq -r '.workspace.project_dir // .workspace.current_dir // ""')
     if [ -n "$project_dir" ] && [ "$project_dir" != "null" ]; then
         mkdir -p "$project_dir/.claude" 2>/dev/null || true
 
-        cat > "$project_dir/.claude/context-status.json" 2>/dev/null << JSONEOF
+        # Determine status file: per-session if session_id available
+        if [ -n "$session_id" ]; then
+            status_file="$project_dir/.claude/context-status-${session_id}.json"
+        else
+            status_file="$project_dir/.claude/context-status.json"
+        fi
+
+        timestamp=$(date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S)
+
+        cat > "$status_file" 2>/dev/null << JSONEOF
 {
   "ctx_pct": $ctx_pct,
-  "used_percentage": $(echo "$input" | jq -r '.context_window.used_percentage // null'),
+  "reliable": $reliable,
+  "used_percentage_raw": $(echo "$input" | jq -r '.context_window.used_percentage // null'),
   "remaining_percentage": $(echo "$input" | jq -r '.context_window.remaining_percentage // null'),
   "total_input_tokens": $total_input,
   "total_output_tokens": $total_output,
   "context_window_size": $ctx_size,
-  "model": "$(echo "$input" | jq -r '.model.display_name // .model.id')",
-  "updated": "$(date -Iseconds 2>/dev/null || date +%Y-%m-%dT%H:%M:%S)"
+  "model": "$model",
+  "session_id": "$session_id",
+  "updated": "$timestamp"
 }
 JSONEOF
+
+        # Also write legacy file for backward compatibility
+        if [ -n "$session_id" ]; then
+            cp "$status_file" "$project_dir/.claude/context-status.json" 2>/dev/null || true
+        fi
+
+        # Cleanup stale per-session files (>24h old)
+        if [ -n "$session_id" ]; then
+            find "$project_dir/.claude" -name "context-status-*.json" -mtime +1 -delete 2>/dev/null || true
+        fi
     fi
 
 else

@@ -14,15 +14,18 @@
 #
 # Output:
 #   - Displays formatted status in Claude Code UI
-#   - Writes context stats to .claude/context-status.json in current project
+#   - Writes context stats to .claude/context-status-{session_id}.json in current project
 #
 # Credit: Based on workaround shared by @Memphizzz in anthropics/claude-code#18027
 #         PowerShell port for Windows users
 #
-# Version: 2.0.0 - Fixed inflated ctx% after compaction, prefer remaining_percentage
+# Version: 3.0.0 - Per-session status files (fixes concurrent session contamination)
+#   Session ID from Claude Code input → writes to context-status-{session_id}.json
+#   Hooks read their own session's file. No more cross-session interference.
+#   Backward compatible: also writes context-status.json for legacy hooks.
 #
 # Compaction Detection:
-#   - Reads previous context % from context-status.json
+#   - Reads previous context % from per-session context-status file
 #   - If context drops 30%+ from a high point (60%+), logs as compaction event
 #   - Writes to .claude/compaction-log.json for analysis/feedback to Anthropic
 
@@ -44,6 +47,9 @@ try {
         $ctxSize = if ($data.context_window.context_window_size) { $data.context_window.context_window_size } else { 200000 }
         $usedPct = $data.context_window.used_percentage
         $remainingPct = $data.context_window.remaining_percentage
+
+        # Extract session ID (v3.0)
+        $sessionId = $data.session_id
 
         # Calculate percentage — PREFER remaining_percentage (actual window occupancy)
         # used_percentage is CUMULATIVE (counts all tokens ever, including compacted ones)
@@ -99,8 +105,14 @@ try {
 
         if ($projectDir) {
             $claudeDir = Join-Path $projectDir ".claude"
-            $statusFile = Join-Path $claudeDir "context-status.json"
             $compactionLogFile = Join-Path $claudeDir "compaction-log.json"
+
+            # Determine status file path: per-session if session_id available, legacy fallback otherwise
+            if ($sessionId) {
+                $statusFile = Join-Path $claudeDir "context-status-$sessionId.json"
+            } else {
+                $statusFile = Join-Path $claudeDir "context-status.json"
+            }
 
             # Create .claude directory if it doesn't exist
             if (-not (Test-Path $claudeDir)) {
@@ -126,6 +138,7 @@ try {
                 # Log compaction event
                 $compactionEvent = @{
                     timestamp = (Get-Date -Format "o")
+                    session_id = $sessionId
                     before_pct = $prevCtxPct
                     after_pct = $ctxPct
                     drop_pct = $prevCtxPct - $ctxPct
@@ -164,11 +177,32 @@ try {
                 total_output_tokens = $totalOutput
                 context_window_size = $ctxSize
                 model = $model
+                session_id = $sessionId
                 updated = (Get-Date -Format "o")
             }
 
-            # Write JSON file
+            # Write per-session status file
             $status | ConvertTo-Json | Set-Content -Path $statusFile -Encoding UTF8
+
+            # Also write legacy context-status.json for backward compatibility
+            # (hooks without session_id support will still work)
+            if ($sessionId) {
+                $legacyFile = Join-Path $claudeDir "context-status.json"
+                $status | ConvertTo-Json | Set-Content -Path $legacyFile -Encoding UTF8
+            }
+
+            # ============================================
+            # CLEANUP: Remove stale per-session files (>24h old)
+            # ============================================
+            if ($sessionId) {
+                try {
+                    $staleFiles = Get-ChildItem -Path $claudeDir -Filter "context-status-*.json" -ErrorAction SilentlyContinue |
+                        Where-Object { $_.LastWriteTime -lt (Get-Date).AddHours(-24) }
+                    foreach ($stale in $staleFiles) {
+                        Remove-Item $stale.FullName -Force -ErrorAction SilentlyContinue
+                    }
+                } catch { }
+            }
         }
     } else {
         Write-Host "Ready" -NoNewline
