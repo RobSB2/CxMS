@@ -173,6 +173,14 @@ Export CxMS to Cursor, GitHub Copilot, Windsurf, and Aider.
 
 ## What's New: CxMS Tools v2.0
 
+### Per-Session Context Isolation (v2.0.5 — February 19, 2026)
+
+When two Claude Code sessions run against the same project, they previously shared a single `context-status.json`. Session A's context percentage would overwrite Session B's, causing the wrong session to get blocked at 80%.
+
+**Fix:** Each session now writes to its own `context-status-{session_id}.json`. Hooks read only their own session's status file. Legacy `context-status.json` still written for backward compatibility. Stale per-session files auto-cleaned after 24 hours.
+
+The statusline command also now detects and logs compaction events to `.claude/compaction-log.json`.
+
 ### Enforced Startup Sequence
 
 Previous versions relied on advisory text to get AI assistants to read startup files. **They often skipped it.** CxMS v2.0 solves this structurally:
