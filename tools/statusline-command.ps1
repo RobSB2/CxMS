@@ -1,4 +1,8 @@
 #
+# DEPRECATED: Claude Code runs statusline commands through bash on all platforms
+# (including Windows via Git Bash/MSYS2). Use statusline-command.sh instead.
+# This file is retained for manual/external use only.
+#
 # CxMS Statusline Command for Claude Code (PowerShell)
 #
 # This script generates a status line and writes context usage to a JSON file

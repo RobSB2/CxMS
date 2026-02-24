@@ -132,16 +132,26 @@ Fires after compaction restores context. Reads `.claude/compaction-recovery.md` 
 
 ### Statusline
 
-The context monitor hook requires the statusline to write `.claude/context-status.json`. Configure the statusline in your Claude Code settings:
+The context monitor hook requires the statusline to write `.claude/context-status.json`.
 
-**PowerShell (Windows):**
-```
-tools/statusline-command.ps1
+**Important:** Claude Code runs statusline commands through bash on **all platforms** (including Windows via Git Bash). The PowerShell script is deprecated.
+
+Add to your `~/.claude/settings.json` (or project `.claude/settings.json`):
+
+```json
+{
+  "statusLine": {
+    "type": "command",
+    "command": "bash ~/.claude/statusline-command.sh"
+  }
+}
 ```
 
-**Bash (macOS/Linux):**
-```
-tools/statusline-command.sh
+Copy `tools/statusline-command.sh` to `~/.claude/` and make it executable:
+
+```bash
+cp tools/statusline-command.sh ~/.claude/statusline-command.sh
+chmod +x ~/.claude/statusline-command.sh
 ```
 
 ### Plain Language Summary

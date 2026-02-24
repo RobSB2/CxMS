@@ -91,8 +91,8 @@ This file is the single source of truth for template versions. AI assistants sho
 | `cxms-cascade.mjs` | 1.0.0 | Node.js | Cascading config manager - CSS-like inheritance, conflict audit |
 | `cxms-report.mjs` | 1.2.0 | Node.js | Telemetry reporter - opt-out model, queue-first resilience, --quiet mode |
 | `cxms-profile.mjs` | 1.1.0 | Node.js | Profile manager CLI with multi-tool export |
-| `statusline-command.sh` | 1.1.0 | Bash (Mac/Linux) | Context monitoring statusline script |
-| `statusline-command.ps1` | 1.1.0 | PowerShell (Windows) | Context monitoring statusline script |
+| `statusline-command.sh` | 3.1.0 | Bash (all platforms) | Context monitoring statusline script |
+| `statusline-command.ps1` | 3.0.0 | PowerShell (deprecated) | Deprecated — Claude Code uses bash runner |
 | `agent-monitor.ps1` | 2.1 | PowerShell (Windows) | Multi-agent heartbeat monitor with alert limits |
 | `supabase-schema.sql` | 1.0 | SQL | Telemetry database schema |
 

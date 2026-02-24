@@ -304,8 +304,8 @@ CxMS/
 │   ├── cxms-cascade.mjs                   # Cascading config manager
 │   ├── cxms-report.mjs                    # Telemetry reporter
 │   ├── cxms-profile.mjs                   # Profile manager CLI
-│   ├── statusline-command.sh              # Context monitoring (Mac/Linux)
-│   └── statusline-command.ps1             # Context monitoring (Windows)
+│   ├── statusline-command.sh              # Context monitoring (all platforms)
+│   └── statusline-command.ps1             # Context monitoring (deprecated — use .sh)
 │
 └── docs/dashboard/                        # Community dashboard (coming soon)
 ```
