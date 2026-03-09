@@ -12,6 +12,8 @@
 
 </div>
 
+> **Note:** This repository was restructured and relaunched in early 2026. Current GitHub analytics (clone count, stars, traffic) reflect only the period since the relaunch and do not capture the full adoption history across prior versions. Total clones since inception exceed 1,000.
+
 ---
 
 ## The Problem
