@@ -1,8 +1,7 @@
 <div align="center">
 
-<img src="https://img.shields.io/badge/%F0%9F%9A%80_CxMS_Pro_is_Here-The_AI_That_Never_Forgets-6366f1?style=for-the-badge&labelColor=1e1b4b" alt="CxMS Pro is Here" />
-
-<br /><br />
+<h1>🚀 CxMS Pro is Here</h1>
+<h3>The AI That Never Forgets</h3>
 
 **Your corrections stick. Your decisions persist. Every session builds on the last.**
 
