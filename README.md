@@ -1,3 +1,36 @@
+<div align="center">
+
+<img src="https://img.shields.io/badge/%F0%9F%9A%80_CxMS_Pro_is_Here-The_AI_That_Never_Forgets-6366f1?style=for-the-badge&labelColor=1e1b4b" alt="CxMS Pro is Here" />
+
+<br /><br />
+
+**Your corrections stick. Your decisions persist. Every session builds on the last.**
+
+Persistent hierarchical memory with confidence tiers, emotional weighting, contradiction detection, and automated consolidation. 180+ production sessions. 16 patents pending. Zero cloud dependency.
+
+$49/mo per seat (1 AI assistant included, +$19/mo per additional agent)
+
+Works with Claude Code, Cursor, Windsurf, GitHub Copilot, Cline, Continue.dev, Zed, and Amazon Q.
+
+[![Get CxMS Pro](https://img.shields.io/badge/Get_CxMS_Pro-$49/mo-6366f1?style=for-the-badge)](https://opencxms.org/products/cxms-pro) [![Try Core Free](https://img.shields.io/badge/CxMS_Core-Free_&_Open_Source-22c55e?style=for-the-badge)](https://github.com/RobSB2/CxMS)
+
+| | CxMS Core (Free) | CxMS Pro |
+|---|---|---|
+| BM25 full-text search | :white_check_mark: | :white_check_mark: |
+| Lifecycle hooks | :white_check_mark: | :white_check_mark: |
+| Context monitoring | :white_check_mark: | :white_check_mark: |
+| **Persistent memory engine** | | :star: |
+| **Confidence tiers + consolidation** | | :star: |
+| **Contradiction detection** | | :star: |
+| **Cross-project memory** | | :star: |
+| **Auto context profiles (128K-1M)** | | :star: |
+| **Project onboarding + migration** | | :star: |
+| **9 AI assistant support** | | :star: |
+
+</div>
+
+---
+
 # CxMS - OpenCxMS Memory System
 
 <div align="center">
@@ -13,39 +46,6 @@
 </div>
 
 > **Note:** This repository was restructured and relaunched in early 2026. Current GitHub analytics (clone count, stars, traffic) reflect only the period since the relaunch and do not capture the full adoption history across prior versions. Total clones since inception exceed 1,000.
-
----
-
-## CxMS Pro is Here
-
-<div align="center">
-
-**The AI that never forgets. Now available.**
-
-CxMS Core is free and open source. **CxMS Pro** adds the Cortex memory engine: persistent hierarchical memory with confidence tiers, emotional weighting, contradiction detection, and automated consolidation. 180+ production sessions. 16 patents pending. Zero cloud dependency.
-
-Your corrections stick. Your decisions persist. Every session builds on the last.
-
-**$49/mo** per seat (1 AI assistant included, +$19/mo per additional agent)
-
-Works with Claude Code, Cursor, Windsurf, GitHub Copilot, Cline, Continue.dev, Zed, and Amazon Q.
-
-[![Get CxMS Pro](https://img.shields.io/badge/Get_CxMS_Pro-$49/mo-6366f1?style=for-the-badge)](https://opencxms.org/products/cxms-pro)
-
-</div>
-
-| | CxMS Core (Free) | CxMS Pro |
-|---|---|---|
-| BM25 full-text search | Yes | Yes |
-| Lifecycle hooks | Yes | Yes |
-| Context monitoring | Yes | Yes |
-| **Cortex memory engine** | | **Yes** |
-| **Confidence tiers + consolidation** | | **Yes** |
-| **Contradiction detection** | | **Yes** |
-| **Cross-project memory** | | **Yes** |
-| **Auto context profiles (128K-1M)** | | **Yes** |
-| **Project onboarding + migration** | | **Yes** |
-| **9 AI assistant support** | | **Yes** |
 
 ---
 
