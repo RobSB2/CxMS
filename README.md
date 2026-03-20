@@ -5,7 +5,7 @@
 
 **Your corrections stick. Your decisions persist. Every session builds on the last.**
 
-Persistent hierarchical memory with confidence tiers, emotional weighting, contradiction detection, and automated consolidation. 180+ production sessions. 16 patents pending. Zero cloud dependency.
+Persistent memory with confidence-based knowledge tiers, accuracy enforcement, and self-improving recall. Born from 184+ real production sessions. 16 patents pending. Zero cloud dependency.
 
 $49/mo per seat (1 AI assistant included, +$19/mo per additional agent)
 
@@ -15,14 +15,18 @@ Works with Claude Code, Cursor, Windsurf, GitHub Copilot, Cline, Continue.dev, Z
 
 | | CxMS Core (Free) | CxMS Pro |
 |---|---|---|
-| BM25 full-text search | :white_check_mark: | :white_check_mark: |
-| Lifecycle hooks | :white_check_mark: | :white_check_mark: |
+| Full-text search | :white_check_mark: | :white_check_mark: |
+| Session lifecycle hooks | :white_check_mark: | :white_check_mark: |
 | Context monitoring | :white_check_mark: | :white_check_mark: |
 | **Persistent memory engine** | | :star: |
-| **Confidence tiers + consolidation** | | :star: |
-| **Contradiction detection** | | :star: |
-| **Cross-project memory** | | :star: |
-| **Auto context profiles (128K-1M)** | | :star: |
+| **Confidence-based knowledge tiers** | | :star: |
+| **Accuracy enforcement** | | :star: |
+| **Automatic context awareness** | | :star: |
+| **Source verification before writes** | | :star: |
+| **Self-improving memory** | | :star: |
+| **Conflict detection and resolution** | | :star: |
+| **Cross-project knowledge sharing** | | :star: |
+| **Adaptive context scaling (128K-1M)** | | :star: |
 | **Project onboarding + migration** | | :star: |
 | **9 AI assistant support** | | :star: |
 
