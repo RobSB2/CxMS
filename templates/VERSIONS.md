@@ -15,7 +15,8 @@ This file is the single source of truth for template versions. AI assistants sho
 | `CLAUDE.md.existing-project.template` | 1.0 | Adding CxMS to existing projects |
 | `PROJECT_Approvals.md.template` | 1.0 | Pre-approved operations to reduce permission prompts |
 | `PROJECT_Startup.md.template` | 1.2 | Single-file session initialization + opt-out telemetry |
-| `PROJECT_Context.md.template` | 1.0 | Documentation index |
+| `PROJECT_Key_Context_File_Index.md.template` | 1.0 | Slim list of highest-importance project files + locations (session boot) — formerly `PROJECT_MBR.md.template` |
+| `PROJECT_Master_Context_File_Index.md.template` | 1.0 | Comprehensive file registry with category groupings + when-to-read directives — formerly `PROJECT_Context.md.template` |
 | `PROJECT_Session.md.template` | 1.1 | Session state tracking |
 | `PROJECT_Tasks.md.template` | 1.0 | Task tracker |
 | `PROJECT_Prompt_History.md.template` | 1.0 | Prompt audit trail |

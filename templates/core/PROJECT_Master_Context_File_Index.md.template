@@ -1,0 +1,229 @@
+# [PROJECT] Master Context File Index
+
+**CxMS Version:** 1.6
+**Template Version:** 1.0
+**Purpose:** Comprehensive index of all project context files, their locations, and purposes. NOT for routine session start — read only when looking something up across the full project or when creating new documents.
+**For the slim subset used at session startup:** see `[PROJECT]_Key_Context_File_Index.md`.
+**Last Updated:** [DATE]
+
+---
+
+## How to Use This File
+
+1. Looking for something? Search this file first.
+2. Creating a new document? Add it to the appropriate category below.
+3. Referencing a document elsewhere? Use the path from this registry.
+4. Starting a new session? Read `[PROJECT]_Key_Context_File_Index.md` instead. This file is for targeted lookups.
+5. Finding a file: use the category whose "When to read" directive matches your current work.
+
+---
+
+## Session Startup
+
+*When to read: Every session start, in order.*
+
+| File | Purpose |
+|------|---------|
+| `CLAUDE.md` | Project instructions (auto-loaded) |
+| `[PROJECT]_Startup.md` | Session startup sequence |
+| `[PROJECT]_Key_Context_File_Index.md` | Slim list — essentials for session boot |
+| `[PROJECT]_Approvals.md` | Pre-approved operations (DO NOT prompt) |
+| `[PROJECT]_Session.md` | Current state, last session, in-progress work |
+| `[PROJECT]_Tasks.md` | Active and pending tasks |
+
+---
+
+## Dynamic State
+
+*When to read: At session start AND after each work block; update at session end.*
+
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Session.md` | DYNAMIC — current session, accomplishments, suggested next action |
+| `[PROJECT]_Tasks.md` | DYNAMIC — active and pending tasks |
+
+---
+
+## Governance (Decisions + Approvals + Exceptions)
+
+*When to read: At session start AND before any sensitive operation (deploys, schema changes, architectural decisions, releases).*
+
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Approvals.md` | Pre-approved operations |
+| `[PROJECT]_Decision_Log.md` | Architectural / strategic decisions + rationale |
+| `[PROJECT]_Issue_Log.md` | Problems and resolutions |
+| `[PROJECT]_Exceptions.md` | Technical workarounds (if used) |
+
+---
+
+## Architecture & Design
+
+*When to read: Before touching core architecture or doing structural changes.*
+
+| File | Purpose |
+|------|---------|
+| `[path/to/architecture-doc]` | [System architecture reference] |
+| `[path/to/design-docs]` | [Design documents, RFCs, proposals] |
+
+---
+
+## Database & Schema
+
+*When to read: When touching the database, diagnosing data issues, or planning schema changes.*
+
+| File / Location | Purpose |
+|-----------------|---------|
+| `[path/to/schema-doc]` | Schema overview + conventions |
+| `[path/to/migrations]` | Database migrations |
+| `[path/to/seed-data]` | Seed / reference data |
+
+---
+
+## Deployment & Infrastructure
+
+*When to read: Before any deploy; when touching server config or environment routing.*
+
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Deployment.md` | Deployment status + checklist |
+
+**Environments:**
+
+| Environment | Address / Location | Role |
+|-------------|---------------------|------|
+| PROD | [address] | Live production |
+| TEST | [address] | Staging / UAT |
+| DEV | [address or local] | Development |
+
+---
+
+## Strategy & Planning
+
+*When to read: When doing strategic work, planning roadmaps, or reviewing gaps.*
+
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Strategy.md` | Strategic documentation (if used) |
+| `[PROJECT]_Plan.md` | Multi-phase project plan (if used) |
+
+---
+
+## Active Logs (Diagnostics)
+
+*When to read: When diagnosing recent behavior, performance issues, or investigating what happened.*
+
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Activity_Log.md` | Record of significant actions |
+| `[PROJECT]_Performance_Log.md` | Performance observations + benchmarks (if used) |
+| `[PROJECT]_Prompt_History.md` | Audit trail of prompts + outcomes |
+
+---
+
+## Prompt Library / Reference
+
+*When to read: When authoring new session prompts or referencing established prompt patterns.*
+
+| File | Purpose |
+|------|---------|
+| `SESSION_START_PROMPTS.md` | Copy-paste session prompts |
+| `[PROJECT]_Prompts_and_Instructions.md` | Project-specific prompt library (if used) |
+
+---
+
+## Historical / Archives
+
+*When to read: When investigating prior decisions, rollbacks, or superseded context.*
+
+| File / Location | Purpose |
+|-----------------|---------|
+| `[PROJECT]_Session_Archive.md` | Historical session summaries (if used) |
+| `[archive-directory]/` | Archived legacy documentation |
+
+---
+
+## Key Project Files
+
+### Configuration
+| File | Purpose |
+|------|---------|
+| `[path/to/config]` | Main configuration |
+| `[path/to/env]` | Environment variables |
+
+### Entry Points
+| File | Purpose |
+|------|---------|
+| `[path/to/main]` | Application entry point |
+| `[path/to/routes]` | Route definitions |
+
+### Important Directories
+| Directory | Contents |
+|-----------|----------|
+| `src/` | Source code |
+| `tests/` | Test files |
+| `docs/` | Documentation |
+
+---
+
+## External References
+
+| Resource | URL/Location | Purpose |
+|----------|--------------|---------|
+| Repository | [URL] | Source code |
+| Documentation | [URL] | External docs |
+| Issue Tracker | [URL] | Bug/feature tracking |
+
+---
+
+## Reading Order by Activity
+
+### Starting a New Session
+1. `CLAUDE.md`
+2. `[PROJECT]_Startup.md`
+3. `[PROJECT]_Key_Context_File_Index.md` (slim)
+4. `[PROJECT]_Session.md`
+5. `[PROJECT]_Tasks.md`
+
+### Planning New Work
+1. All Session Startup files
+2. Architecture & Design category
+3. `[PROJECT]_Strategy.md` (if used)
+4. `[PROJECT]_Plan.md` (if used)
+
+### Debugging Issues
+1. `[PROJECT]_Session.md` — recent changes
+2. Active Logs category
+3. `[PROJECT]_Exceptions.md` (if used)
+
+### Deployment
+1. Deployment & Infrastructure category
+2. `[PROJECT]_Activity_Log.md` — recent deployments
+3. `[PROJECT]_Session.md` — what's ready
+
+### Reviewing History
+1. Historical / Archives category
+2. `[PROJECT]_Prompt_History.md` — detailed history
+3. `[PROJECT]_Decision_Log.md` — why things were done
+
+---
+
+## Notes
+
+<!-- Add any project-specific notes about documentation structure here -->
+
+---
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0 | [DATE] | Initial Master Context File Index — full registry with category groupings + "when to read" directives per category. Paired with slim `[PROJECT]_Key_Context_File_Index.md`. |
+
+---
+
+### Plain Language Summary
+
+This file is the complete table of contents for every file in the project. Files are organized into categories, each labeled with a "when to read" directive so AI assistants and humans can find the right source for the right work. When you can't find a file, search here first. When you create a new file, add it to the appropriate category. When you reference a document from elsewhere, use the path from this registry.
+
+The slim session-startup subset lives in `[PROJECT]_Key_Context_File_Index.md` — that file is what gets read at every session start; this file is what gets read when you need the full project inventory.

@@ -1,0 +1,124 @@
+# [PROJECT] Key Context File Index
+
+**CxMS Version:** 1.6
+**Template Version:** 1.0
+**Purpose:** Slim list of the highest-importance project files and their locations. Used for quick session orientation and routine-work routing.
+**For the comprehensive file registry:** see `[PROJECT]_Master_Context_File_Index.md`.
+**Last Updated:** [DATE]
+
+> This file provides the "30-second briefing" — enough context for any AI assistant to understand the project, its architecture, and current state without reading every file. Keep it under 150 lines. If it grows beyond that, detail belongs in the Master Context File Index instead.
+
+---
+
+## Project Identity
+
+| Field | Value |
+|-------|-------|
+| Name | [PROJECT NAME] |
+| Type | [web app / CLI tool / library / API / service / etc.] |
+| Owner | [NAME] |
+| Repo | [REPO URL] |
+| Stack | [LANGUAGES, FRAMEWORKS, DATABASES] |
+| Environments | [PROD / TEST / STAGING — addresses or placeholder] |
+
+---
+
+## Session Startup
+
+*When to read: Every session start, in order.*
+
+| File | Purpose |
+|------|---------|
+| `CLAUDE.md` | Project instructions (auto-loaded) |
+| `[PROJECT]_Startup.md` | Session startup sequence |
+| `[PROJECT]_Approvals.md` | Pre-approved operations (DO NOT prompt for these) |
+| `[PROJECT]_Session.md` | Current state, last session, in-progress work |
+| `[PROJECT]_Tasks.md` | Active and pending tasks |
+
+---
+
+## Dynamic State
+
+*When to read: At session start AND after each work block; update at session end.*
+
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Session.md` | DYNAMIC — current session, accomplishments, next action |
+| `[PROJECT]_Tasks.md` | DYNAMIC — active + pending tasks |
+
+---
+
+## Governance
+
+*When to read: At session start AND before any sensitive operation (deploys, schema changes, architectural decisions, releases).*
+
+| File | Purpose |
+|------|---------|
+| `[PROJECT]_Approvals.md` | Pre-approved operations |
+| `[PROJECT]_Decision_Log.md` | Architectural / strategic decisions + rationale (if used) |
+| `[PROJECT]_Issue_Log.md` | Problems and resolutions (if used) |
+
+---
+
+## Critical Architecture Reference
+
+*When to read: Before touching core architecture, schema, or major system components.*
+
+| File | Purpose |
+|------|---------|
+| `[path/to/architecture-doc]` | [Architecture reference / system design] |
+| `[path/to/schema-doc]` | [Database schema / data model reference] |
+| `[PROJECT]_Deployment.md` | Deployment status + checklist (if used) |
+
+---
+
+## Known Paths
+
+| Path | What |
+|------|------|
+| `[REPO_ROOT]` | This repo (root) |
+| `[path/to/main-code]` | Primary application code |
+| `[path/to/tests]` | Test files |
+| `[path/to/docs]` | Documentation |
+| `[path/to/config]` | Configuration files |
+
+---
+
+## Quick Orientation
+
+**What is [PROJECT]?**
+- [1-2 sentence description of what the project is + target audience]
+
+**Current Focus:** [1-2 sentences about what's being worked on right now]
+
+**Boundaries:** [Things the AI should NOT do without asking. Examples: don't modify production configs, don't delete test data, don't push to main without review.]
+
+---
+
+## Quick Reference
+
+| If you need to... | Read |
+|-------------------|------|
+| Start a session | `CLAUDE.md` → `[PROJECT]_Startup.md` → this file → Session + Tasks |
+| Know current state | `[PROJECT]_Session.md` |
+| See active work | `[PROJECT]_Tasks.md` |
+| Check pre-approved operations | `[PROJECT]_Approvals.md` |
+| Find the full file index | `[PROJECT]_Master_Context_File_Index.md` |
+| Review architecture | `[path/to/architecture-doc]` |
+| Check deployment status | `[PROJECT]_Deployment.md` |
+
+---
+
+## Version History
+
+| Version | Date | Change |
+|---------|------|--------|
+| 1.0 | [DATE] | Initial Key Context File Index — slim version covering session startup, dynamic state, governance, critical architecture. Full file index at `[PROJECT]_Master_Context_File_Index.md`. |
+
+---
+
+### Plain Language Summary
+
+This file is the short list of files an AI assistant reads first when starting work on this project. It lists only the files needed for routine work (session startup, active tasks, current state, governance rules, critical architecture). The full inventory of every project file lives in `[PROJECT]_Master_Context_File_Index.md` — read that when you need to find something across the whole project, not at every session start.
+
+Keep this file under 150 lines. When it grows beyond that, move detail into the Master Context File Index.

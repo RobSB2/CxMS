@@ -87,7 +87,8 @@ templates/core/PROJECT_Tasks.md.template
 
 | File | Purpose |
 |------|---------|
-| `[PROJECT]_Context.md` | Documentation index |
+| `[PROJECT]_Key_Context_File_Index.md` | Slim list of highest-importance files + locations (session boot) |
+| `[PROJECT]_Master_Context_File_Index.md` | Comprehensive file registry with category groupings |
 | `[PROJECT]_Prompt_History.md` | Audit trail of prompts |
 | `[PROJECT]_Activity_Log.md` | What was done |
 | `[PROJECT]_Decision_Log.md` | Why decisions were made |
@@ -99,7 +100,8 @@ templates/core/PROJECT_Tasks.md.template
 ```
 # Core (required)
 templates/core/CLAUDE.md.template
-templates/core/PROJECT_Context.md.template
+templates/core/PROJECT_Key_Context_File_Index.md.template
+templates/core/PROJECT_Master_Context_File_Index.md.template
 templates/core/PROJECT_Session.md.template
 templates/core/PROJECT_Tasks.md.template
 templates/core/PROJECT_Prompt_History.md.template
@@ -150,9 +152,10 @@ templates/logs/PROJECT_Issue_Log.md.template
 ```
 templates/
 ├── DEPLOYMENT.md          # This file
-├── core/                   # Required templates (6 files)
+├── core/                   # Required templates
 │   ├── CLAUDE.md.template
-│   ├── PROJECT_Context.md.template
+│   ├── PROJECT_Key_Context_File_Index.md.template       # Slim file index (session boot)
+│   ├── PROJECT_Master_Context_File_Index.md.template    # Full file registry (on-demand)
 │   ├── PROJECT_Session.md.template
 │   ├── PROJECT_Tasks.md.template
 │   ├── PROJECT_Prompt_History.md.template
