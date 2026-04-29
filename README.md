@@ -7,11 +7,11 @@
 
 Persistent memory with confidence-based knowledge tiers, accuracy enforcement, and self-improving recall. Born from 184+ real production sessions. 16 patents pending. Zero cloud dependency.
 
-$49/mo per seat (1 AI assistant included, +$19/mo per additional agent)
+$49 one-time on Gumroad. Pick any 1 of 9 AI assistant integrations. Add the others at $19 one-time each. Bring your own API key for any AI model.
 
 Works with Claude Code, Cursor, Windsurf, GitHub Copilot, Cline, Continue.dev, Zed, and Amazon Q.
 
-[![Get CxMS Pro](https://img.shields.io/badge/Get_CxMS_Pro-$49/mo-6366f1?style=for-the-badge)](https://opencxms.org/products/cxms-pro) [![Try Core Free](https://img.shields.io/badge/CxMS_Core-Free_&_Open_Source-22c55e?style=for-the-badge)](https://github.com/RobSB2/CxMS)
+[![Get CxMS Pro](https://img.shields.io/badge/Get_CxMS_Pro-$49_one--time-6366f1?style=for-the-badge)](https://opencxms.org/products/cxms-pro) [![Try Core Free](https://img.shields.io/badge/CxMS_Core-Free_&_Open_Source-22c55e?style=for-the-badge)](https://github.com/RobSB2/CxMS)
 
 | | CxMS Core (Free) | CxMS Pro |
 |---|---|---|
