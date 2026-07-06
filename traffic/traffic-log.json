@@ -1,7 +1,7 @@
 {
   "repo": "RobSB2/CxMS",
   "description": "Archived GitHub traffic data. GitHub only retains 14 days — this preserves history.",
-  "last_updated": "2026-06-29",
+  "last_updated": "2026-07-06",
   "snapshots": [
     {
       "date": "2026-02-23",
@@ -2943,6 +2943,161 @@
         },
         {
           "timestamp": "2026-06-28T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        }
+      ]
+    },
+    {
+      "date": "2026-07-06",
+      "clones_14d": {
+        "count": 66,
+        "uniques": 37
+      },
+      "views_14d": {
+        "count": 5,
+        "uniques": 2
+      },
+      "daily_clones": [
+        {
+          "timestamp": "2026-06-22T00:00:00Z",
+          "count": 13,
+          "uniques": 7
+        },
+        {
+          "timestamp": "2026-06-23T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-06-24T00:00:00Z",
+          "count": 3,
+          "uniques": 3
+        },
+        {
+          "timestamp": "2026-06-25T00:00:00Z",
+          "count": 14,
+          "uniques": 5
+        },
+        {
+          "timestamp": "2026-06-26T00:00:00Z",
+          "count": 2,
+          "uniques": 2
+        },
+        {
+          "timestamp": "2026-06-27T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-06-28T00:00:00Z",
+          "count": 1,
+          "uniques": 1
+        },
+        {
+          "timestamp": "2026-06-29T00:00:00Z",
+          "count": 20,
+          "uniques": 9
+        },
+        {
+          "timestamp": "2026-06-30T00:00:00Z",
+          "count": 1,
+          "uniques": 1
+        },
+        {
+          "timestamp": "2026-07-01T00:00:00Z",
+          "count": 4,
+          "uniques": 4
+        },
+        {
+          "timestamp": "2026-07-02T00:00:00Z",
+          "count": 1,
+          "uniques": 1
+        },
+        {
+          "timestamp": "2026-07-03T00:00:00Z",
+          "count": 4,
+          "uniques": 4
+        },
+        {
+          "timestamp": "2026-07-04T00:00:00Z",
+          "count": 2,
+          "uniques": 2
+        },
+        {
+          "timestamp": "2026-07-05T00:00:00Z",
+          "count": 1,
+          "uniques": 1
+        }
+      ],
+      "daily_views": [
+        {
+          "timestamp": "2026-06-22T00:00:00Z",
+          "count": 3,
+          "uniques": 1
+        },
+        {
+          "timestamp": "2026-06-23T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-06-24T00:00:00Z",
+          "count": 1,
+          "uniques": 1
+        },
+        {
+          "timestamp": "2026-06-25T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-06-26T00:00:00Z",
+          "count": 1,
+          "uniques": 1
+        },
+        {
+          "timestamp": "2026-06-27T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-06-28T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-06-29T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-06-30T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-07-01T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-07-02T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-07-03T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-07-04T00:00:00Z",
+          "count": 0,
+          "uniques": 0
+        },
+        {
+          "timestamp": "2026-07-05T00:00:00Z",
           "count": 0,
           "uniques": 0
         }
